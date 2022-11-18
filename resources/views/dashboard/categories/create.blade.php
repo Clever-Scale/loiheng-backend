@@ -25,6 +25,7 @@
                             <input type="hidden" name="created_by" value="{{ Auth::user()->id }}">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
+                                    <label for="name" style="font-weight: 700">Category Picture:</label><br>
                                     <label for="picture">
                                         <img id="blah" src="{{ asset('assets/img/images.jpg') }}"
                                             class="rounded shadow-sm p-1"
@@ -33,7 +34,7 @@
                                     <input accept="image/*" name="picture" type='file' id="picture" class="mx-2" />
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="name">Name:</label>
+                                    <label for="name" style="font-weight: 700">Category Name:</label>
                                     <input type="name" name="name"
                                         class="@error('name') is-invalid @enderror form-control py-1" required
                                         value="{{ old('name') }}">
@@ -44,7 +45,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="name">Parent Category:</label>
+                                    <label for="name" style="font-weight: 700">Parent Category:</label>
                                     <select class="form-select" aria-label="Default select example" name="parent">
                                         <option value="0" name="parent">Select Category</option>
                                         @foreach ($categories as $category)
@@ -54,7 +55,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="name">Description:</label>
+                                    <label for="name" style="font-weight: 700">Description:</label>
                                     <textarea id="summernote" name="description"></textarea>
                                 </div>
                             </div>
@@ -77,15 +78,13 @@
         $('#summernote').summernote({
             placeholder: 'Hello stand alone ui',
             tabsize: 2,
-            height: 120,
+            height: 400,
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
             ]
         });
     </script>

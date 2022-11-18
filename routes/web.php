@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +31,15 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::delete('/category/{id}/delete', [CategoryController::class, 'delete'])->name('category.delete');
     // Category end //
 
+    // Brand start //
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand');
+    Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
+    Route::post('/brand/save', [BrandController::class, 'save'])->name('brand.save');
+    Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
+    Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
+    Route::delete('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
+    // Category end //
+
     // Category start //
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
@@ -37,6 +48,13 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     // Category end //
+
+    // User start //
+    Route::get('/users', [UserController::class, 'index'])->name('user');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/users/{id}/update', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/users/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
+    // User end //
 });
 
 Route::group(['namespace' => "Auth", 'prefix' => 'auth/'], function () {

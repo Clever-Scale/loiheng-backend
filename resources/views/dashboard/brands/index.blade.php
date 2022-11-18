@@ -1,17 +1,17 @@
 @extends('layouts.mainlayout')
-@section('title', 'Category')
+@section('title', 'Brand')
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Category Page</h1>
+            <h1>Brand Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item active">Brand</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <a href="{{ route('category.create') }}" class="d-flex align-items-center btn btn-primary">
+        <a href="{{ route('brand.create') }}" class="d-flex align-items-center btn btn-primary">
             <i class="bi bi-plus-lg"></i>Add
         </a>
     </div>
@@ -22,8 +22,8 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Category List </h5>
-                        <table class="table table-borderless datatable" id="categoryTable">
+                        <h5 class="card-title">Brand List </h5>
+                        <table class="table table-borderless datatable" id="brandTable">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -38,26 +38,26 @@
                                 @php
                                     $index = 1;
                                 @endphp
-                                @foreach ($categories as $category)
+                                @foreach ($brands as $brand)
                                     <tr>
                                         <th scope="row"><a href="#">{{ $index++ }}</a></th>
-                                        <td><img src="{{ asset($category->picture ? $category->picture : 'assets/img/images.jpg') }}"
+                                        <td><img src="{{ asset($brand->picture ? $brand->picture : 'assets/img/images.jpg') }}"
                                                 alt="" width="60px" height="60px">
                                         </td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{!! $category->description !!}</td>
-                                        <td>{{ \Carbon\Carbon::create($category->created_at)->toFormattedDateString() }}
+                                        <td>{{ $brand->name }}</td>
+                                        <td>{!! $brand->description !!}</td>
+                                        <td>{{ \Carbon\Carbon::create($brand->created_at)->toFormattedDateString() }}
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="edit-btn">
-                                                    <a href="{{ route('category.edit', ['id' => $category->id]) }}"
+                                                    <a href="{{ route('brand.edit', ['id' => $brand->id]) }}"
                                                         class="px-2">
                                                         <i class="bi bi-pencil-square"></i>
                                                         <span style="padding-left: 4px">Edit</span>
                                                     </a>
                                                 </div>
-                                                <form action="{{ route('category.delete', ['id' => $category->id]) }}"
+                                                <form action="{{ route('brand.delete', ['id' => $brand->id]) }}"
                                                     method="POST">
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE">
@@ -85,7 +85,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script type="text/javascript">
         $(function() {
-            $('#categoryTable').on('click', 'button.delete', function(e) {
+            $('#brandTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
                 Swal.fire({
