@@ -27,6 +27,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">PROFILE</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">CREATED AT</th>
@@ -40,6 +41,8 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <th scope="row"><a href="#">{{ $index++ }}</a></th>
+                                        <th><img src="{{ $user->profile_img }}" alt="" width="60px"
+                                                height="60px"></th>
                                         <td>{{ $user->fullname }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ \Carbon\Carbon::create($user->created_at)->toFormattedDateString() }}
