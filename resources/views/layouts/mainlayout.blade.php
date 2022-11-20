@@ -49,6 +49,7 @@
             list-style: decimal !important;
             list-style-position: inside !important;
         }
+
     </style>
 
     <!-- =======================================================
@@ -233,7 +234,7 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset(Auth::user()->profile_img ? Auth::user()->profile_img : 'assets/img/images.jpg') }}"
+                        <img src="{{ asset(Auth::user()->profile_img ? Auth::user()->profile_img : 'assets/img/pp.jpg') }}"
                             alt="Profile"
                             style="border-radius: 50%; width: 50px; height: 50px; position: relative; object-fit: cover">
                         {{-- <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span> --}}
