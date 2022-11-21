@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_no')->nullable();
-            $table->enum('is_admin', ['user', 'admin'])->default('user');
-            $table->boolean('is_active')->default(false);
+            $table->enum('is_admin', ['user', 'admin'])->default('user')->nullable();
+            $table->boolean('is_active')->default(false)->nullable();
             $table->timestamp('last_login')->nullable();
             $table->string('role')->nullable();
             $table->string('status')->nullable();

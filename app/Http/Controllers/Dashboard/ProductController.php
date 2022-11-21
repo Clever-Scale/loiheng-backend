@@ -11,4 +11,9 @@ class ProductController extends Controller
     {
         return view('dashboard.products.index');
     }
+
+    public function create()
+    {
+        return view('dashboard.products.create');
+    }
 }

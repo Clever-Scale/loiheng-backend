@@ -36,7 +36,8 @@
             </a>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
+            <a class="nav-link collapsed {{ request()->routeIs('customer') || request()->routeIs('customer.edit') ? '' : 'collapsed' }}"
+                href="{{ route('customer') }}">
                 <i class="bi bi-person"></i>
                 <span>Customers</span>
             </a>

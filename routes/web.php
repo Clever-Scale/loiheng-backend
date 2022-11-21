@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -55,6 +56,17 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::put('/users/{id}/update', [UserController::class, 'update'])->name('user.update');
     Route::delete('/users/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
     // User end //
+
+
+    // Customer start //
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customer');
+    Route::get('/customers/search', [CustomerController::class, 'search'])->name('customer.search');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('/customers/save', [CustomerController::class, 'save'])->name('customer.save');
+    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::put('/customers/{id}/update', [CustomerController::class, 'update'])->name('customer.update');
+    Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
+    // Customer end //
 });
 
 Route::group(['namespace' => "Auth", 'prefix' => 'auth/'], function () {
