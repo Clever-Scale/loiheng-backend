@@ -60,6 +60,9 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
 
     // Customer start //
     Route::get('/customers', [CustomerController::class, 'index'])->name('customer');
+    Route::get('/customers/search', [CustomerController::class, 'search'])->name('customer.search');
+    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('/customers/save', [CustomerController::class, 'save'])->name('customer.save');
     Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
     Route::put('/customers/{id}/update', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');

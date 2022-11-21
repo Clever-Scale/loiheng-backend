@@ -49,8 +49,9 @@
             list-style: decimal !important;
             list-style-position: inside !important;
         }
-
     </style>
+
+    @yield('links')
 
     <!-- =======================================================
   * Template Name: NiceAdmin - v2.4.1
