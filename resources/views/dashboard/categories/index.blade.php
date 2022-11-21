@@ -23,56 +23,58 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Category List </h5>
-                        <table class="table table-borderless datatable" id="categoryTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">PICTURE</th>
-                                    <th scope="col">NAME</th>
-                                    <th scope="col">DESCRIPTION</th>
-                                    <th scope="col">CREATED AT</th>
-                                    <th scope="col">ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $index = 1;
-                                @endphp
-                                @foreach ($categories as $category)
+                        <div class="table-responsive">
+                            <table class="table table-border datatable" id="categoryTable">
+                                <thead>
                                     <tr>
-                                        <th scope="row"><a href="#">{{ $index++ }}</a></th>
-                                        <td><img src="{{ asset($category->picture ? $category->picture : 'assets/img/images.jpg') }}"
-                                                alt="" width="60px" height="60px">
-                                        </td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{!! $category->description !!}</td>
-                                        <td>{{ \Carbon\Carbon::create($category->created_at)->toFormattedDateString() }}
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="edit-btn">
-                                                    <a href="{{ route('category.edit', ['id' => $category->id]) }}"
-                                                        class="px-2">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                        <span style="padding-left: 4px">Edit</span>
-                                                    </a>
-                                                </div>
-                                                <form action="{{ route('category.delete', ['id' => $category->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="delete-btn mx-2  delete">
-                                                        <i class="bi bi-trash"></i>
-                                                        <span style="padding-left: 4px">Delete</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <th scope="col">#</th>
+                                        <th scope="col">PICTURE</th>
+                                        <th scope="col">NAME</th>
+                                        <th scope="col">DESCRIPTION</th>
+                                        <th scope="col">CREATED AT</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $index = 1;
+                                    @endphp
+                                    @foreach ($categories as $category)
+                                        <tr>
+                                            <th scope="row"><a href="#">{{ $index++ }}</a></th>
+                                            <td><img src="{{ asset($category->picture ? $category->picture : 'assets/img/images.jpg') }}"
+                                                    alt="" width="60px" height="60px">
+                                            </td>
+                                            <td>{{ $category->name }}</td>
+                                            <td>{!! $category->description !!}</td>
+                                            <td>{{ \Carbon\Carbon::create($category->created_at)->toFormattedDateString() }}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="edit-btn">
+                                                        <a href="{{ route('category.edit', ['id' => $category->id]) }}"
+                                                            class="px-2">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                            <span style="padding-left: 4px">Edit</span>
+                                                        </a>
+                                                    </div>
+                                                    <form action="{{ route('category.delete', ['id' => $category->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button type="submit" class="delete-btn mx-2  delete">
+                                                            <i class="bi bi-trash"></i>
+                                                            <span style="padding-left: 4px">Delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>

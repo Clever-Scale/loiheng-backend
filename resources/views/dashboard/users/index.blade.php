@@ -23,51 +23,57 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">User List </h5>
-                        <table class="table table-borderless datatable" id="UserTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">CREATED AT</th>
-                                    <th scope="col">ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $index = 1;
-                                @endphp
-                                @foreach ($users as $user)
+                        <div class="table-responsive">
+                            <table class="table table-border datatable" id="UserTable">
+                                <thead>
                                     <tr>
-                                        <th scope="row"><a href="#">{{ $index++ }}</a></th>
-                                        <td>{{ $user->fullname }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ \Carbon\Carbon::create($user->created_at)->toFormattedDateString() }}
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center ">
-                                                <div class="edit-btn">
-                                                    <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="px-2">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                        <span style="padding-left: 4px">Edit</span>
-                                                    </a>
-                                                </div>
-                                                <form action="{{ route('user.delete', ['id' => $user->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="delete-btn mx-2  delete">
-                                                        <i class="bi bi-trash"></i>
-                                                        <span style="padding-left: 4px">Delete</span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <th scope="col">#</th>
+                                        <th scope="col">PROFILE</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">CREATED AT</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $index = 1;
+                                    @endphp
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <th scope="row"><a href="#">{{ $index++ }}</a></th>
+                                            <th><img src="{{ $user->profile_img }}" alt="" width="60px"
+                                                    height="60px"></th>
+                                            <td>{{ $user->fullname }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ \Carbon\Carbon::create($user->created_at)->toFormattedDateString() }}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center ">
+                                                    <div class="edit-btn">
+                                                        <a href="{{ route('user.edit', ['id' => $user->id]) }}"
+                                                            class="px-2">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                            <span style="padding-left: 4px">Edit</span>
+                                                        </a>
+                                                    </div>
+                                                    <form action="{{ route('user.delete', ['id' => $user->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button type="submit" class="delete-btn mx-2  delete">
+                                                            <i class="bi bi-trash"></i>
+                                                            <span style="padding-left: 4px">Delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>

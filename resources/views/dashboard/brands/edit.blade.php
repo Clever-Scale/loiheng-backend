@@ -35,7 +35,7 @@
                                     </label>
                                     <input accept="image/*" name="picture" type='file' id="picture" class="mx-2" />
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="name" style="font-weight: 700">Name:</label>
                                     <input type="name" name="name"
                                         class="@error('name') is-invalid @enderror form-control py-1" required
@@ -51,12 +51,12 @@
                                     <textarea id="summernote" name="description">{{ $brand->description }}</textarea>
                                 </div>
                             </div>
-
                             <div class="row my-3">
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
+
                         </form>
 
 
