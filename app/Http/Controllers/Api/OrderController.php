@@ -9,6 +9,6 @@ class OrderController extends Controller
 {
     public function getAllOrder()
     {
-        $orders =
+        // $orders =
     }
 }

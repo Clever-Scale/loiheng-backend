@@ -24,8 +24,8 @@ return new class extends Migration
             $table->foreign('delivery_id')->references('id')->on('deliveries');
             $table->unsignedBigInteger('delivery_id')->nullable();
             $table->string('payment_method')->nullable();
-            $table->string('
-            ')->nullable();
+            $table->string('coupon_code')->nullable();
+            $table->string('coupon_price')->nullable();
             $table->string('total_price')->nullable();
             $table->string('discount_price')->nullable();
             $table->string('status')->nullable();
