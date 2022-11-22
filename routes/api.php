@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
@@ -27,6 +28,12 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
     Route::get('logout',[AuthController::class, 'logout']);
 });
 
-Route::group(['namespace' => 'Api'], function() {
-    Route::get('order', [OrderController::class, 'getAllOrder'])->name('order.all');
+Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() {
+    Route::get('orders/{id}', [OrderController::class, 'getByIdOrder'])->name('orders');
+    Route::post('order-create', [OrderController::class, 'createOrder'])->name('orders.create');
+
+    // Cart start //
+    Route::get('carts', [CartController::class, 'getByIdCart'])->name('carts');
+    Route::post('cart-create', [CartController::class, 'createCart'])->name('carts.create');
+    // Cart end //
 });

@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\OrderResource;
 
-class OrderCollection extends ResourceCollection
+class CartCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,7 +15,7 @@ class OrderCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'orders' => OrderResource::collection($this->collection),
+            'carts' => CartResource::collection($this->collection),
             'pagination' => [
                 "current_page" => $this->currentPage(),
                 "first_page_url" => $this->getOptions()['path'] . '?' . $this->getOptions()['pageName'] . '=1',

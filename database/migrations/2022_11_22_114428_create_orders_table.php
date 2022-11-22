@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('cart_id')->references('id')->on('carts');
-            $table->unsignedBigInteger('cart_id')->nullable();
+            $table->unsignedBigInteger('cart_id');
             $table->foreign('address_id')->references('id')->on('addresses');
-            $table->unsignedBigInteger('address_id')->nullable();
+            $table->unsignedBigInteger('address_id');
             $table->foreign('delivery_id')->references('id')->on('deliveries');
             $table->unsignedBigInteger('delivery_id')->nullable();
             $table->string('payment_method')->nullable();
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('coupon_price')->nullable();
             $table->string('total_price')->nullable();
             $table->string('discount_price')->nullable();
-            $table->string('status')->nullable();
+            $table->enum('status', ['pending', 'confirm', 'ontheway', 'complete'])->default('pending')->nullable();
             $table->string('order_no')->nullable();
             $table->string('delivery_fee')->nullable();
             $table->boolean('is_active')->default(0)->nullable();

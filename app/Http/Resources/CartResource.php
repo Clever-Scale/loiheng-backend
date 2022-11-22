@@ -2,13 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Address;
-use App\Models\Cart;
-use App\Models\Delivery;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResource extends JsonResource
+class CartResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,17 +19,8 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => User::where('id', $this->user_id)->get(),
-            'cart' => Cart::where('id', $this->cart_id)->get(),
-            'address' => Address::where('id', $this->address_id)->get(),
-            'delivery' => Delivery::where('id', $this->delivery_id)->get(),
-            'payment_method' => $this->payment_method,
-            'coupon_code' => $this->coupon_code,
-            'coupon_price' => $this->coupon_price,
-            'total_price' => $this->total_price,
-            'discount_price' => $this->discount_price,
+            'product' => Product::where('id', $this->product_id)->get(),
             'status' => $this->status,
-            'order_no' => $this->order_no,
-            'delivery_fee' => $this->delivery_fee,
             'is_active' => $this->is_active,
             'is_preorder' => $this->is_preorder,
             'created_at' => $this->created_at,
