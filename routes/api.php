@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\AuthController;
@@ -29,11 +30,18 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
 });
 
 Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() {
-    Route::get('orders/{id}', [OrderController::class, 'getByIdOrder'])->name('orders');
+    // Order start //
+    Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder'])->name('orders');
     Route::post('order-create', [OrderController::class, 'createOrder'])->name('orders.create');
+    // Order end //
 
     // Cart start //
-    Route::get('carts/{id}', [CartController::class, 'getByIdCart'])->name('carts');
+    Route::get('carts/{id}', [CartController::class, 'getByUserIdCart'])->name('carts');
     Route::post('cart-create', [CartController::class, 'createCart'])->name('carts.create');
+    // Cart end //
+
+    // Cart start //
+    Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress'])->name('address');
+    Route::post('address-create', [AddressController::class, 'createAddress'])->name('address.create');
     // Cart end //
 });

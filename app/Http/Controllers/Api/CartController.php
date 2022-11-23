@@ -10,7 +10,7 @@ use App\Http\Resources\CartCollection;
 
 class CartController extends BaseController
 {
-    public function getByIdCart($id)
+    public function getByUserIdCart($id)
     {
         try{
             $carts = new CartCollection(Cart::where('user_id', $id)->paginate(10));
