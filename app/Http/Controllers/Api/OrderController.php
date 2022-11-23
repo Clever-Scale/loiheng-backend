@@ -11,7 +11,7 @@ use App\Http\Resources\OrderResource;
 
 class OrderController extends BaseController
 {
-    public function getByIdOrder($id)
+    public function getByUserIdOrder($id)
     {
         try{
             $orders = new OrderCollection(Order::where('user_id', $id)->paginate(10));
