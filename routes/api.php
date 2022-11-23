@@ -33,7 +33,7 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     Route::post('order-create', [OrderController::class, 'createOrder'])->name('orders.create');
 
     // Cart start //
-    Route::get('carts', [CartController::class, 'getByIdCart'])->name('carts');
+    Route::get('carts/{id}', [CartController::class, 'getByIdCart'])->name('carts');
     Route::post('cart-create', [CartController::class, 'createCart'])->name('carts.create');
     // Cart end //
 });

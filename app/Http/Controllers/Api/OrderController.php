@@ -11,11 +11,12 @@ use App\Http\Resources\OrderResource;
 
 class OrderController extends BaseController
 {
-    public function getByIdOrder(Request $request)
+    public function getByIdOrder($id)
     {
         try{
-            $orders = new OrderCollection(Order::where('user_id', $request->id)->paginate(10));
-            // $orders = json_decode(json_encode($orders));
+            $orders = new OrderCollection(Order::where('user_id', $id)->paginate(10));
+            $orders = json_decode(json_encode($orders));
+            // dd($orders);
             return $this->sendResponse($orders,"Order data getting successfully!");
 
         }catch(Exception $e){
