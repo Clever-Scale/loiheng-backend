@@ -43,5 +43,6 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     // Cart start //
     Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress'])->name('address');
     Route::post('address-create', [AddressController::class, 'createAddress'])->name('address.create');
+    Route::post('address-remove/{id}', [AddressController::class, 'removeAddress'])->name('address.remove');
     // Cart end //
 });
