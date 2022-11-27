@@ -39,4 +39,16 @@ class AddressController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function removeAddress($id)
+    {
+        try{
+           $address=  Address::findOrFail($id)->update([
+            'is_active' => false
+           ]);
+            return $this->sendMessageResponse("Address added successfully!.");
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }
