@@ -45,9 +45,11 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/save', [ProductController::class, 'save'])->name('product.save');
+    Route::get('/product/{id}/show', [ProductController::class, 'show'])->name('product.show');
     Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
+    Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
     // Category end //
 
     // User start //
