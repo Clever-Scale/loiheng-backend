@@ -22,6 +22,15 @@
                             <h5 class="card-title">Create Product</h5>
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="cover_img" style="font-weight: 700">Cover Picture:</label><br>
+                                    <label for="cover_img">
+                                        <img id="coverPic" src="{{ asset('assets/img/images.jpg') }}"
+                                            class="rounded shadow-sm p-1"
+                                            style="transition: 0.4s; height: 100px; width: 100px" />
+                                    </label>
+                                    <input accept="image/*" name="cover_img" type='file' id="cover_img" class="mx-2" />
+                                </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="name" style="font-weight: 700">Product Name:</label>
                                     <input type="text" name="name"
@@ -259,6 +268,12 @@
             const [file] = picture.files
             if (file) {
                 blah.src = URL.createObjectURL(file)
+            }
+        }
+        cover_img.onchange = evt => {
+            const [file] = cover_img.files
+            if (file) {
+                coverPic.src = URL.createObjectURL(file)
             }
         }
     </script>

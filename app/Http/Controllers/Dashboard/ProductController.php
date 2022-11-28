@@ -10,10 +10,10 @@ use Illuminate\Http\Request;
 use App\Models\ProductPicture;
 use Illuminate\Support\Carbon;
 use App\Models\ProductWarranty;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -43,6 +43,11 @@ class ProductController extends Controller
                     })
                     ->editColumn('brand_id', function ($row) {
                         return Brand::findOrFail( $row->brand_id)->name;
+                    })
+                    ->addColumn('cover_img', function ($row) {
+                        $url = asset($row->cover_img ? $row->cover_img : "assets/img/images.jpg");
+                        return '<img src="' . $url . '"
+                    alt="Profile Image" style="width: 60px; height: 60px; border-radius: 4px;">';
                     })
                     ->addColumn('created_at', function ($row) {
                         return '
@@ -103,7 +108,7 @@ class ProductController extends Controller
 
                         }
                     })
-                    ->rawColumns(['description', 'created_at', 'action', 'price'  ])
+                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img'  ])
                     ->make(true);
         }
     }
@@ -122,6 +127,7 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'sku' => 'required',
+            'cover_img' => 'required'
         ]);
         $prod_no = Product::orderBy('id', 'DESC')->pluck('id')->first();
             if ($prod_no == null or $prod_no == "") {
@@ -136,6 +142,14 @@ class ProductController extends Controller
             }
         $product_code = 'LH' . $prod_no;
 
+        // Cover start
+        $pathCover = '';
+        if ($request->file()) {
+            $fileNameCover = time() . '_' . $request->cover_img->getClientOriginalName();
+            $filePathCover = $request->file('cover_img')->storeAs('Product', $fileNameCover, 'public');
+            $pathCover = '/storage/' . $filePathCover;
+        }
+        // Cover end
         // Description File start
         $pathDescFile = '';
         if ($request->file('desc_file')) {
@@ -147,6 +161,7 @@ class ProductController extends Controller
         $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
+            'cover_img' => $pathCover,
             'product_code' => $product_code,
             'description' => $request->description,
             'short_description' => $request->short_description,

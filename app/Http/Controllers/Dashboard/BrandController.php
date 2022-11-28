@@ -45,7 +45,6 @@ class BrandController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'picture' => $path,
-            'is_active' => $request->is_active,
             'created_by' => $request->created_by,
         ]);
         return redirect()->route('brand')->with('brand-create', "Brand has been created Successfully!");
