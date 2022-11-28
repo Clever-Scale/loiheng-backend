@@ -59,7 +59,7 @@
                         </form>
                         <hr class="py-2">
                         <div class="table-responsive">
-                            <table class="table table-border datatable" id="customerTable">
+                            <table class="table table-striped table-hover datatable" id="customerTable">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

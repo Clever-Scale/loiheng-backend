@@ -339,14 +339,14 @@
                 var newDivImage = $(
                     `<div class="row py-2" id="img${k}" style="border-top: 1px solid grey">
                         <div class="col-md-4">
-                            <label for="picture${k}">
+                            <label for="imgInp${k}">
                                 <img id="blah${k}" src="{{ asset('assets/img/images.jpg') }}" class="rounded shadow-sm p-1" style="transition: 0.4s; height: 100px; width: 100px" />
                             </label>
-                            <input accept="image/*" name="image[]" type='file' id="picture${k}" class="mx-2" hidden />
+                            <input accept="image/*" name="image[]" type='file' id="imgInp${k}" class="mx-2" hidden />
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex align-items-center" style="height: 100%">
-                                <input type="number" name="display_order[]" class="@error('display_order') is-invalid @enderror form-control py-1" required value="{{ old('display_order') }}">
+                                <input type="number" name="display_order[]" class="@error('display_order') is-invalid @enderror form-control py-1" value="{{ old('display_order') }}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -364,12 +364,22 @@
                         var childImage = $(`#img${rmi}`);
                         childImage.remove();
                     });
-                    `#picture${rmi}`.onchange = evt => {
-                        const [file] = `#picture${rmi}`.files
-                        if (file) {
-                            `#blah${rmi}`.src = URL.createObjectURL(file)
+
+                    function readURL(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function(e) {
+                                $(`#blah${rmi}`).attr('src', e.target.result);
+                            }
+
+                            reader.readAsDataURL(input.files[0]);
                         }
                     }
+
+                    $(`#imgInp${rmi}`).change(function() {
+                        readURL(this);
+                    });
 
                 }
                 console.log(i);
