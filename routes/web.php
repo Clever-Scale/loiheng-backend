@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
@@ -22,6 +23,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function () {
     Route::get('/', [HomeController::class, 'index'])->name('homepage');
+
+    // Banner Slider start //
+    Route::get('/banner-slider', [BannerSliderController::class, 'index'])->name('banner-slider');
+    Route::post('/banner-slider/save', [BannerSliderController::class, 'save'])->name('banner-slider.save');
+    Route::put('/banner-slider/{id}/update', [BannerSliderController::class, 'update'])->name('banner-slider.update');
+    Route::delete('/banner-slider/{id}/delete', [BannerSliderController::class, 'delete'])->name('banner-slider.delete');
+    Route::get('/banner-slider/list', [BannerSliderController::class, 'getBannerSliderList'])->name('getbannerlist');
+    // Banner Slider end //
 
     // Category start //
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
@@ -68,6 +77,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
     Route::put('/customers/{id}/update', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
+    Route::get('/customers/list', [CustomerController::class, 'getCustomerList'])->name('getcustomerlist');
     // Customer end //
 });
 

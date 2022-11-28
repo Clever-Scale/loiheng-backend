@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable();
             $table->string('status')->nullable();
             $table->boolean('is_preorder')->default(0)->nullable();
-            $table->boolean('is_active')->default(0)->nullable();
+            $table->boolean('is_active')->default(1)->nullable();
             $table->timestamps();
         });
     }
