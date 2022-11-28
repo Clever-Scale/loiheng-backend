@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('product_code');
             $table->string('name');
             $table->string('price');
+            $table->string('cover_img')->nullable();
             $table->text('description')->nullable();
             $table->text('short_description')->nullable();
             $table->string('sku')->nullable();

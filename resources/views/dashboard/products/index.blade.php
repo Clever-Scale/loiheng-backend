@@ -69,10 +69,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Product List </h5>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="productDataTable" style="width: 100%">
+                            <table class="table table-striped table-hover" id="productDataTable"
+                                style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Cover</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Price</th>
@@ -82,44 +84,6 @@
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                {{-- <tbody>
-                                    @php
-                                        $index = 1;
-                                    @endphp
-                                    @foreach ($products as $item)
-                                        <tr>
-                                            <th scope="row"><a href="#">{{ $index++ }}</a></th>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{!! $item->description !!}</td>
-                                            <td>{{ $item->price }} $</td>
-                                            <td>{{ $item->category[0]->name }}</td>
-                                            <td>{{ $item->brand[0]->name }}</td>
-                                            <td>{{ $item->user[0]->fullname }} |
-                                                {{ \Carbon\Carbon::create($item->created_at)->toFormattedDateString() }}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="edit-btn">
-                                                        <a href="" class="px-2">
-                                                            <i class="bi bi-pencil-square"></i>
-                                                            <span style="padding-left: 4px">Edit</span>
-                                                        </a>
-                                                    </div>
-                                                    <form action="" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button type="submit" class="delete-btn mx-2  delete">
-                                                            <i class="bi bi-trash"></i>
-                                                            <span style="padding-left: 4px">Delete</span>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                    @endforeach
-
-                                </tbody> --}}
                             </table>
                         </div>
 
@@ -157,6 +121,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'cover_img',
+                        name: 'cover_img'
                     },
                     {
                         data: 'description',

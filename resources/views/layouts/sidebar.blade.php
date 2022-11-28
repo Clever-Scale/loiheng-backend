@@ -18,11 +18,7 @@
             <ul id="components-nav"
                 class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.create') ? '' : 'collapse' }} "
                 data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('product') }}">
-                        <i class="bi bi-circle"></i><span>Products</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{ route('category') }}">
                         <i class="bi bi-circle"></i><span>Categories</span>
@@ -31,6 +27,11 @@
                 <li>
                     <a href="{{ route('brand') }}">
                         <i class="bi bi-circle"></i><span>Brands</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('product') }}">
+                        <i class="bi bi-circle"></i><span>Products</span>
                     </a>
                 </li>
             </ul>
@@ -42,6 +43,13 @@
                 <span>Customers</span>
             </a>
         </li> --}}
+        <li class="nav-item">
+            <a class="nav-link collapsed {{ request()->routeIs('banner-slider') ? '' : 'collapsed' }}"
+                href="{{ route('banner-slider') }}">
+                <i class="bi bi-person"></i>
+                <span>Banner Slider</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link collapsed {{ request()->routeIs('customer') || request()->routeIs('customer.edit') ? '' : 'collapsed' }}"
                 href="{{ route('customer') }}">

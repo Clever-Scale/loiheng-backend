@@ -12,6 +12,7 @@ class Product extends Model
         'product_code',
         'name',
         'price',
+        'cover_img',
         'description',
         'short_description',
         'sku',
