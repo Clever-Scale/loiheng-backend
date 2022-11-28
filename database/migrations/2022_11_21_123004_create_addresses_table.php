@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->boolean('is_default')->default(0)->nullable();
             $table->string('address_type')->nullable();
-            $table->boolean('is_active')->default(0)->nullable();
+            $table->boolean('is_active')->default(1)->nullable();
             $table->string('street_address')->nullable();
             $table->timestamps();
         });

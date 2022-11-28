@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 class="card-title">User List </h5>
                         <div class="table-responsive">
-                            <table class="table table-border datatable" id="UserTable">
+                            <table class="table table-striped table-hover datatable" id="UserTable">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
