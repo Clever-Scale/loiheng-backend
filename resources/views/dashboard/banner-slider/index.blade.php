@@ -11,12 +11,11 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <button type="button" class="d-flex align-items-center btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#exampleModal">
+        <a href="{{ route('banner-slider.create') }}" class="d-flex align-items-center btn btn-primary">
             <i class="bi bi-plus-lg"></i>Add
-        </button>
+        </a>
         {{-- Model start --}}
-        <div class="modal  fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        {{-- <div class="modal  fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog ">
                 <form action="{{ route('banner-slider.save') }}" method="POST" novalidate enctype="multipart/form-data"
@@ -54,7 +53,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
         {{-- Model end --}}
     </div>
 

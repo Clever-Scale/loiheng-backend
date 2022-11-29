@@ -75,16 +75,16 @@ class CustomerController extends Controller
                         </div>';
                     })
                     ->filter(function ($instance) use ($request) {
-                        if (!empty($request->get('fullname'))) {
-                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                return Str::contains(Str::lower($row['fullname']), $request->get('fullname')) ? true : false;
-                            });
-                        }
-                        if (!empty($request->get('email'))) {
-                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                return Str::contains(Str::lower($row['email']), $request->get('email')) ? true : false;
-                            });
-                        }
+                        // if (!empty($request->get('fullname'))) {
+                        //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        //         return Str::contains(Str::lower($row['fullname']), $request->get('fullname')) ? true : false;
+                        //     });
+                        // }
+                        // if (!empty($request->get('email'))) {
+                        //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        //         return Str::contains(Str::lower($row['email']), $request->get('email')) ? true : false;
+                        //     });
+                        // }
                         if($request->has('from_date')){
                             $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
                             $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
