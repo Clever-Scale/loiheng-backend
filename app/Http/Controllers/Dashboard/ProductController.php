@@ -127,7 +127,13 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'sku' => 'required',
-            'cover_img' => 'required'
+            'cover_img' => 'required',
+            'category_id' => 'required',
+            'brand_id' => 'required'
+        ],[
+            "cover_img.required" => "Pleace select cover image!",
+            "category_id.required" => "Pleace select category!",
+            "brand_id.required" => "Pleace select brand!",
         ]);
         $prod_no = Product::orderBy('id', 'DESC')->pluck('id')->first();
             if ($prod_no == null or $prod_no == "") {
@@ -176,41 +182,48 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
         ]);
 
-        $count = count($request->service_key);
-        if ($request->service_key[0] != null) {
-            for ($i = 0; $i < $count; $i++) {
-                ProductWarranty::create([
-                    'product_id' => $product->id,
-                    'service_key' => $request->service_key[$i],
-                    'service_value' => $request->service_value[$i],
-                ]);
-            }
-        }
 
-        $countSpec = count($request->spec_key);
-        if ($request->spec_key[0] != null) {
-            for ($j = 0; $j < $countSpec; $j++) {
-                ProductSpec::create([
-                    'product_id' => $product->id,
-                    'spec_key' => $request->spec_key[$j],
-                    'spec_value' => $request->spec_value[$j],
-                ]);
-            }
-        }
-
-        $countImg = count($request->spec_key);
-        if ($request->spec_key[0] != null) {
-            for ($k = 0; $k < $countImg; $k++) {
-                foreach($request->file('image') as $uploadedFile){
-                    $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                    $path = $uploadedFile->storeAs('ProductImg', $filename, 'public');
-                    ProductPicture::create([
+        if(!is_null($request->service_key[0])){
+            $count = count($request->service_key);
+            if ($count > 0) {
+                for ($i = 0; $i < $count; $i++) {
+                    ProductWarranty::create([
                         'product_id' => $product->id,
-                        'image' => $path,
-                        'display_order' => $request->display_order[$k],
+                        'service_key' => $request->service_key[$i],
+                        'service_value' => $request->service_value[$i],
                     ]);
                 }
-                // Description File end
+            }
+        }
+
+        if(!is_null($request->spec_key[0])){
+            $countSpec = count($request->spec_key);
+            if ($countSpec > 0) {
+                for ($j = 0; $j < $countSpec; $j++) {
+                    ProductSpec::create([
+                        'product_id' => $product->id,
+                        'spec_key' => $request->spec_key[$j],
+                        'spec_value' => $request->spec_value[$j],
+                    ]);
+                }
+            }
+        }
+
+        if(!is_null($request->image)){
+            $countImg = count($request->image);
+            if ($countImg > 0) {
+                for ($k = 0; $k < $countImg; $k++) {
+                    foreach($request->file('image') as $uploadedFile){
+                        $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+                        $path = $uploadedFile->storeAs('ProductImg', $filename, 'public');
+                        ProductPicture::create([
+                            'product_id' => $product->id,
+                            'image' => $path,
+                            'display_order' => $request->display_order[$k],
+                        ]);
+                    }
+
+                }
             }
         }
 

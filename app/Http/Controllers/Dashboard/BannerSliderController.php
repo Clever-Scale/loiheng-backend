@@ -17,6 +17,9 @@ class BannerSliderController extends Controller
         if (session('banner-create')) {
             toast(Session::get('banner-create'), "success");
         }
+        if (session('banner-delete')) {
+            toast(Session::get('banner-delete'), "success");
+        }
         return view('dashboard.banner-slider.index');
     }
 
@@ -53,12 +56,12 @@ class BannerSliderController extends Controller
                         </button>
                         <ul class="dropdown-menu p-4">
                             <li>
-                                <a href="' . route("customer.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
+                                <a href="' . route("banner-slider.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
                                     Edit
                                 </a>
                             </li>
                             <li>
-                                <form method="post" action="' . route("customer.delete", ["id" => $row->id]) . ' "
+                                <form method="post" action="' . route("banner-slider.delete", ["id" => $row->id]) . ' "
                                 id="from1" data-flag="0">
                                 ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
                                         <button type="submit" class="btn btn-danger btn-sm delete"
@@ -73,23 +76,59 @@ class BannerSliderController extends Controller
         }
     }
 
+    public function create()
+    {
+        return view('dashboard.banner-slider.create');
+    }
+
     public function save(Request $request)
     {
         // dd($request->all());
-        if (is_null($request->image)){
-            return redirect()->back()->with('err', 'Please Image One Picture!');
+        $this->validate($request, [
+            'image' => 'required',
+        ], [
+            "image.required" => "Pleace select image!",
+        ]);
+        $path = '';
+        $fileName = time() . '_' . $request->image->getClientOriginalName();
+        $filePath = $request->file('image')->storeAs('BannerSlider', $fileName, 'public');
+        $path = '/storage/' . $filePath;
+        BannerSlider::create([
+            'image' => $path,
+            'created_by' => $request->created_by,
+        ]);
 
-        }else{
-            $path = '';
-            $fileName = time() . '_' . $request->image->getClientOriginalName();
-            $filePath = $request->file('image')->storeAs('BannerSlider', $fileName, 'public');
-            $path = '/storage/' . $filePath;
-            BannerSlider::create([
-                'image' => $path,
-                'created_by' => $request->created_by,
-            ]);
+        return redirect()->route('banner-slider')->with('banner-create', 'Banner image has been created successfully!');
+    }
 
-            return redirect()->route('banner-slider')->with('banner-create', 'Banner image has been created successfully!');
+    public function edit($id)
+    {
+        $banner = BannerSlider::findOrFail($id);
+        return view('dashboard.banner-slider.edit', compact('banner'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $pathEmp = $request->file('image');
+        $path= BannerSlider::where('id', $id)->value('image');
+        if($pathEmp){
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->image->getClientOriginalName();
+                $filePath = $request->file('image')->storeAs('BannerSlider', $fileName, 'public');
+                $path = '/storage/' . $filePath;
+            }
         }
+        BannerSlider::where('id', $id)->update([
+            'image' => $path,
+            'created_by' => $request->created_by,
+        ]);
+        return redirect()->route('banner-slider')->with('banner-update', "Banner image has been updated Successfully!");
+    }
+
+
+    public function delete($id)
+    {
+        BannerSlider::find($id)->delete();
+        return redirect()->route('banner-slider')->with('banner-delete', 'Banner image has been deleted successfully!');
     }
 }

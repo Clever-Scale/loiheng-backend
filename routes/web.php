@@ -26,7 +26,9 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
 
     // Banner Slider start //
     Route::get('/banner-slider', [BannerSliderController::class, 'index'])->name('banner-slider');
+    Route::get('/banner-slider/create', [BannerSliderController::class, 'create'])->name('banner-slider.create');
     Route::post('/banner-slider/save', [BannerSliderController::class, 'save'])->name('banner-slider.save');
+    Route::get('/banner-slider/{id}/edit', [BannerSliderController::class, 'edit'])->name('banner-slider.edit');
     Route::put('/banner-slider/{id}/update', [BannerSliderController::class, 'update'])->name('banner-slider.update');
     Route::delete('/banner-slider/{id}/delete', [BannerSliderController::class, 'delete'])->name('banner-slider.delete');
     Route::get('/banner-slider/list', [BannerSliderController::class, 'getBannerSliderList'])->name('getbannerlist');

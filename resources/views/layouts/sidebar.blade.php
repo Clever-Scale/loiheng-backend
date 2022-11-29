@@ -46,7 +46,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed {{ request()->routeIs('banner-slider') ? '' : 'collapsed' }}"
                 href="{{ route('banner-slider') }}">
-                <i class="bi bi-person"></i>
+                <i class="bi bi-card-image"></i>
                 <span>Banner Slider</span>
             </a>
         </li>
