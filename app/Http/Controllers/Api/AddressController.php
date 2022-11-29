@@ -46,7 +46,22 @@ class AddressController extends BaseController
            $address=  Address::findOrFail($id)->update([
             'is_active' => false
            ]);
-            return $this->sendMessageResponse("Address added successfully!.");
+            return $this->sendMessageResponse("Address removed successfully!.");
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function defaultAddress($id)
+    {
+        try{
+           $address =  Address::findOrFail($id)->update([
+            'is_default' => true
+           ]);
+            // Address::where('id', '!=', $address->id)->where('user_id', $address->user_id)->update([
+            //     'is_default' => false
+            // ]);
+            return $this->sendMessageResponse("Address default successfully!.");
         }catch(Exception $e){
             return $this->sendError($e->getMessage());
         }

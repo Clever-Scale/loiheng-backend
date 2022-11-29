@@ -183,7 +183,7 @@ class ProductController extends Controller
         ]);
 
 
-        if(!is_null($request->service_key[0])){
+        if(!is_null($request->service_key)){
             $count = count($request->service_key);
             if ($count > 0) {
                 for ($i = 0; $i < $count; $i++) {
@@ -196,7 +196,7 @@ class ProductController extends Controller
             }
         }
 
-        if(!is_null($request->spec_key[0])){
+        if(!is_null($request->spec_key)){
             $countSpec = count($request->spec_key);
             if ($countSpec > 0) {
                 for ($j = 0; $j < $countSpec; $j++) {

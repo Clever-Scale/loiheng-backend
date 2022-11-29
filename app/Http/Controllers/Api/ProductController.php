@@ -31,4 +31,15 @@ class ProductController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function productDetailById($id)
+    {
+        try{
+            $product_detail = new ProductCollection(Product::where('id',$id)->paginate(10));
+            return $this->sendResponse($product_detail,"Product detail data getting successfully!");
+
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

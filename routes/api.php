@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
     Route::post('address-create', [AddressController::class, 'createAddress']);
     Route::post('address-remove/{id}', [AddressController::class, 'removeAddress']);
+    Route::post('default-address/{id}', [AddressController::class, 'defaultAddress']);
     // Cart end //
 
     // Brand start //
@@ -62,5 +63,6 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     // Product start //
     Route::get('products/new-arrivals', [ProductController::class, 'newArrivals']);
     Route::get('products/featured', [ProductController::class, 'featuredProducts']);
+    Route::get('products/detail/{id}', [ProductController::class, 'productDetailById']);
     // Product end //
 });
