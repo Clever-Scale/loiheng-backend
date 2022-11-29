@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\ProductPicture;
+use App\Models\ProductSpec;
+use App\Models\ProductWarranty;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -36,6 +39,9 @@ class ProductResource extends JsonResource
             'created_by' => User::where('id', $this->user_id)->get(),
             'category' => Category::where('id', $this->category_id)->get(),
             'brand' => Brand::where('id', $this->brand_id)->get(),
+            'product_specs' => ProductSpec::where('product_id', $this->id)->get(),
+            'product_warranties' => ProductWarranty::where('product_id', $this->id)->get(),
+            'product_pictures' => ProductPicture::where('product_id', $this->id)->get(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

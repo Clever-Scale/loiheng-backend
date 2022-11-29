@@ -23,16 +23,23 @@
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label for="cover_img" style="font-weight: 700">Cover Picture:</label><br>
-                                    <label for="cover_img">
+                                    <label for="cover_img" style="font-weight: 700">Cover Picture <span
+                                            style="color: red">*</span> :</label><br>
+                                    <label for="cover_img" class="@error('cover_img') is-invalid @enderror">
                                         <img id="coverPic" src="{{ asset('assets/img/images.jpg') }}"
                                             class="rounded shadow-sm p-1"
                                             style="transition: 0.4s; height: 100px; width: 100px" />
                                     </label>
                                     <input accept="image/*" name="cover_img" type='file' id="cover_img" class="mx-2" />
+                                    @error('cover_img')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="name" style="font-weight: 700">Product Name:</label>
+                                    <label for="name" style="font-weight: 700">Product Name <span
+                                            style="color: red">*</span> :</label>
                                     <input type="text" name="name"
                                         class="@error('name') is-invalid @enderror form-control py-1"
                                         value="{{ old('name') }}">
@@ -43,7 +50,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="price" style="font-weight: 700">Product Price:</label>
+                                    <label for="price" style="font-weight: 700">Product Price <span
+                                            style="color: red">*</span> :</label>
                                     <input type="text" name="price"
                                         class="@error('price') is-invalid @enderror form-control py-1"
                                         value="{{ old('price') }}">
@@ -54,27 +62,42 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="category" style="font-weight: 700">Category:</label>
-                                    <select class="form-select" aria-label="Default select example" name="category_id">
-                                        <option value="0">Select Category</option>
+                                    <label for="category_id" style="font-weight: 700">Category <span
+                                            style="color: red">*</span> :</label>
+                                    <select class="form-select @error('category_id') is-invalid @enderror"
+                                        aria-label="Default select example" name="category_id">
+                                        <option value="">Select Category</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('category_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="brnad" style="font-weight: 700">Brand:</label>
-                                    <select class="form-select" aria-label="Default select example" name="brand_id">
-                                        <option value="0">Select Brand</option>
+                                    <label for="brand_id" style="font-weight: 700">Brand <span style="color: red">*</span>
+                                        :</label>
+                                    <select class="form-select @error('brand_id') is-invalid @enderror"
+                                        aria-label="Default select example" name="brand_id">
+                                        <option value="">Select Brand</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('brand_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="sku" style="font-weight: 700">SKU:</label>
+                                    <label for="sku" style="font-weight: 700">SKU <span style="color: red">*</span>
+                                        :</label>
                                     <input type="text" name="sku"
                                         class="@error('sku') is-invalid @enderror form-control py-1"
                                         value="{{ old('sku') }}">
@@ -95,11 +118,11 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 col-xl-6 mb-3">
                                     <label for="name" style="font-weight: 700">Full Description:</label>
                                     <textarea id="summernote" name="description"></textarea>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 col-xl-6 mb-3">
                                     <label for="name" style="font-weight: 700">Short Description:</label>
                                     <textarea id="shortdescription" name="short_description"></textarea>
                                 </div>
@@ -160,7 +183,8 @@
                                         <div class="col-md-6">
                                             <select class="form-select" aria-label="Default select example"
                                                 name="service_key[]">
-                                                <option value="shield" selected>Shield</option>
+                                                <option value="">Select</option>
+                                                <option value="shield">Shield</option>
                                                 <option value="checked">Checked</option>
                                             </select>
                                         </div>
@@ -209,8 +233,7 @@
                                 <div class="col-md-4">
                                     <div class="d-flex align-items-center" style="height: 100%">
                                         <input type="number" name="display_order[]"
-                                            class="@error('display_order') is-invalid @enderror form-control py-1"
-                                            value="{{ old('display_order') }}">
+                                            class="@error('display_order') is-invalid @enderror form-control py-1">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -286,14 +309,14 @@
                 var newDiv = $(
                     `<div class="row listing listing_ad job mb-3" id="gg${i}">
                         <div class="col-md-5">
-                            <input type="name" name="name"
+                            <input type="text" name="spec_key[]"
                                 class="form-control py-1" placeholder="Enter specification name..."
-                                value="{{ old('name') }}">
+                                value="">
                         </div>
                         <div class="col-md-5">
-                            <input type="name" name="name"
+                            <input type="text" name="spec_value[]"
                                 class="form-control py-1" placeholder="Enter specification value..."
-                                value="{{ old('name') }}">
+                                value="">
                         </div>
                         <div class="col-md-2">
                             <button id="remove${i}" class="btn btn-danger py-1 shadow-sm px-2">Remove</button>
@@ -322,7 +345,8 @@
                         <div class="col-md-5">
                             <select class="form-select" aria-label="Default select example"
                                 name="service_key[]">
-                                <option value="shield" selected>Shield</option>
+                                <option value="" selected>Select</option>
+                                <option value="shield">Shield</option>
                                 <option value="checked">Checked</option>
                             </select>
                         </div>
@@ -361,7 +385,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex align-items-center" style="height: 100%">
-                                <input type="number" name="display_order[]" class="@error('display_order') is-invalid @enderror form-control py-1" value="{{ old('display_order') }}">
+                                <input type="number" name="display_order[]" class="@error('display_order') is-invalid @enderror form-control py-1">
                             </div>
                         </div>
                         <div class="col-md-4">

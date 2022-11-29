@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\BannerSliderController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
@@ -32,6 +33,12 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
 });
 
 Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() {
+
+    // Home Page Banner start //
+    Route::get('home-page-banner-image', [BannerSliderController::class, 'getHomePageSlider']);
+
+    // Home Page Banner end //
+
     // Order start //
     Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder']);
     Route::post('order-create', [OrderController::class, 'createOrder']);
