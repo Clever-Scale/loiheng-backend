@@ -35,4 +35,16 @@ class CartController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function removeCartItem($id)
+    {
+        try{
+            Cart::findOrFail($id)->update([
+                'is_active' => false,
+            ]);
+            return $this->sendMessageResponse("Cart removed successfully!.");
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

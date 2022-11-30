@@ -94,7 +94,8 @@
                         </form>
                         <hr class="py-2"> --}}
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="customerDataTable">
+                            <table class="table table-striped table-hover" id="customerDataTable"
+                                style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
