@@ -11,12 +11,12 @@
 
         <li class="nav-heading">Pages</li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.create') ? '' : 'collapsed' }}"
+            <a class="nav-link {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapsed' }}"
                 data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Catalog</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav"
-                class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.create') ? '' : 'collapse' }} "
+                class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapse' }} "
                 data-bs-parent="#sidebar-nav">
 
                 <li>

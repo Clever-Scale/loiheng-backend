@@ -11,6 +11,7 @@ use App\Models\ProductPicture;
 use Illuminate\Support\Carbon;
 use App\Models\ProductWarranty;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
@@ -183,7 +184,7 @@ class ProductController extends Controller
         ]);
 
 
-        if(!is_null($request->service_key)){
+        if(!is_null($request->service_key[0])){
             $count = count($request->service_key);
             if ($count > 0) {
                 for ($i = 0; $i < $count; $i++) {
@@ -196,7 +197,7 @@ class ProductController extends Controller
             }
         }
 
-        if(!is_null($request->spec_key)){
+        if(!is_null($request->spec_key[0])){
             $countSpec = count($request->spec_key);
             if ($countSpec > 0) {
                 for ($j = 0; $j < $countSpec; $j++) {
@@ -209,25 +210,30 @@ class ProductController extends Controller
             }
         }
 
-        if(!is_null($request->image)){
+        if($request->file('image')){
             $countImg = count($request->image);
             if ($countImg > 0) {
                 for ($k = 0; $k < $countImg; $k++) {
-                    foreach($request->file('image') as $uploadedFile){
-                        $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                        $path = $uploadedFile->storeAs('ProductImg', $filename, 'public');
+                        $filename = time() . '_' . $request->image[$k]->getClientOriginalName();
+                        $filepath = $request->file('image')[$k]->storeAs('ProductImg', $filename, 'public');
+                        $path = '/storage/' . $filepath;
                         ProductPicture::create([
                             'product_id' => $product->id,
                             'image' => $path,
                             'display_order' => $request->display_order[$k],
                         ]);
-                    }
-
                 }
             }
         }
 
         return redirect()->route('product')->with('product-create', 'Product has been created successfully!');
+    }
+
+    public function show($id)
+    {
+        $products =  ProductResource::collection(Product::where('id', $id)->get());
+        $products = json_decode(json_encode($products));
+        return view('dashboard.products.show', compact('products'));
     }
 
     public function delete($id)

@@ -55,13 +55,17 @@ class AddressController extends BaseController
     public function defaultAddress($id)
     {
         try{
-           $address =  Address::findOrFail($id)->update([
-            'is_default' => true
-           ]);
-            // Address::where('id', '!=', $address->id)->where('user_id', $address->user_id)->update([
-            //     'is_default' => false
-            // ]);
-            return $this->sendMessageResponse("Address default successfully!.");
+
+            Address::findOrFail($id)->update([
+                'is_default' => true
+            ]);
+
+            $address = Address::find($id);
+
+            Address::where('id', '!=', $address->id)->where('user_id', $address->user_id)->update([
+                'is_default' => false
+            ]);
+            return $this->sendMessageResponse("Address defaulted successfully!.");
         }catch(Exception $e){
             return $this->sendError($e->getMessage());
         }

@@ -47,13 +47,14 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     // Cart start //
     Route::get('carts/{id}', [CartController::class, 'getByUserIdCart']);
     Route::post('cart-create', [CartController::class, 'createCart']);
+    Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
     // Cart end //
 
     // Cart start //
     Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
     Route::post('address-create', [AddressController::class, 'createAddress']);
-    Route::post('address-remove/{id}', [AddressController::class, 'removeAddress']);
-    Route::post('default-address/{id}', [AddressController::class, 'defaultAddress']);
+    Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
+    Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
     // Cart end //
 
     // Brand start //
@@ -61,6 +62,7 @@ Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() 
     // Brand end //
 
     // Product start //
+    Route::get('products', [ProductController::class, 'allProducts']);
     Route::get('products/new-arrivals', [ProductController::class, 'newArrivals']);
     Route::get('products/featured', [ProductController::class, 'featuredProducts']);
     Route::get('products/detail/{id}', [ProductController::class, 'productDetailById']);

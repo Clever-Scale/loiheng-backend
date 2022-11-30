@@ -10,6 +10,16 @@ use App\Http\Resources\ProductCollection;
 
 class ProductController extends BaseController
 {
+    public function allProducts()
+    {
+        try{
+            $products = new ProductCollection(Product::paginate(10));
+            return $this->sendResponse($products,"All products data getting successfully!");
+
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
     public function newArrivals()
     {
         try{
