@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
@@ -22,6 +23,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function () {
     Route::get('/', [HomeController::class, 'index'])->name('homepage');
+
+    // Banner Slider start //
+    Route::get('/banner-slider', [BannerSliderController::class, 'index'])->name('banner-slider');
+    Route::get('/banner-slider/create', [BannerSliderController::class, 'create'])->name('banner-slider.create');
+    Route::post('/banner-slider/save', [BannerSliderController::class, 'save'])->name('banner-slider.save');
+    Route::get('/banner-slider/{id}/edit', [BannerSliderController::class, 'edit'])->name('banner-slider.edit');
+    Route::put('/banner-slider/{id}/update', [BannerSliderController::class, 'update'])->name('banner-slider.update');
+    Route::delete('/banner-slider/{id}/delete', [BannerSliderController::class, 'delete'])->name('banner-slider.delete');
+    Route::get('/banner-slider/list', [BannerSliderController::class, 'getBannerSliderList'])->name('getbannerlist');
+    // Banner Slider end //
 
     // Category start //
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
@@ -45,9 +56,11 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/save', [ProductController::class, 'save'])->name('product.save');
+    Route::get('/product/{id}/show', [ProductController::class, 'show'])->name('product.show');
     Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
+    Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
     // Category end //
 
     // User start //
@@ -66,6 +79,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
     Route::put('/customers/{id}/update', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
+    Route::get('/customers/list', [CustomerController::class, 'getCustomerList'])->name('getcustomerlist');
     // Customer end //
 });
 

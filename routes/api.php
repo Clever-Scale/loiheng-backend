@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\BannerSliderController;
+use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,18 +34,38 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
 });
 
 Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() {
+
+    // Home Page Banner start //
+    Route::get('home-page-banner-image', [BannerSliderController::class, 'getHomePageSlider']);
+
+    // Home Page Banner end //
+
     // Order start //
-    Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder'])->name('orders');
-    Route::post('order-create', [OrderController::class, 'createOrder'])->name('orders.create');
+    Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder']);
+    Route::post('order-create', [OrderController::class, 'createOrder']);
     // Order end //
 
     // Cart start //
-    Route::get('carts/{id}', [CartController::class, 'getByUserIdCart'])->name('carts');
-    Route::post('cart-create', [CartController::class, 'createCart'])->name('carts.create');
+    Route::get('carts/{id}', [CartController::class, 'getByUserIdCart']);
+    Route::post('cart-create', [CartController::class, 'createCart']);
+    Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
     // Cart end //
 
     // Cart start //
-    Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress'])->name('address');
-    Route::post('address-create', [AddressController::class, 'createAddress'])->name('address.create');
+    Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
+    Route::post('address-create', [AddressController::class, 'createAddress']);
+    Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
+    Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
     // Cart end //
+
+    // Brand start //
+    Route::get('brands', [BrandController::class, 'brands']);
+    // Brand end //
+
+    // Product start //
+    Route::get('products', [ProductController::class, 'allProducts']);
+    Route::get('products/new-arrivals', [ProductController::class, 'newArrivals']);
+    Route::get('products/featured', [ProductController::class, 'featuredProducts']);
+    Route::get('products/detail/{id}', [ProductController::class, 'productDetailById']);
+    // Product end //
 });

@@ -21,12 +21,47 @@
 
     <section class="section">
         <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Customer Filter</div>
+                        <div class="row">
+                            {{-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fullname" style="font-weight: 700">Name:</label>
+                                    <input type="text" placeholder="Enter fullname..." class="form-control"
+                                        name="fullname" id="fullname">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="email" style="font-weight: 700">Email:</label>
+                                    <input type="text" placeholder="Enter email..." class="form-control" name="email"
+                                        id="email">
+                                </div>
+                            </div> --}}
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="category" style="font-weight: 700">Date Range Picker:</label>
+                                    <div
+                                        style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%">
+                                        <input type="text" class="form-control" name="daterange" id="daterange" />
+                                        <div id="from"></div>
+                                        <div id="to"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-12">
 
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Customer List </h5>
-                        <hr class="pt-2">
+                        {{-- <hr class="pt-2">
                         <form action="{{ route('customer.search') }}" enctype="multipart/form-data" method="GET">
 
                             @csrf
@@ -57,9 +92,10 @@
 
                             </div>
                         </form>
-                        <hr class="py-2">
+                        <hr class="py-2"> --}}
                         <div class="table-responsive">
-                            <table class="table table-border datatable" id="customerTable">
+                            <table class="table table-striped table-hover" id="customerDataTable"
+                                style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -71,7 +107,7 @@
                                         <th scope="col">ACTION</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                {{-- <tbody>
                                     @php
                                         $index = 1;
                                     @endphp
@@ -108,7 +144,6 @@
                                                         <a href="{{ route('customer.edit', ['id' => $customer->id]) }}"
                                                             class="px-2">
                                                             <i class="bi bi-pencil-square"></i>
-                                                            {{-- <span style="padding-left: 4px">Edit</span> --}}
                                                         </a>
                                                     </div>
                                                     <form action="{{ route('customer.delete', ['id' => $customer->id]) }}"
@@ -117,7 +152,6 @@
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <button type="submit" class="delete-btn mx-2  delete">
                                                             <i class="bi bi-trash"></i>
-                                                            {{-- <span style="padding-left: 4px">Delete</span> --}}
                                                         </button>
                                                     </form>
                                                 </div>
@@ -125,7 +159,7 @@
                                         </tr>
                                     @endforeach
 
-                                </tbody>
+                                </tbody> --}}
                             </table>
                         </div>
 
@@ -137,14 +171,70 @@
     </section>
 @endsection
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script type="text/javascript">
         $(function() {
-            $('#customerTable').on('click', 'button.delete', function(e) {
+            var table = $('#customerDataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('getcustomerlist') }}",
+                    data: function(d) {
+                        // d.email = $('#email').val(),
+                        //     d.fullname = $('#fullname').val(),
+                        d.from_date = $('#from_date').val(),
+                            d.to_date = $('#to_date').val(),
+                            d.search = $('input[type="search"]').val()
+                    }
+                },
+                columns: [{
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'profile_img',
+                        name: 'profile_img'
+                    },
+                    {
+                        data: 'fullname',
+                        name: 'fullname'
+                    },
+
+                    {
+                        data: 'email',
+                        name: 'email',
+                    },
+                    {
+                        data: 'phone_no',
+                        name: 'phone_no'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                    },
+
+                ]
+            });
+            // $('#email').change(function() {
+            //     table.draw();
+            // });
+            // $('#fullname').change(function() {
+            //     table.draw();
+            // });
+            $('#daterange').change(function() {
+                table.draw();
+            });
+            $('#customerDataTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You want to delete record",
@@ -158,9 +248,12 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $(e.target).closest('form').submit() // Post the surrounding form
+
                     }
                 })
+
             });
+
         });
     </script>
 
@@ -170,10 +263,10 @@
             drops: 'buttom',
         }, function(start, end, label) {
             document.getElementById("from").innerHTML =
-                `<input name='from' type='date' value="${start.format('YYYY-MM-DD') }" hidden />`;
+                `<input name='from_date' id="from_date" type='date' value="${start.format('YYYY-MM-DD') }" hidden />`;
             document.getElementById("to").innerHTML =
-                `<input name='to' type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
-            // console.log(selectedStart);
+                `<input name='to_date' id="to_date" type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
+            // console.log(start.format('YYYY-MM-DD'));
         });
     </script>
 
