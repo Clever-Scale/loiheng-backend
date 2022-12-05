@@ -79,7 +79,7 @@
             </a>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
+            <a class="nav-link collapsed" href="{{ route('orders') }}">
                 <i class="bi bi-cart3"></i>
                 <span>Orders</span>
             </a>
