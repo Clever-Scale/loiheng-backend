@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
@@ -50,9 +51,9 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
     Route::delete('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
-    // Category end //
+    // Brand end //
 
-    // Category start //
+    // Product start //
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/save', [ProductController::class, 'save'])->name('product.save');
@@ -61,7 +62,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
-    // Category end //
+    // Product end //
 
     // User start //
     Route::get('/users', [UserController::class, 'index'])->name('user');
@@ -81,6 +82,13 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
     Route::get('/customers/list', [CustomerController::class, 'getCustomerList'])->name('getcustomerlist');
     // Customer end //
+
+    // Order start //
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/list', [OrderController::class, 'getOrderList'])->name('getorderlist');
+    // Order end //
+
+
 });
 
 Route::group(['namespace' => "Auth", 'prefix' => 'auth/'], function () {
