@@ -279,7 +279,7 @@ class ProductController extends Controller
             $pathDescFile = '/storage/' . $descFilePath;
         }
         // Description File end
-        $product = Product::create([
+        $product = Product::where('id',$id)->update([
             'name' => $request->name,
             'price' => $request->price,
             'cover_img' => $pathCover,
@@ -315,7 +315,7 @@ class ProductController extends Controller
             $countSpec = count($request->edit_spec_key);
             if ($countSpec > 0) {
                 for ($j = 0; $j < $countSpec; $j++) {
-                    $spec_product_id = $request->spec_product_id[$i];
+                    $spec_product_id = $request->spec_product_id[$j];
                     ProductSpec::where('id', $spec_product_id)->update([
                         'spec_key' => $request->edit_spec_key[$j],
                         'spec_value' => $request->edit_spec_value[$j],
@@ -343,12 +343,12 @@ class ProductController extends Controller
             }
         }
 
-        if(!is_null($request->service_key[0])){
+        if(!is_null($request->service_key)){
             $count = count($request->service_key);
             if ($count > 0) {
                 for ($g = 0; $g < $count; $g++) {
                     ProductWarranty::create([
-                        'product_id' => $product->id,
+                        'product_id' => $id,
                         'service_key' => $request->service_key[$g],
                         'service_value' => $request->service_value[$g],
                     ]);
@@ -356,12 +356,12 @@ class ProductController extends Controller
             }
         }
 
-        if(!is_null($request->spec_key[0])){
+        if(!is_null($request->spec_key)){
             $countSpec = count($request->spec_key);
             if ($countSpec > 0) {
                 for ($h = 0; $h < $countSpec; $h++) {
                     ProductSpec::create([
-                        'product_id' => $product->id,
+                        'product_id' => $id,
                         'spec_key' => $request->spec_key[$h],
                         'spec_value' => $request->spec_value[$h],
                     ]);
@@ -377,7 +377,7 @@ class ProductController extends Controller
                         $filepath = $request->file('image')[$t]->storeAs('ProductImg', $filename, 'public');
                         $path = '/storage/' . $filepath;
                         ProductPicture::create([
-                            'product_id' => $product->id,
+                            'product_id' => $id,
                             'image' => $path,
                             'display_order' => $request->display_order[$t],
                         ]);
