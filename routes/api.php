@@ -32,30 +32,33 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
     Route::get('logout',[AuthController::class, 'logout']);
 });
 
-Route::group(['namespace' => 'Api', "middleware" => 'auth:sanctum'], function() {
+Route::group(['namespace' => 'Api'], function() {
 
     // Home Page Banner start //
     Route::get('home-page-banner-image', [BannerSliderController::class, 'getHomePageSlider']);
 
     // Home Page Banner end //
 
-    // Order start //
-    Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder']);
-    Route::post('order-create', [OrderController::class, 'createOrder']);
-    // Order end //
 
-    // Cart start //
-    Route::get('carts/{id}', [CartController::class, 'getByUserIdCart']);
-    Route::post('cart-create', [CartController::class, 'createCart']);
-    Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
-    // Cart end //
+    Route::group(["middleware" => 'auth:sanctum'], function() {
+        // Order start //
+        Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder']);
+        Route::post('order-create', [OrderController::class, 'createOrder']);
+        // Order end //
 
-    // Cart start //
-    Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
-    Route::post('address-create', [AddressController::class, 'createAddress']);
-    Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
-    Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
-    // Cart end //
+        // Cart start //
+        Route::get('carts/{id}', [CartController::class, 'getByUserIdCart']);
+        Route::post('cart-create', [CartController::class, 'createCart']);
+        Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
+        // Cart end //
+
+        // Address start //
+        Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
+        Route::post('address-create', [AddressController::class, 'createAddress']);
+        Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
+        Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
+        // Address end //
+    });
 
     // Brand start //
     Route::get('brands', [BrandController::class, 'brands']);
