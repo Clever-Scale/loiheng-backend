@@ -76,7 +76,6 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Cover</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Description</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Brand</th>
@@ -125,10 +124,6 @@
                     {
                         data: 'cover_img',
                         name: 'cover_img'
-                    },
-                    {
-                        data: 'description',
-                        name: 'description',
                     },
                     {
                         data: 'price',
