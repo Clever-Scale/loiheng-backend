@@ -93,6 +93,12 @@ class CustomerController extends Controller
                             $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
                         }
+                        if (!empty($request->get('search'))) {
+                            $instance->where('fullname', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('email', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('phone_no', 'Like', "%{$request->get('search')}%")
+                            ;
+                        }
                     })
                     ->rawColumns(['created_at', 'action', 'profile_img'  ])
                     ->make(true);
