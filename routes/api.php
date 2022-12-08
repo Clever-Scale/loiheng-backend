@@ -69,5 +69,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('products/new-arrivals', [ProductController::class, 'newArrivals']);
     Route::get('products/featured', [ProductController::class, 'featuredProducts']);
     Route::get('products/detail/{id}', [ProductController::class, 'productDetailById']);
+    Route::get('products/category/{id}', [ProductController::class, 'productByCategoryId']);
+    Route::get('products/brand/{id}', [ProductController::class, 'productByBrandId']);
     // Product end //
 });

@@ -6,15 +6,16 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSpec;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductPicture;
 use Illuminate\Support\Carbon;
 use App\Models\ProductWarranty;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Resources\ProductCollection;
 
 class ProductController extends Controller
 {
@@ -107,6 +108,15 @@ class ProductController extends Controller
                             $end_date = $to_date != null ? "$to_date 23:59:59" : null;
                             $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
+                        }
+                        if (!empty($request->get('search'))) {
+                            $instance->where('name', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('product_code', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('sku', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('price', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('description', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('short_description', 'Like', "%{$request->get('search')}%")
+                            ;
                         }
                     })
                     ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img'  ])
