@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'picture' => $this->picture,
             'description' => $this->description,
+            'sub_category' => Category::where('id', $this->parent)->get(),
             'created_by' => User::where('id', $this->created_by)->get(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
