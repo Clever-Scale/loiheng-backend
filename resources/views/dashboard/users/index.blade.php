@@ -42,8 +42,9 @@
                                     @foreach ($users as $user)
                                         <tr>
                                             <th scope="row"><a href="#">{{ $index++ }}</a></th>
-                                            <th><img src="{{ $user->profile_img }}" alt="" width="60px"
-                                                    height="60px"></th>
+                                            <th><img src="{{ asset($user->profile_img ? $user->profile_img : 'assets/img/pp.jpg') }}"
+                                                    alt="" width="60px" height="60px" style="border-radius: 50%">
+                                            </th>
                                             <td>{{ $user->fullname }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ \Carbon\Carbon::create($user->created_at)->toFormattedDateString() }}

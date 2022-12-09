@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CustomerController;
+use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
@@ -51,6 +52,16 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
     Route::delete('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
+    // Brand end //
+
+    // Brand start //
+    Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery');
+    Route::get('/delivery/create', [DeliveryController::class, 'create'])->name('delivery.create');
+    Route::post('/delivery/save', [DeliveryController::class, 'save'])->name('delivery.save');
+    Route::get('/delivery/{id}/edit', [DeliveryController::class, 'edit'])->name('delivery.edit');
+    Route::put('/delivery/{id}/update', [DeliveryController::class, 'update'])->name('delivery.update');
+    Route::delete('/delivery/{id}/delete', [DeliveryController::class, 'delete'])->name('delivery.delete');
+    Route::get('/delivery/list', [DeliveryController::class, 'getDeliveryList'])->name('getdeliverylist');
     // Brand end //
 
     // Product start //
