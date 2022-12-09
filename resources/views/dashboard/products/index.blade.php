@@ -74,8 +74,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Cover</th>
+                                        <th scope="col">Product Code</th>
                                         <th scope="col">Name</th>
+                                        <th scope="col">Cover</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Brand</th>
@@ -116,6 +117,10 @@
                         render: function(data, type, row, meta) {
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
+                    },
+                    {
+                        data: 'product_code',
+                        name: 'product_code'
                     },
                     {
                         data: 'name',

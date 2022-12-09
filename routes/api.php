@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BannerSliderController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Auth\AuthController;
@@ -63,6 +64,10 @@ Route::group(['namespace' => 'Api'], function() {
     // Brand start //
     Route::get('brands', [BrandController::class, 'brands']);
     // Brand end //
+
+    // Delivery start //
+    Route::get('deliveries', [DeliveryController::class, 'deliveries']);
+    // Delivery end //
 
     // Product start //
     Route::get('products', [ProductController::class, 'allProducts']);

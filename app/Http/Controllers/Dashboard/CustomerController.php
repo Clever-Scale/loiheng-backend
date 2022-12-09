@@ -32,7 +32,7 @@ class CustomerController extends Controller
     public function getCustomerList(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::where('is_admin', '=', 'user')->latest();
+            $data = User::where('is_admin', '!=', 'admin')->latest();
             return DataTables::of($data)
                     ->addColumn('profile_img', function ($row) {
                         $url = asset($row->profile_img ? $row->profile_img : "assets/img/pp.jpg");
@@ -74,32 +74,32 @@ class CustomerController extends Controller
                             </ul>
                         </div>';
                     })
-                    ->filter(function ($instance) use ($request) {
-                        // if (!empty($request->get('fullname'))) {
-                        //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        //         return Str::contains(Str::lower($row['fullname']), $request->get('fullname')) ? true : false;
-                        //     });
-                        // }
-                        // if (!empty($request->get('email'))) {
-                        //     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        //         return Str::contains(Str::lower($row['email']), $request->get('email')) ? true : false;
-                        //     });
-                        // }
-                        if($request->has('from_date')){
-                            $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
-                            $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
-                            $start_date = $from_date != null ? "$from_date 00:00:00" : null;
-                            $end_date = $to_date != null ? "$to_date 23:59:59" : null;
-                            $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
+                    // ->filter(function ($instance) use ($request) {
+                    //     if (!empty($request->get('fullname'))) {
+                    //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    //             return Str::contains(Str::lower($row['fullname']), $request->get('fullname')) ? true : false;
+                    //         });
+                    //     }
+                    //     if (!empty($request->get('email'))) {
+                    //         $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                    //             return Str::contains(Str::lower($row['email']), $request->get('email')) ? true : false;
+                    //         });
+                    //     }
+                    //     if($request->has('from_date')){
+                    //         $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
+                    //         $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
+                    //         $start_date = $from_date != null ? "$from_date 00:00:00" : null;
+                    //         $end_date = $to_date != null ? "$to_date 23:59:59" : null;
+                    //         $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
-                        }
-                        if (!empty($request->get('search'))) {
-                            $instance->where('fullname', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('email', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('phone_no', 'Like', "%{$request->get('search')}%")
-                            ;
-                        }
-                    })
+                    //     }
+                    //     if (!empty($request->get('search'))) {
+                    //         $instance->where('fullname', 'Like', "%{$request->get('search')}%")
+                    //         ->orWhere('email', 'Like', "%{$request->get('search')}%")
+                    //         ->orWhere('phone_no', 'Like', "%{$request->get('search')}%")
+                    //         ;
+                    //     }
+                    // })
                     ->rawColumns(['created_at', 'action', 'profile_img'  ])
                     ->make(true);
         }

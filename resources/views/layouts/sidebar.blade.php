@@ -21,17 +21,17 @@
 
                 <li>
                     <a href="{{ route('category') }}">
-                        <i class="bi bi-circle"></i><span>Categories</span>
+                        <i class="bi bi-receipt" style="font-size: 20px"></i><span>Categories</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('brand') }}">
-                        <i class="bi bi-circle"></i><span>Brands</span>
+                        <i class="bi bi-type-bold" style="font-size: 20px"></i><span>Brands</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('product') }}">
-                        <i class="bi bi-circle"></i><span>Products</span>
+                        <i class="bi bi-tags" style="font-size: 20px"></i><span>Products</span>
                     </a>
                 </li>
             </ul>
@@ -66,11 +66,19 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('delivery') || request()->routeIs('delivery.edit') ? '' : 'collapsed' }}"
+                href="{{ route('delivery') }}">
+                <i class="bi bi-truck
+                "></i>
+                <span>Deliveries</span>
+            </a>
+        </li>
+        {{-- <li class="nav-item">
             <a class="nav-link collapsed" href="/">
                 <i class="bi bi-card-heading"></i>
                 <span>Posts</span>
             </a>
-        </li>
+        </li> --}}
         {{-- <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') ? '' : 'collapsed' }}"
                 href="{{ route('brand') }}">
@@ -93,6 +101,22 @@
                 <span>Contact</span>
             </a>
         </li><!-- End Contact Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link " data-bs-target="#components-nav-setting" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav-setting"
+                class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapse' }} "
+                data-bs-parent="#sidebar-nav">
+
+                <li>
+                    <a href="{{ route('category') }}">
+                        <i class="bi bi-circle"></i><span>About Us</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
     </ul>
 

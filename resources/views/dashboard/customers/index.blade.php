@@ -21,12 +21,12 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Customer Filter</div>
                         <div class="row">
-                            {{-- <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="fullname" style="font-weight: 700">Name:</label>
                                     <input type="text" placeholder="Enter fullname..." class="form-control"
@@ -39,7 +39,7 @@
                                     <input type="text" placeholder="Enter email..." class="form-control" name="email"
                                         id="email">
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="category" style="font-weight: 700">Date Range Picker:</label>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-lg-12">
 
                 <div class="card">
@@ -178,13 +178,11 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('getcustomerlist') }}",
-                    data: function(d) {
-                        // d.email = $('#email').val(),
-                        //     d.fullname = $('#fullname').val(),
-                        d.from_date = $('#from_date').val(),
-                            d.to_date = $('#to_date').val(),
-                            d.search = $('input[type="search"]').val()
-                    }
+                    // data: function(d) {
+                    //     d.from_date = $('#from_date').val(),
+                    //         d.to_date = $('#to_date').val(),
+                    //         d.search = $('input[type="search"]').val()
+                    // }
                 },
                 columns: [{
                         data: 'id',
