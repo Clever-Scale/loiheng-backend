@@ -1,5 +1,9 @@
 @extends('layouts.mainlayout')
 @section('title', 'Product')
+@section('links')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
+@endsection
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
@@ -102,6 +106,15 @@
             var table = $('#productDataTable').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+                ],
+                select: true,
                 ajax: {
                     url: "{{ route('getproductlist') }}",
                     data: function(d) {
@@ -155,28 +168,6 @@
 
                 ]
             });
-            // $('#productDataTable').on('click', 'button.delete-user', function(e) {
-            //     // console.log(e);
-            //     e.preventDefault();
-
-            //     Swal.fire({
-            //         title: 'Are you sure?',
-            //         text: "You want to delete record",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         timer: 4000,
-            //         timerProgressBar: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Yes, delete it!'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             $(e.target).closest('form').submit() // Post the surrounding form
-
-            //         }
-            //     })
-
-            // });
             $('#category_id').change(function() {
                 table.draw();
             });
@@ -224,4 +215,12 @@
             // console.log(start.format('YYYY-MM-DD'));
         });
     </script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
 @endsection
