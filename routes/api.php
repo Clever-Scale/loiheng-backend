@@ -32,6 +32,7 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
     Route::post('register',[AuthController::class, 'createRegister']);
     Route::post('login',[AuthController::class, 'login']);
     Route::get('logout',[AuthController::class, 'logout']);
+    Route::get('me',[AuthController::class, 'me']);
 });
 
 Route::group(['namespace' => 'Api'], function() {
