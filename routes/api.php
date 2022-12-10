@@ -87,7 +87,7 @@ Route::group(['namespace' => 'Api'], function() {
     // Product end //
 
     // Setting start //
-    Route::get('settings', [SettingController::class, 'settings']);
+    Route::get('settings/{key}', [SettingController::class, 'settings']);
     // Setting end //
 
     // Contact start //

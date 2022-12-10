@@ -51,6 +51,12 @@ class ProductController extends Controller
                         return '<img src="' . $url . '"
                     alt="Profile Image" style="width: 60px; height: 60px; border-radius: 4px;">';
                     })
+                    ->addColumn('name', function($row) {
+                        return '
+                        <a  data-bs-toggle="tooltip" data-bs-placement="top" title="'.$row->name.'">
+                            <p style="overflow: hidden; width: 200px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
+                        </a>';
+                    })
                     ->addColumn('created_at', function ($row) {
                         return '
                         <div class="d-flex ">
@@ -119,7 +125,7 @@ class ProductController extends Controller
                             ;
                         }
                     })
-                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img'  ])
+                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img', 'name'  ])
                     ->make(true);
         }
     }

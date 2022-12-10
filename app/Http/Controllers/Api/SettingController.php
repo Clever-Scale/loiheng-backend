@@ -10,10 +10,10 @@ use App\Http\Resources\SettingResource;
 
 class SettingController extends BaseController
 {
-    public function settings()
+    public function settings($key)
     {
         try{
-            $setting =  SettingResource::collection(Setting::get());
+            $setting =  SettingResource::collection(Setting::where('key', $key)->get());
             return $this->sendResponse($setting,"Setting data getting successfully!");
 
         }catch(Exception $e){
