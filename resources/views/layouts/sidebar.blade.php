@@ -96,7 +96,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link collapsed" href="{{ route('contact') }}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>

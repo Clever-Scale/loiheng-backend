@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BannerSliderController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
@@ -88,4 +89,8 @@ Route::group(['namespace' => 'Api'], function() {
     // Setting start //
     Route::get('settings', [SettingController::class, 'settings']);
     // Setting end //
+
+    // Contact start //
+    Route::post('contact', [ContactController::class, 'contact']);
+    // Contact end //
 });
