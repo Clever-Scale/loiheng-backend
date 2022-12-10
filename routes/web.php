@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ContactController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
@@ -106,6 +107,12 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/settings/{id}/edit', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings/{key}/update', [SettingController::class, 'update'])->name('settings.update');
     // Setting end //
+
+    // Contact start //
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::get('/contact/list', [ContactController::class, 'getContactList'])->name('getcontactlist');
+    Route::delete('/contact/{id}/delete', [ContactController::class, 'delete'])->name('contact.delete');
+    // Contact end //
 
 
 });
