@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,13 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/orders/list', [OrderController::class, 'getOrderList'])->name('getorderlist');
     // Order end //
+
+    // Setting start //
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::get('/settings/list', [SettingController::class, 'getSettingList'])->name('getsettinglist');
+    Route::get('/settings/{id}/edit', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('/settings/{key}/update', [SettingController::class, 'update'])->name('settings.update');
+    // Setting end //
 
 
 });
