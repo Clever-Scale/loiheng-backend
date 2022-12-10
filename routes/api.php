@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -83,4 +84,8 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('products/category/{id}', [ProductController::class, 'productByCategoryId']);
     Route::get('products/brand/{id}', [ProductController::class, 'productByBrandId']);
     // Product end //
+
+    // Setting start //
+    Route::get('settings', [SettingController::class, 'settings']);
+    // Setting end //
 });
