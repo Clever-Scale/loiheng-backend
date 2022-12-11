@@ -89,6 +89,13 @@
                                                             </p>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Stock</th>
+                                                        <td>
+                                                            <p style="text-transform: capitalize">{{ $products[0]->stock }}
+                                                            </p>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                             <hr>
