@@ -78,9 +78,10 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        {{-- <th scope="col">Cover</th> --}}
                                         <th scope="col">Product Code</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Cover</th>
+                                        <th scope="col">Stock</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Brand</th>
@@ -131,6 +132,10 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
+                    // {
+                    //     data: 'cover_img',
+                    //     name: 'cover_img'
+                    // },
                     {
                         data: 'product_code',
                         name: 'product_code'
@@ -140,8 +145,8 @@
                         name: 'name'
                     },
                     {
-                        data: 'cover_img',
-                        name: 'cover_img'
+                        data: 'stock',
+                        name: 'stock'
                     },
                     {
                         data: 'price',

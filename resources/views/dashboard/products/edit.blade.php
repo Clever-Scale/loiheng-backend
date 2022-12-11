@@ -101,7 +101,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label for="sku" style="font-weight: 700">SKU <span style="color: red">*</span>
                                         :</label>
                                     <input type="text" name="sku"
@@ -113,7 +113,19 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="stock" style="font-weight: 700">Stock <span style="color: red">*</span>
+                                        :</label>
+                                    <input type="number" name="stock"
+                                        class="@error('stock') is-invalid @enderror form-control py-1"
+                                        value="{{ $products[0]->stock }}">
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4 mb-3">
                                     <label for="desc_file" style="font-weight: 700">Description File:</label>
                                     <input type="file" name="desc_file"
                                         class="@error('desc_file') is-invalid @enderror form-control py-1"

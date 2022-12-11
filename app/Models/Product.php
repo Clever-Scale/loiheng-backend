@@ -24,6 +24,7 @@ class Product extends Model
         'is_preorder',
         'is_feature_product',
         'is_new_arrival',
+        'stock',
         'user_id',
         'category_id',
         'brand_id',
