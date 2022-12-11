@@ -54,7 +54,7 @@ class ProductController extends Controller
                     ->addColumn('name', function($row) {
                         return '
                         <a  data-bs-toggle="tooltip" data-bs-placement="top" title="'.$row->name.'">
-                            <p style="overflow: hidden; width: 200px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
+                            <p style="overflow: hidden; width: 150px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
                         </a>';
                     })
                     ->addColumn('created_at', function ($row) {
@@ -146,7 +146,8 @@ class ProductController extends Controller
             'sku' => 'required',
             'cover_img' => 'required',
             'category_id' => 'required',
-            'brand_id' => 'required'
+            'brand_id' => 'required',
+            'stock' => 'required'
         ],[
             "cover_img.required" => "Pleace select cover image!",
             "category_id.required" => "Pleace select category!",
@@ -189,6 +190,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'short_description' => $request->short_description,
             'sku' => $request->sku,
+            'stock' => $request->stock,
             'desc_file' => $pathDescFile,
             'status' => $request->status,
             'is_preorder' => $request->is_preorder,
@@ -270,7 +272,8 @@ class ProductController extends Controller
         'price' => 'required',
         'sku' => 'required',
         'category_id' => 'required',
-        'brand_id' => 'required'
+        'brand_id' => 'required',
+        'stock' => 'required'
         ],[
             "cover_img.required" => "Pleace select cover image!",
             "category_id.required" => "Pleace select category!",
@@ -303,6 +306,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'short_description' => $request->short_description,
             'sku' => $request->sku,
+            'stock' => $request->stock,
             'desc_file' => $pathDescFile,
             'status' => $request->status,
             'is_preorder' => $request->is_preorder,
