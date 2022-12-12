@@ -32,7 +32,7 @@ class CustomerController extends Controller
     public function getCustomerList(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::where('is_admin', '!=', 'admin')->latest();
+            $data = User::where('is_admin', '!=', 'admin')->select('*');
             return DataTables::of($data)
                     ->addColumn('profile_img', function ($row) {
                         $url = asset($row->profile_img ? $row->profile_img : "assets/img/pp.jpg");
