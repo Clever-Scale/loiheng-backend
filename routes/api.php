@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,12 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
         Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
         // Address end //
+
+        // Wishlist start //
+        Route::get('wishlists/{id}', [WishlistController::class, 'getByUserIdWishlist']);
+        Route::post('wishlist-create', [WishlistController::class, 'creteWishlist']);
+        Route::delete('wishlist-remove/{id}', [WishlistController::class, 'removeWishlist']);
+        // Wishlist end //
     });
 
     // Brand start //
