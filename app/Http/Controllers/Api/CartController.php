@@ -58,7 +58,7 @@ class CartController extends BaseController
             $user = auth('sanctum')->user();
             $old = Cart::where('user_id', $user->id)->where('id', $id)->value('id');
             if($old != null){
-                Cart::where('user_id', $user->id)->where('id', $id)->update([
+                Cart::findOrFail($id)->update([
                     'is_active' => false,
                 ]);
                 return $this->sendMessageResponse("Cart removed successfully!.");
