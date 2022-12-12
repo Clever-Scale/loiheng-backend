@@ -15,6 +15,7 @@ class Cart extends Model
         'status',
         'is_preorder',
         'is_active',
+        'qty'
     ];
 
     public function user()
