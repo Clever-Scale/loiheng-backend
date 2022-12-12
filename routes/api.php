@@ -53,20 +53,20 @@ Route::group(['namespace' => 'Api'], function() {
         // Order end //
 
         // Cart start //
-        Route::get('carts/{id}', [CartController::class, 'getByUserIdCart']);
+        Route::get('carts', [CartController::class, 'getByUserIdCart']);
         Route::post('cart-create', [CartController::class, 'createCart']);
         Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
         // Cart end //
 
         // Address start //
-        Route::get('address/{id}', [AddressController::class, 'getByUserIdAddress']);
+        Route::get('address', [AddressController::class, 'getByUserIdAddress']);
         Route::post('address-create', [AddressController::class, 'createAddress']);
         Route::put('address-remove/{id}', [AddressController::class, 'removeAddress']);
         Route::put('default-address/{id}', [AddressController::class, 'defaultAddress']);
         // Address end //
 
         // Wishlist start //
-        Route::get('wishlists/{id}', [WishlistController::class, 'getByUserIdWishlist']);
+        Route::get('wishlists', [WishlistController::class, 'getByUserIdWishlist']);
         Route::post('wishlist-create', [WishlistController::class, 'creteWishlist']);
         Route::delete('wishlist-remove/{id}', [WishlistController::class, 'removeWishlist']);
         // Wishlist end //
