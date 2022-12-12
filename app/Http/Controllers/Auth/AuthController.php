@@ -35,7 +35,6 @@ class AuthController extends Controller
                 'fullname' => $request->fullname,
                 'email' => $request->email,
                 'phone_no' => $request->phone_no,
-                'is_admin' => $request->is_admin,
                 'is_active' => $request->is_active,
                 'last_login' => $request->last_login,
                 'role' => $request->role,
