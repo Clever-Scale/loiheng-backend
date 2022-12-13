@@ -14,7 +14,7 @@ class AddressController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $address = new AddressCollection(Address::where('user_id', $user->id)->paginate(10));
+            $address = new AddressCollection(Address::where('user_id', $user->id)->where('is_active', true)->paginate(1000));
             return $this->sendResponse($address,"Shipping address data getting successfully!");
 
         }catch(Exception $e){
