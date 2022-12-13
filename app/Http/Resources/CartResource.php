@@ -21,6 +21,7 @@ class CartResource extends JsonResource
             'user' => User::where('id', $this->user_id)->get(),
             'product' => ProductResource::collection(Product::where('id', $this->product_id)->get()),
             'status' => $this->status,
+            'qty' => $this->qty,
             'is_active' => $this->is_active,
             'is_preorder' => $this->is_preorder,
             'created_at' => $this->created_at,
