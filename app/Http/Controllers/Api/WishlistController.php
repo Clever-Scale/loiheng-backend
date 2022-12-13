@@ -45,9 +45,9 @@ class WishlistController extends BaseController
     public function removeWishlist($id)
     {
         $user = auth('sanctum')->user();
-        $old = Wishlist::where('user_id', $user->id)->where('id', $id)->value('id');
+        $old = Wishlist::where('user_id', $user->id)->where('product_id', $id)->value('id');
         if($old != null){
-            Wishlist::where('user_id', $user->id)->where('product_id', $id)->first()->delete();
+            Wishlist::findOrFail($old)->delete();
             return $this->sendMessageResponse('Product wishlist removed successfully!');
         }else{
             return $this->sendErrorMessageResponse('something went wrong!');
