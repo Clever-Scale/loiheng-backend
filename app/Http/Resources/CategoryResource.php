@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use App\Models\User;
-use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CartResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +18,11 @@ class CartResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => User::where('id', $this->user_id)->get(),
-            'product' => ProductResource::collection(Product::where('id', $this->product_id)->get()),
-            'status' => $this->status,
-            'qty' => $this->qty,
-            'is_active' => $this->is_active,
-            'is_preorder' => $this->is_preorder,
+            'name' => $this->name,
+            'picture' => $this->picture,
+            'description' => $this->description,
+            'sub_category' => Category::where('id', $this->parent)->get(),
+            'created_by' => User::where('id', $this->created_by)->get(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

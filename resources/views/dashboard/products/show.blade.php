@@ -24,9 +24,10 @@
                         <div class="d-flex justify-content-center align-items-center">
                             <div>
                                 <img src="{{ asset($products[0]->cover_img) }}" alt="" class="img-fluid">
-                                <h1 style="text-transform: capitalize; padding-top: 10px">
-                                    {{ $products[0]->name }} <span style="font-size: 18px">({{ $products[0]->sku }})</span>
-                                </h1>
+                                <h6 style="text-transform: capitalize; padding-top: 10px">
+                                    {{ $products[0]->name }} <span
+                                        style="font-size: 14px; font-weight: 800">({{ $products[0]->sku }})</span>
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -85,6 +86,13 @@
                                                         <th>SKU</th>
                                                         <td>
                                                             <p style="text-transform: capitalize">{{ $products[0]->sku }}
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Stock</th>
+                                                        <td>
+                                                            <p style="text-transform: capitalize">{{ $products[0]->stock }}
                                                             </p>
                                                         </td>
                                                     </tr>

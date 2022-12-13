@@ -6,15 +6,16 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSpec;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductPicture;
 use Illuminate\Support\Carbon;
 use App\Models\ProductWarranty;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Resources\ProductCollection;
 
 class ProductController extends Controller
 {
@@ -49,6 +50,12 @@ class ProductController extends Controller
                         $url = asset($row->cover_img ? $row->cover_img : "assets/img/images.jpg");
                         return '<img src="' . $url . '"
                     alt="Profile Image" style="width: 60px; height: 60px; border-radius: 4px;">';
+                    })
+                    ->addColumn('name', function($row) {
+                        return '
+                        <a  data-bs-toggle="tooltip" data-bs-placement="top" title="'.$row->name.'">
+                            <p style="overflow: hidden; width: 150px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
+                        </a>';
                     })
                     ->addColumn('created_at', function ($row) {
                         return '
@@ -108,8 +115,17 @@ class ProductController extends Controller
                             $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
                         }
+                        if (!empty($request->get('search'))) {
+                            $instance->where('name', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('product_code', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('sku', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('price', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('description', 'Like', "%{$request->get('search')}%")
+                            ->orWhere('short_description', 'Like', "%{$request->get('search')}%")
+                            ;
+                        }
                     })
-                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img'  ])
+                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img', 'name'  ])
                     ->make(true);
         }
     }
@@ -130,7 +146,8 @@ class ProductController extends Controller
             'sku' => 'required',
             'cover_img' => 'required',
             'category_id' => 'required',
-            'brand_id' => 'required'
+            'brand_id' => 'required',
+            'stock' => 'required'
         ],[
             "cover_img.required" => "Pleace select cover image!",
             "category_id.required" => "Pleace select category!",
@@ -173,6 +190,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'short_description' => $request->short_description,
             'sku' => $request->sku,
+            'stock' => $request->stock,
             'desc_file' => $pathDescFile,
             'status' => $request->status,
             'is_preorder' => $request->is_preorder,
@@ -234,6 +252,160 @@ class ProductController extends Controller
         $products =  ProductResource::collection(Product::where('id', $id)->get());
         $products = json_decode(json_encode($products));
         return view('dashboard.products.show', compact('products'));
+    }
+
+    public function edit($id)
+    {
+        $categories = Category::get();
+        $brands = Brand::get();
+        $products =  ProductResource::collection(Product::where('id', $id)->get());
+        $products = json_decode(json_encode($products));
+        // dd($products);
+        return view('dashboard.products.edit', compact('categories', 'brands', 'products'));
+    }
+
+    public function update(Request $request, $id)
+    {
+    //    dd($request->all());
+       $this->validate($request, [
+        'name' => 'required',
+        'price' => 'required',
+        'sku' => 'required',
+        'category_id' => 'required',
+        'brand_id' => 'required',
+        'stock' => 'required'
+        ],[
+            "cover_img.required" => "Pleace select cover image!",
+            "category_id.required" => "Pleace select category!",
+            "brand_id.required" => "Pleace select brand!",
+        ]);
+
+        // Cover start
+        $pathCo = $request->file('cover_img');
+        $pathCover= Product::where('id', $id)->value('cover_img');
+        if ($pathCo) {
+            $fileNameCover = time() . '_' . $request->cover_img->getClientOriginalName();
+            $filePathCover = $request->file('cover_img')->storeAs('Product', $fileNameCover, 'public');
+            $pathCover = '/storage/' . $filePathCover;
+        }
+        // Cover end
+        // Description File start
+        $pathDes = $request->file('desc_file');
+        $pathDescFile= Product::where('id', $id)->value('desc_file');
+        if ($pathDes) {
+            $descFileName = time() . '_' . $request->desc_file->getClientOriginalName();
+            $descFilePath = $request->file('desc_file')->storeAs('Description', $descFileName, 'public');
+            $pathDescFile = '/storage/' . $descFilePath;
+        }
+        // Description File end
+        $product = Product::where('id',$id)->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'cover_img' => $pathCover,
+            'product_code' => $request->product_code,
+            'description' => $request->description,
+            'short_description' => $request->short_description,
+            'sku' => $request->sku,
+            'stock' => $request->stock,
+            'desc_file' => $pathDescFile,
+            'status' => $request->status,
+            'is_preorder' => $request->is_preorder,
+            'is_feature_product' => $request->is_feature_product,
+            'is_new_arrival' => $request->is_new_arrival,
+            'user_id' => $request->user_id,
+            'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
+        ]);
+
+
+        if(!is_null($request->edit_service_key)){
+            $count = count($request->edit_service_key);
+            if ($count > 0) {
+                for ($i = 0; $i < $count; $i++) {
+                    $service_product_id = $request->service_product_id[$i];
+                    ProductWarranty::where('id', $service_product_id)->update([
+                        'service_key' => $request->edit_service_key[$i],
+                        'service_value' => $request->edit_service_value[$i],
+                    ]);
+                }
+            }
+        }
+
+        if(!is_null($request->edit_spec_key)){
+            $countSpec = count($request->edit_spec_key);
+            if ($countSpec > 0) {
+                for ($j = 0; $j < $countSpec; $j++) {
+                    $spec_product_id = $request->spec_product_id[$j];
+                    ProductSpec::where('id', $spec_product_id)->update([
+                        'spec_key' => $request->edit_spec_key[$j],
+                        'spec_value' => $request->edit_spec_value[$j],
+                    ]);
+                }
+            }
+        }
+
+        if($request->file('edit_image')){
+            $countImg = count($request->edit_image);
+            if ($countImg > 0) {
+                for ($k = 0; $k < $countImg; $k++) {
+                        $filename = time() . '_' . $request->edit_image[$k]->getClientOriginalName();
+                        $filepath = $request->file('image')[$k]->storeAs('ProductImg', $filename, 'public');
+                        $path = '/storage/' . $filepath;
+                        $img_product_id = $request->img_product_id[$k];
+                        $editPath = $request->file('edit_image');
+                        $pathEditImg= ProductPicture::where('id', $k)->value('image');
+                        ProductPicture::where('id', $img_product_id)->update([
+                            'product_id' => $product->id,
+                            'image' => $pathEditImg,
+                            'display_order' => $request->display_order[$k],
+                        ]);
+                }
+            }
+        }
+
+        if(!is_null($request->service_key)){
+            $count = count($request->service_key);
+            if ($count > 0) {
+                for ($g = 0; $g < $count; $g++) {
+                    ProductWarranty::create([
+                        'product_id' => $id,
+                        'service_key' => $request->service_key[$g],
+                        'service_value' => $request->service_value[$g],
+                    ]);
+                }
+            }
+        }
+
+        if(!is_null($request->spec_key)){
+            $countSpec = count($request->spec_key);
+            if ($countSpec > 0) {
+                for ($h = 0; $h < $countSpec; $h++) {
+                    ProductSpec::create([
+                        'product_id' => $id,
+                        'spec_key' => $request->spec_key[$h],
+                        'spec_value' => $request->spec_value[$h],
+                    ]);
+                }
+            }
+        }
+
+        if($request->file('image')){
+            $countImg = count($request->image);
+            if ($countImg > 0) {
+                for ($t = 0; $t < $countImg; $t++) {
+                        $filename = time() . '_' . $request->image[$t]->getClientOriginalName();
+                        $filepath = $request->file('image')[$t]->storeAs('ProductImg', $filename, 'public');
+                        $path = '/storage/' . $filepath;
+                        ProductPicture::create([
+                            'product_id' => $id,
+                            'image' => $path,
+                            'display_order' => $request->display_order[$t],
+                        ]);
+                }
+            }
+        }
+
+        return redirect()->route('product')->with('product-create', 'Product has been edited successfully!');
     }
 
     public function delete($id)

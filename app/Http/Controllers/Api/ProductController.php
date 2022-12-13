@@ -52,4 +52,26 @@ class ProductController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function productByCategoryId($id)
+    {
+        try{
+            $products = new ProductCollection(Product::where('category_id',$id)->paginate(10));
+            return $this->sendResponse($products,"Product data getting by category successfully!");
+
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function productByBrandId($id)
+    {
+        try{
+            $products = new ProductCollection(Product::where('brand_id',$id)->paginate(10));
+            return $this->sendResponse($products,"Product data getting by brand successfully!");
+
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

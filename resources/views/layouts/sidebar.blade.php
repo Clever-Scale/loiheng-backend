@@ -21,17 +21,17 @@
 
                 <li>
                     <a href="{{ route('category') }}">
-                        <i class="bi bi-circle"></i><span>Categories</span>
+                        <i class="bi bi-receipt" style="font-size: 20px"></i><span>Categories</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('brand') }}">
-                        <i class="bi bi-circle"></i><span>Brands</span>
+                        <i class="bi bi-type-bold" style="font-size: 20px"></i><span>Brands</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('product') }}">
-                        <i class="bi bi-circle"></i><span>Products</span>
+                        <i class="bi bi-tags" style="font-size: 20px"></i><span>Products</span>
                     </a>
                 </li>
             </ul>
@@ -66,11 +66,19 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('delivery') || request()->routeIs('delivery.edit') ? '' : 'collapsed' }}"
+                href="{{ route('delivery') }}">
+                <i class="bi bi-truck
+                "></i>
+                <span>Deliveries</span>
+            </a>
+        </li>
+        {{-- <li class="nav-item">
             <a class="nav-link collapsed" href="/">
                 <i class="bi bi-card-heading"></i>
                 <span>Posts</span>
             </a>
-        </li>
+        </li> --}}
         {{-- <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') ? '' : 'collapsed' }}"
                 href="{{ route('brand') }}">
@@ -79,7 +87,7 @@
             </a>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
+            <a class="nav-link collapsed" href="{{ route('orders') }}">
                 <i class="bi bi-cart3"></i>
                 <span>Orders</span>
             </a>
@@ -88,11 +96,19 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link collapsed" href="{{ route('contact') }}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('settings') }}">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
         </li><!-- End Contact Page Nav -->
+
+
 
     </ul>
 

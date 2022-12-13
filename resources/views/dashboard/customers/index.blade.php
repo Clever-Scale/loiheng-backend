@@ -1,7 +1,8 @@
 @extends('layouts.mainlayout')
 @section('title', 'Customer')
 @section('links')
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
 @endsection
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
@@ -21,12 +22,12 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">Customer Filter</div>
                         <div class="row">
-                            {{-- <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="fullname" style="font-weight: 700">Name:</label>
                                     <input type="text" placeholder="Enter fullname..." class="form-control"
@@ -39,7 +40,7 @@
                                     <input type="text" placeholder="Enter email..." class="form-control" name="email"
                                         id="email">
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="category" style="font-weight: 700">Date Range Picker:</label>
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-lg-12">
 
                 <div class="card">
@@ -176,16 +177,16 @@
             var table = $('#customerDataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: {
-                    url: "{{ route('getcustomerlist') }}",
-                    data: function(d) {
-                        // d.email = $('#email').val(),
-                        //     d.fullname = $('#fullname').val(),
-                        d.from_date = $('#from_date').val(),
-                            d.to_date = $('#to_date').val(),
-                            d.search = $('input[type="search"]').val()
-                    }
-                },
+                dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+                ],
+                select: true,
+                ajax: "{{ route('getcustomerlist') }}",
                 columns: [{
                         data: 'id',
                         render: function(data, type, row, meta) {
@@ -222,12 +223,6 @@
 
                 ]
             });
-            // $('#email').change(function() {
-            //     table.draw();
-            // });
-            // $('#fullname').change(function() {
-            //     table.draw();
-            // });
             $('#daterange').change(function() {
                 table.draw();
             });
@@ -269,5 +264,13 @@
             // console.log(start.format('YYYY-MM-DD'));
         });
     </script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
 
 @endsection

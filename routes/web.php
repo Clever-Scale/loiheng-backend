@@ -4,9 +4,13 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ContactController;
 use App\Http\Controllers\Dashboard\CustomerController;
+use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,9 +54,19 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
     Route::delete('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
-    // Category end //
+    // Brand end //
 
-    // Category start //
+    // Brand start //
+    Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery');
+    Route::get('/delivery/create', [DeliveryController::class, 'create'])->name('delivery.create');
+    Route::post('/delivery/save', [DeliveryController::class, 'save'])->name('delivery.save');
+    Route::get('/delivery/{id}/edit', [DeliveryController::class, 'edit'])->name('delivery.edit');
+    Route::put('/delivery/{id}/update', [DeliveryController::class, 'update'])->name('delivery.update');
+    Route::delete('/delivery/{id}/delete', [DeliveryController::class, 'delete'])->name('delivery.delete');
+    Route::get('/delivery/list', [DeliveryController::class, 'getDeliveryList'])->name('getdeliverylist');
+    // Brand end //
+
+    // Product start //
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product/save', [ProductController::class, 'save'])->name('product.save');
@@ -61,7 +75,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
-    // Category end //
+    // Product end //
 
     // User start //
     Route::get('/users', [UserController::class, 'index'])->name('user');
@@ -81,6 +95,26 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
     Route::get('/customers/list', [CustomerController::class, 'getCustomerList'])->name('getcustomerlist');
     // Customer end //
+
+    // Order start //
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/list', [OrderController::class, 'getOrderList'])->name('getorderlist');
+    // Order end //
+
+    // Setting start //
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::get('/settings/list', [SettingController::class, 'getSettingList'])->name('getsettinglist');
+    Route::get('/settings/{id}/edit', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('/settings/{key}/update', [SettingController::class, 'update'])->name('settings.update');
+    // Setting end //
+
+    // Contact start //
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::get('/contact/list', [ContactController::class, 'getContactList'])->name('getcontactlist');
+    Route::delete('/contact/{id}/delete', [ContactController::class, 'delete'])->name('contact.delete');
+    // Contact end //
+
+
 });
 
 Route::group(['namespace' => "Auth", 'prefix' => 'auth/'], function () {
