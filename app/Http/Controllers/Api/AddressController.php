@@ -35,6 +35,7 @@ class AddressController extends BaseController
                 'region' => $request->region,
                 'address_type' => $request->address_type,
                 'street_address' => $request->street_address,
+                'is_default' => $request->is_default,
             ]);
             return $this->sendResponse($address,"Address added successfully!.");
         }catch(Exception $e){
