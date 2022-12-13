@@ -27,9 +27,9 @@ class CartController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $old_cartId = Cart::where('user_id', $user->id)->where('product_id', $request->product_id)->value('id');
+            $old_cartId = Cart::where('is_active', true)->where('user_id', $user->id)->where('product_id', $request->product_id)->value('id');
             if($old_cartId){
-                $old_qty = Cart::where('user_id', $user->id)->where('product_id', $request->product_id)->value('qty');
+                $old_qty = Cart::where('is_active', true)->where('user_id', $user->id)->where('product_id', $request->product_id)->value('qty');
                 $new_qty = $old_qty + 1;
                 Cart::where('id', $old_cartId)->update([
                     'user_id' => $request->user_id,
@@ -62,6 +62,49 @@ class CartController extends BaseController
                     'is_active' => false,
                 ]);
                 return $this->sendMessageResponse("Cart removed successfully!.");
+            }else{
+                return $this->sendErrorMessageResponse('something went wrong!');
+            }
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function increaseCart($id)
+    {
+        try{
+            $user = auth('sanctum')->user();
+            $old_qty = Cart::where('user_id', $user->id)->where('id', $id)->value('qty');
+            if($old_qty != null){
+                $old_qty = $old_qty + 1;
+                Cart::findOrFail($id)->update([
+                    'qty' => $old_qty,
+                ]);
+                return $this->sendMessageResponse("Increased successfully!.");
+            }else{
+                return $this->sendErrorMessageResponse('something went wrong!');
+            }
+        }catch(Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+    public function descreaseCart($id)
+    {
+        try{
+            $user = auth('sanctum')->user();
+            $old_qty = Cart::where('user_id', $user->id)->where('id', $id)->value('qty');
+            if($old_qty != null){
+                $old_qty = $old_qty - 1;
+                if($old_qty <= 0){
+                    Cart::findOrFail($id)->update([
+                        'qty' => 0,
+                    ]);
+                }else{
+                    Cart::findOrFail($id)->update([
+                        'qty' => $old_qty,
+                    ]);
+                }
+                return $this->sendMessageResponse("Descreased successfully!.");
             }else{
                 return $this->sendErrorMessageResponse('something went wrong!');
             }
