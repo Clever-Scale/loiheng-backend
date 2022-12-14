@@ -48,7 +48,7 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::group(["middleware" => 'auth:sanctum'], function() {
         // Order start //
-        Route::get('orders/{id}', [OrderController::class, 'getByUserIdOrder']);
+        Route::get('orders', [OrderController::class, 'getByUserIdOrder']);
         Route::post('order-create', [OrderController::class, 'createOrder']);
         // Order end //
 
