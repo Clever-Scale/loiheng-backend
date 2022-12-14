@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => User::where('id', $this->user_id)->get(),
-            'cart' => Cart::where('id', $this->cart_id)->get(),
+            'cart' => CartResource::collection(Cart::where('id', $this->cart_id)->get()),
             'address' => Address::where('id', $this->address_id)->get(),
             'delivery' => Delivery::where('id', $this->delivery_id)->get(),
             'payment_method' => $this->payment_method,
