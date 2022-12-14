@@ -15,7 +15,7 @@ class OrderController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $orders = new OrderResource(Order::where('user_id', $user->id)->get());
+            $orders =  OrderResource::collection(Order::where('user_id', $user->id)->get());
             return $this->sendResponse($orders,"Order data getting successfully!");
 
         }catch(Exception $e){
