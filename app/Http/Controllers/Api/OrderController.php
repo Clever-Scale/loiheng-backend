@@ -11,12 +11,11 @@ use App\Http\Resources\OrderResource;
 
 class OrderController extends BaseController
 {
-    public function getByUserIdOrder($id)
+    public function getByUserIdOrder()
     {
         try{
-            $orders = new OrderCollection(Order::where('user_id', $id)->paginate(10));
-            $orders = json_decode(json_encode($orders));
-            // dd($orders);
+            $user = auth('sanctum')->user();
+            $orders = new OrderResource(Order::where('user_id', $user->id)->get());
             return $this->sendResponse($orders,"Order data getting successfully!");
 
         }catch(Exception $e){
@@ -28,6 +27,7 @@ class OrderController extends BaseController
     public function createOrder(Request $request)
     {
         try{
+            $user = auth('sanctum')->user();
             $order_code = Order::orderBy('id', 'DESC')->pluck('id')->first();
             if ($order_code == null or $order_code == "") {
                 #If Table is Empty
@@ -41,7 +41,7 @@ class OrderController extends BaseController
             }
             $order_no = 'LH' . $order_code;
             $order = Order::create([
-                'user_id' => $request->user_id,
+                'user_id' => $user->id,
                 'cart_id' => $request->cart_id,
                 'address_id' => $request->address_id,
                 'delivery_id' => $request->delivery_id,
