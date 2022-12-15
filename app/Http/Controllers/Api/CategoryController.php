@@ -13,7 +13,7 @@ class CategoryController extends BaseController
     public function categories()
     {
         try{
-            $category = new CategoryCollection(Category::paginate(10));
+            $category = new CategoryCollection(Category::where('parent', '=', 0)->paginate(10));
             return $this->sendResponse($category,"Category data getting successfully!");
 
         }catch(Exception $e){
