@@ -80,6 +80,11 @@ class ProductController extends Controller
                             </button>
                             <ul class="dropdown-menu p-4">
                                 <li>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'">
+                                        Launch demo modal
+                                    </button>
+                                </li>
+                                <li>
                                     <a href="' . route("product.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
                                         Show
                                     </a>
@@ -266,7 +271,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-    //    dd($request->all());
+
+    //    dd($key);
        $this->validate($request, [
         'name' => 'required',
         'price' => 'required',
@@ -346,21 +352,37 @@ class ProductController extends Controller
 
         if($request->file('edit_image')){
             $countImg = count($request->edit_image);
-            if ($countImg > 0) {
+            if ($countImg > 1) {
                 for ($k = 0; $k < $countImg; $k++) {
-                        $filename = time() . '_' . $request->edit_image[$k]->getClientOriginalName();
-                        $filepath = $request->file('image')[$k]->storeAs('ProductImg', $filename, 'public');
-                        $path = '/storage/' . $filepath;
+                        $editfilename = time() . '_' . $request->edit_image[$k]->getClientOriginalName();
+                        $editFilepath = $request->file('edit_image')[$k]->storeAs('ProductImg', $editfilename, 'public');
+                        $editPath = '/storage/' . $editFilepath;
                         $img_product_id = $request->img_product_id[$k];
-                        $editPath = $request->file('edit_image');
-                        $pathEditImg= ProductPicture::where('id', $k)->value('image');
                         ProductPicture::where('id', $img_product_id)->update([
-                            'product_id' => $product->id,
-                            'image' => $pathEditImg,
-                            'display_order' => $request->display_order[$k],
+                            'image' => $editPath,
                         ]);
                 }
+            }else{
+                $key = key($request->edit_image);
+                $editfilename = time() . '_' . $request->edit_image[$key]->getClientOriginalName();
+                $editFilepath = $request->file('edit_image')[$key]->storeAs('ProductImg', $editfilename, 'public');
+                $editPath = '/storage/' . $editFilepath;
+                $img_product_id = $request->img_product_id[$key++];
+                ProductPicture::where('id', $img_product_id)->update([
+                    'image' => $editPath,
+                ]);
             }
+        }
+
+        if(!is_null($request->edit_display_order)){
+            $display = count($request->edit_display_order);
+            for ($ek = 0; $ek < $display; $ek++) {
+            $dis_product_id = $request->img_product_id[$ek];
+            ProductPicture::where('id', $dis_product_id)->update([
+                'display_order' => $request->edit_display_order[$ek],
+            ]);
+        }
+
         }
 
         if(!is_null($request->service_key)){
