@@ -21,7 +21,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'picture' => $this->picture,
             'description' => $this->description,
-            'sub_category' => Category::where('id', $this->parent)->get(),
+            'sub_category' => Category::where('parent', $this->id)->get(),
             'created_by' => User::where('id', $this->created_by)->get(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -80,6 +80,11 @@ class ProductController extends Controller
                             </button>
                             <ul class="dropdown-menu p-4">
                                 <li>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'">
+                                        Launch demo modal
+                                    </button>
+                                </li>
+                                <li>
                                     <a href="' . route("product.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
                                         Show
                                     </a>
