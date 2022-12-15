@@ -270,19 +270,22 @@
                                 $ppicid = 0;
                                 $ppic = 0;
                                 $ppicd = 0;
+                                $edi = 0;
+                                $edo = 0;
+                                $edk = 0;
                             @endphp
                             @foreach ($products[0]->product_pictures as $pic)
                                 <input type="hidden" name="img_product_id[{{ $ppicid++ }}]"
                                     value="{{ $pic->id }}">
                                 <div class="row py-2 border-t" style="border-top: 1px solid grey">
                                     <div class="col-md-4">
-                                        <label for="picture">
-                                            <img id="blah" src="{{ asset($pic->image) }}"
+                                        <label for="picture{{ $edk++ }}">
+                                            <img id="blah{{ $edi++ }}" src="{{ asset($pic->image) }}"
                                                 class="rounded shadow-sm p-1"
                                                 style="transition: 0.4s; height: 100px; width: 100px" />
                                         </label>
                                         <input accept="image/*" name="edit_image[{{ $ppic++ }}]" type='file'
-                                            id="picture" class="mx-2" hidden />
+                                            id="picture{{ $edo++ }}" class="mx-2" hidden />
                                     </div>
                                     <div class="col-md-4">
                                         <div class="d-flex align-items-center" style="height: 100%">
@@ -343,11 +346,23 @@
         });
     </script>
     <script>
-        picture.onchange = evt => {
-            const [file] = picture.files
-            if (file) {
-                blah.src = URL.createObjectURL(file)
+        var sites = {!! json_encode($products[0]->product_pictures) !!};
+        console.log(sites);
+        for (let ed = 0; ed <= sites.length; ed++) {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $(`#blah${ed}`).attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
+            $(`#picture${ed}`).change(function() {
+                readURL(this);
+            });
         }
         cover_img.onchange = evt => {
             const [file] = cover_img.files
@@ -435,7 +450,7 @@
                     `<div class="row py-2" id="img${k}" style="border-top: 1px solid grey">
                         <div class="col-md-4">
                             <label for="imgInp${k}">
-                                <img id="blah${k}" src="{{ asset('assets/img/images.jpg') }}" class="rounded shadow-sm p-1" style="transition: 0.4s; height: 100px; width: 100px" />
+                                <img id="eblah${k}" src="{{ asset('assets/img/images.jpg') }}" class="rounded shadow-sm p-1" style="transition: 0.4s; height: 100px; width: 100px" />
                             </label>
                             <input accept="image/*" name="image[]" type='file' id="imgInp${k}" class="mx-2" hidden />
                         </div>
@@ -465,7 +480,7 @@
                             var reader = new FileReader();
 
                             reader.onload = function(e) {
-                                $(`#blah${rmi}`).attr('src', e.target.result);
+                                $(`#eblah${rmi}`).attr('src', e.target.result);
                             }
 
                             reader.readAsDataURL(input.files[0]);
