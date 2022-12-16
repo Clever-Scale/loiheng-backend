@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('order_no')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('cart_id')->references('id')->on('carts');
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->unsignedBigInteger('cart_id');
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->unsignedBigInteger('address_id');

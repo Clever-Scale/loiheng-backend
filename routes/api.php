@@ -55,7 +55,7 @@ Route::group(['namespace' => 'Api'], function() {
         // Cart start //
         Route::get('carts', [CartController::class, 'getByUserIdCart']);
         Route::post('cart-create', [CartController::class, 'createCart']);
-        Route::put('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
+        Route::delete('remove-cart-item/{id}', [CartController::class, 'removeCartItem']);
         Route::put('increase-qty/{id}', [CartController::class, 'increaseCart']);
         Route::put('descrease-qty/{id}', [CartController::class, 'descreaseCart']);
         // Cart end //
