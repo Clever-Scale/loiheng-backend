@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ProductPicture;
 use App\Models\ProductSpec;
 use App\Models\ProductWarranty;
+use App\Models\Setting;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -20,11 +21,12 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $exchange_rate = Setting::where('key', 'exchange_rate')->value('value');
         return [
             'id' => $this->id,
             'product_code' => $this->product_code,
             'name' => $this->name,
-            'price' => $this->price,
+            'price' => $this->price * $exchange_rate,
             'cover_img' => $this->cover_img,
             'description' => $this->description,
             'short_description' => $this->short_description,
