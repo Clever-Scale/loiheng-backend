@@ -7,6 +7,7 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartCollection;
+use App\Http\Resources\CartResource;
 
 class CartController extends BaseController
 {
@@ -39,14 +40,15 @@ class CartController extends BaseController
                 ]);
             }else{
                 $qty = 1;
-                Cart::create([
+                $cart = Cart::create([
                     'user_id' => $user->id,
                     'product_id' => $request->product_id,
                     'status' => $request->status,
                     'qty' => $qty
                 ]);
+                $cart = CartResource::collection(Cart::where('id', $cart->id)->get());
             }
-            return $this->sendMessageResponse("Cart Added successfully!.");
+            return $this->sendResponse($cart ,"Cart Added successfully!.");
         }catch(Exception $e){
             return $this->sendError($e->getMessage());
         }
