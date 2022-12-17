@@ -39,7 +39,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="fullname" style="font-weight: 700">Name:</label>
                                     <input type="text" name="fullname"
-                                        class="@error('fullname') is-invalid @enderror form-control py-1" required
+                                        class="@error('fullname') is-invalid @enderror form-control py-1"
                                         value="{{ $user->fullname }}">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -50,7 +50,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="email" style="font-weight: 700">Email:</label>
                                     <input type="email" name="email"
-                                        class="@error('email') is-invalid @enderror form-control py-1" required
+                                        class="@error('email') is-invalid @enderror form-control py-1"
                                         value="{{ $user->email }}">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="phone_no" style="font-weight: 700">Phone No:</label>
                                     <input type="text" name="phone_no"
-                                        class="@error('phone_no') is-invalid @enderror form-control py-1" required
+                                        class="@error('phone_no') is-invalid @enderror form-control py-1"
                                         value="{{ $user->phone_no }}">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -72,7 +72,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="role" style="font-weight: 700">Role:</label>
                                     <input type="text" name="role"
-                                        class="@error('role') is-invalid @enderror form-control py-1" required
+                                        class="@error('role') is-invalid @enderror form-control py-1"
                                         value="{{ $user->role }}">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -83,7 +83,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="password" style="font-weight: 700">Password:</label>
                                     <input type="password" name="password"
-                                        class="@error('password') is-invalid @enderror form-control py-1" required
+                                        class="@error('password') is-invalid @enderror form-control py-1"
                                         value="{{ $user->role }}">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
