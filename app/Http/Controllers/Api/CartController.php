@@ -32,7 +32,7 @@ class CartController extends BaseController
             if($old_cartId){
                 $old_qty = Cart::where('is_active', true)->where('user_id', $user->id)->where('product_id', $request->product_id)->value('qty');
                 $new_qty = $old_qty + 1;
-                Cart::where('id', $old_cartId)->update([
+                $cart = Cart::where('id', $old_cartId)->update([
                     'user_id' => $user->id,
                     'product_id' => $request->product_id,
                     'status' => $request->status,
