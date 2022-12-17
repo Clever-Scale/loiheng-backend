@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
+use App\Http\Controllers\Dashboard\PromotionController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,13 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
     Route::post('/product/promotion', [ProductController::class, 'promotion'])->name('promotion');
     // Product end //
+
+    // Promotion start //
+    Route::get('promotion', [PromotionController::class, 'index'])->name('promo.index');
+    Route::get('promotion/list', [PromotionController::class, 'list'])->name('promo.list');
+    Route::put('promotion/{id}/update', [PromotionController::class, 'update'])->name('promo.update');
+    Route::delete('promotion/{id}/delete', [PromotionController::class, 'delete'])->name('promo.delete');
+    // Promotion end //
 
     // User start //
     Route::get('/users', [UserController::class, 'index'])->name('user');
