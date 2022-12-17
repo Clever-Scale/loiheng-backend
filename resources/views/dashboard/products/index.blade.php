@@ -113,7 +113,7 @@
                                     <div class="form-group pb-1">
                                         <label for="name">Name:*</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            name="name">
+                                            name="name" required>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -123,7 +123,7 @@
                                     <div class="form-group pb-1">
                                         <label for="name">Percent Amount:*</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            name="percent">
+                                            name="percent" required>
                                         @error('percent')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -133,13 +133,14 @@
                                     <div class="form-group pb-1">
                                         <label for="name">Expired Date:*</label>
                                         <input type="date" class="form-control @error('name') is-invalid @enderror"
-                                            name="expired_date">
+                                            name="expired_date" required>
                                         @error('expired_date')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
