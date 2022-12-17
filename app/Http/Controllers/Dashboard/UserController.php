@@ -16,11 +16,19 @@ class UserController extends Controller
         if (session('user-delete')) {
             toast(Session::get('user-delete'), "success");
         }
+        if (session('user-create')) {
+            toast(Session::get('user-create'), "success");
+        }
         if (session('user-edit')) {
             toast(Session::get('user-edit'), "success");
         }
         $users = User::where('is_admin', '=', 'admin')->get();
         return view('dashboard.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        return view('dashboard.users.create');
     }
 
     public function edit($id)
@@ -29,6 +37,36 @@ class UserController extends Controller
 
         return view('dashboard.users.edit', compact('user'));
 
+    }
+
+    public function save(Request $request)
+    {
+        $this->validate($request, [
+            'fullname' => 'required',
+            'email' => 'bail|required|email|unique:users,email',
+            'password' => 'bail|required|confirmed|min:6',
+            'phone_no' => 'required',
+        ]);
+        // dd($request->role_id);
+        $password = Hash::make($request->password);
+        $path = '';
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->profile_img->getClientOriginalName();
+            $filePath = $request->file('profile_img')->storeAs('UserImage', $fileName, 'public');
+            $path = '/storage/' . $filePath;
+        }
+
+        User::create([
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'profile_img' => $path,
+            'password' => $password,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'phone_no' => $request->phone_no,
+            'is_admin' => $request->is_admin,
+        ]);
+        return redirect()->route('user')->with('user-create', "User has been created successfully!");
     }
     public function update(Request $request, $id)
     {

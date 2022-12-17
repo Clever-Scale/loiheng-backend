@@ -88,6 +88,8 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
 
     // User start //
     Route::get('/users', [UserController::class, 'index'])->name('user');
+    Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/users/save', [UserController::class, 'save'])->name('user.save');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/users/{id}/update', [UserController::class, 'update'])->name('user.update');
     Route::delete('/users/{id}/delete', [UserController::class, 'delete'])->name('user.delete');

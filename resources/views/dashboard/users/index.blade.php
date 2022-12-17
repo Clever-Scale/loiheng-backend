@@ -11,9 +11,9 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        {{-- <a href="{{ route('user.create') }}" class="d-flex align-items-center btn btn-primary">
+        <a href="{{ route('user.create') }}" class="d-flex align-items-center btn btn-primary">
             <i class="bi bi-plus-lg"></i>Add
-        </a> --}}
+        </a>
     </div>
 
     <section class="section">
