@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Auth\AuthController;
@@ -94,6 +95,10 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('products/category/{id}', [ProductController::class, 'productByCategoryId']);
     Route::get('products/brand/{id}', [ProductController::class, 'productByBrandId']);
     // Product end //
+
+    // Promotion start //
+    Route::get('promotions', [PromotionController::class, 'allPromotions']);
+    // Promotion end //
 
     // Setting start //
     Route::get('settings/{key}', [SettingController::class, 'settings']);
