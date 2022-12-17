@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PromotionResource extends JsonResource
@@ -19,11 +20,12 @@ class PromotionResource extends JsonResource
         $price = Product::where('id', $this->product_id)->value('price');
         $promo_price =  $this->percent / 100 * $price;
         $promo_price = $price - $promo_price;
+        $exchange_rate = Setting::where('key', 'exchange_rate')->value('value');
         return [
             'id' => $this->id,
             'name' => $this->name,
             'percent' => $this->percent,
-            'promo_price' => $promo_price,
+            'promo_price' => $promo_price * $exchange_rate,
             'user' => User::where('id', $this->user_id)->get(),
             'product' => ProductResource::collection(Product::where('id', $this->product_id)->get()),
             'created_at' => $this->created_at,
