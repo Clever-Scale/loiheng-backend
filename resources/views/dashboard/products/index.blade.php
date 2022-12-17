@@ -102,17 +102,51 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Discount Product</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                ...
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                            <form action="{{ route('promotion') }}" method="POST" novalidate enctype="multipart/form-data"
+                                class="needs-validation">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group pb-1">
+                                        <label for="name">Name:*</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                            name="name">
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group pb-1">
+                                        <label for="name">Percent Amount:*</label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                            name="percent">
+                                        @error('percent')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group pb-1">
+                                        <label for="name">Expired Date:*</label>
+                                        <input type="date" class="form-control @error('name') is-invalid @enderror"
+                                            name="expired_date">
+                                        @error('expired_date')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -240,6 +274,15 @@
                 `<input name='to_date' id="to_date" type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
             // console.log(start.format('YYYY-MM-DD'));
         });
+    </script>
+    <script>
+        // var user = {{ Session::get('err') }};
+        if ({{ Session::has('err') }}) {
+            $(document).ready(function() {
+                $('#exampleModal').modal('show');
+            });
+        }
+        // console.log("This is javascript session" + user);
     </script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
