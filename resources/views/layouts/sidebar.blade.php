@@ -46,15 +46,15 @@
         <li class="nav-item">
             <a class="nav-link collapsed {{ request()->routeIs('promo.index') ? '' : 'collapsed' }}"
                 href="{{ route('promo.index') }}">
-                <i class="bi bi-card-image"></i>
-                <span>Promotion</span>
+                <i class="bi bi-percent"></i>
+                <span>Promotions</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed {{ request()->routeIs('banner-slider') ? '' : 'collapsed' }}"
                 href="{{ route('banner-slider') }}">
                 <i class="bi bi-card-image"></i>
-                <span>Banner Slider</span>
+                <span>Banner Sliders</span>
             </a>
         </li>
         <li class="nav-item">
