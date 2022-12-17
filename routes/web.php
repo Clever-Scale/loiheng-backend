@@ -75,6 +75,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
+    Route::post('/product/promotion', [ProductController::class, 'promotion'])->name('promotion');
     // Product end //
 
     // User start //

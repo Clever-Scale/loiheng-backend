@@ -16,6 +16,8 @@ use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Resources\ProductCollection;
+use App\Models\Promotion;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -26,6 +28,9 @@ class ProductController extends Controller
         }
         if (session('product-delete')) {
             toast(Session::get('product-delete'), "success");
+        }
+        if (session('name')) {
+            toast(Session::get('name'), "success");
         }
         $categories = Category::get();
         $brands = Brand::get();
@@ -80,8 +85,8 @@ class ProductController extends Controller
                             </button>
                             <ul class="dropdown-menu p-4">
                                 <li>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'">
-                                        Launch demo modal
+                                    <button type="button" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'"  style="width:100%">
+                                        Discount
                                     </button>
                                 </li>
                                 <li>
@@ -434,5 +439,25 @@ class ProductController extends Controller
     {
         Product::find($id)->delete();
         return redirect()->route('product')->with('product-delete', 'Product has been deleted successfully!');
+    }
+
+    public function promotion(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'percent' => 'required',
+            'expired_date' => 'required',
+        ]);
+        $user = auth('sanctum')->user();
+        Promotion::create([
+            'name' => $request->name,
+            'percent' => $request->percent,
+            'expired_date' => $request->expired_date,
+            'user_id' => $user->id,
+            'product_id' => $request->product_id,
+
+        ]);
+
+        return redirect()->route('product')->with('create-promotion', 'Product promotion created successfully!');
     }
 }
