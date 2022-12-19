@@ -7,6 +7,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
+use App\Models\Promotion;
+use Illuminate\Support\Carbon;
 
 class ProductController extends BaseController
 {

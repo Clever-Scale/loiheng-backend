@@ -26,8 +26,6 @@ class PromotionResource extends JsonResource
             'name' => $this->name,
             'percent' => $this->percent,
             'promo_price' => $promo_price * $exchange_rate,
-            'user' => User::where('id', $this->user_id)->get(),
-            'product' => ProductResource::collection(Product::where('id', $this->product_id)->get()),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
