@@ -10,10 +10,11 @@ use App\Http\Resources\BannerSliderCollection;
 
 class BannerSliderController extends BaseController
 {
-    public function getHomePageSlider()
+    public function getHomePageSlider(Request $request)
     {
         try{
-            $home_banner = new BannerSliderCollection(BannerSlider::paginate(10));
+            $limit = $request->limit;
+            $home_banner = new BannerSliderCollection(BannerSlider::paginate($limit));
             return $this->sendResponse($home_banner,"Banner slider image data getting successfully!");
 
         }catch(Exception $e){
