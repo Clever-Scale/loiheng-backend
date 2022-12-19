@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ProductPicture;
 use App\Models\ProductSpec;
 use App\Models\ProductWarranty;
+use App\Models\Promotion;
 use App\Models\Setting;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +23,7 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         $exchange_rate = Setting::where('key', 'exchange_rate')->value('value');
+        $now = date('Y-m-d');
         return [
             'id' => $this->id,
             'product_code' => $this->product_code,
@@ -46,6 +48,7 @@ class ProductResource extends JsonResource
             'product_specs' => ProductSpec::where('product_id', $this->id)->get(),
             'product_warranties' => ProductWarranty::where('product_id', $this->id)->get(),
             'product_pictures' => ProductPicture::where('product_id', $this->id)->get(),
+            'discount' => PromotionResource::collection(Promotion::where('product_id', $this->id)->where('expired_date', '>=', $now)->get()),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
