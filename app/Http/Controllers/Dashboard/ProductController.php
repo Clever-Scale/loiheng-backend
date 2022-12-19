@@ -26,6 +26,12 @@ class ProductController extends Controller
         if (session('product-create')) {
             toast(Session::get('product-create'), "success");
         }
+        if (session('create-promotion')) {
+            toast(Session::get('create-promotion'), "success");
+        }
+        if (session('already-promo')) {
+            toast(Session::get('already-promo'), "error");
+        }
         if (session('product-delete')) {
             toast(Session::get('product-delete'), "success");
         }
@@ -449,15 +455,20 @@ class ProductController extends Controller
             'expired_date' => 'required',
         ]);
         $user = auth('sanctum')->user();
-        Promotion::create([
-            'name' => $request->name,
-            'percent' => $request->percent,
-            'expired_date' => $request->expired_date,
-            'user_id' => $user->id,
-            'product_id' => $request->product_id,
+        $old_promo = Promotion::where('product_id', $request->product_id)->value('id');
+        if($old_promo) {
+            return redirect()->route('product')->with('already-promo', 'This product is already promotion! Edit in promotion table!');
+        }else{
+            Promotion::create([
+                'name' => $request->name,
+                'percent' => $request->percent,
+                'expired_date' => $request->expired_date,
+                'user_id' => $user->id,
+                'product_id' => $request->product_id,
 
-        ]);
+            ]);
 
-        return redirect()->route('product')->with('create-promotion', 'Product promotion created successfully!');
+            return redirect()->route('product')->with('create-promotion', 'Product promotion created successfully!');
+        }
     }
 }
