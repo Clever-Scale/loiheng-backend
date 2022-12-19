@@ -11,11 +11,12 @@ use App\Http\Resources\CartResource;
 
 class CartController extends BaseController
 {
-    public function getByUserIdCart()
+    public function getByUserIdCart(Request $request)
     {
         try{
+            $limit = $request->limit;
             $user = auth('sanctum')->user();
-            $carts = new CartCollection(Cart::where('user_id', $user->id)->where('is_active', true)->paginate(10));
+            $carts = new CartCollection(Cart::where('user_id', $user->id)->where('is_active', true)->paginate($limit));
             // $carts = json_decode(json_encode($carts));
             return $this->sendResponse($carts,"Cart data getting successfully!");
 

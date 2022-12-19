@@ -10,11 +10,12 @@ use App\Http\Resources\WishlistCollection;
 
 class WishlistController extends BaseController
 {
-    public function getByUserIdWishlist()
+    public function getByUserIdWishlist(Request $request)
     {
         try{
+            $limit = $request->limit;
             $user = auth('sanctum')->user();
-            $wishlist = new WishlistCollection(Wishlist::where('user_id', $user->id)->paginate(10));
+            $wishlist = new WishlistCollection(Wishlist::where('user_id', $user->id)->paginate($limit));
             // $carts = json_decode(json_encode($carts));
             return $this->sendResponse($wishlist,"Wishlist data getting successfully!");
 

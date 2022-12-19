@@ -26,6 +26,15 @@ class AddressController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
+            $old_address = Address::where('user_id', $user->id)->get();
+            if($request->is_default == true){
+                foreach($old_address as $old){
+                    Address::where('user_id', $old->user_id)->update([
+                        'is_default' => 0
+                    ]);
+                }
+            }
+            // return $old_address;
             $address = Address::create([
                 'user_id' => $user->id,
                 'full_name' => $request->full_name,
