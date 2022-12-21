@@ -17,22 +17,25 @@ class ProductController extends BaseController
     public function allProducts(Request $request)
     {
         try{
+
             $limit = $request->limit;
             $products = Product::query();
             if(isset($request->category_id)){
                 $products = $products->whereHas('category', function ($query)  {
-                    $query->whereIn('id', request('category_id'));
+                    $cat_array = explode(',',request('category_id'));
+                    $query->whereIn('id', $cat_array);
                 });
             }
             if(isset($request->brand_id)){
                 $products = $products->whereHas('brand', function ($query)  {
-                    $query->whereIn('id', request('brand_id'));
+                    $brand_array = explode(',',request('brand_id'));
+                    $query->whereIn('id', $brand_array);
                 });
             }
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
-            // return $products->get();
+            return $products->get();
             // if($request->price_range){
             //     $products = $products->whereBetween('price', $request->price_range);
             // }
