@@ -7,8 +7,10 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
+use App\Models\Category;
 use App\Models\Promotion;
 use Illuminate\Support\Carbon;
+use Psy\CodeCleaner\IssetPass;
 
 class ProductController extends BaseController
 {
@@ -17,41 +19,20 @@ class ProductController extends BaseController
         try{
             $limit = $request->limit;
             $products = Product::query();
-            $category_fields = [];
-            $brand_fields = [];
-            if (isset($request->category_id)) {
-                $category = [
-                    "title" => "category_id",
-                    "value" => $request->category_id,
-                ];
-                array_push($category_fields, $category);
-            };
-            if (isset($request->brand_id)) {
-                $brand = [
-                    "title" => "brand_id",
-                    "value" => $request->brand_id,
-                ];
-                array_push($brand_fields, $brand);
-            };
-            if (count($category_fields) > 0) {
-                foreach ($category_fields as $cat_field) {
-                    $products = $products->where($cat_field['title'], $cat_field['value']);
-                }
+            if(isset($request->category_id)){
+                $products = $products->whereHas('category', function ($query)  {
+                    $query->whereIn('id', request('category_id'));
+                });
             }
-            if (count($brand_fields) > 0) {
-                foreach ($brand_fields as $field) {
-                    $products = $products->where($field['title'], $field['value']);
-                }
+            if(isset($request->brand_id)){
+                $products = $products->whereHas('brand', function ($query)  {
+                    $query->whereIn('id', request('brand_id'));
+                });
             }
-            // if($request->category_id){
-            //     $products = $products->where('category_id', $request->category_id);
-            // }
-            // if($request->brand_id){
-            //     $products = $products->where('brand_id', $request->brand_id);
-            // }
-            if($request->is_feature_product){
+            if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
+            // return $products->get();
             // if($request->price_range){
             //     $products = $products->whereBetween('price', $request->price_range);
             // }
