@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
+use App\Models\Product;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductCollection;
 use App\Http\Resources\PromotionCollection;
 
 class PromotionController extends BaseController
@@ -15,7 +17,12 @@ class PromotionController extends BaseController
         $limit = $request->limit;
         try{
             $now = date('Y-m-d');
-            $products = new PromotionCollection(Promotion::where('expired_date', '>=', $now)->paginate($limit));
+            $promotion = Promotion::where('expired_date', '>=', $now)->get();
+            $products = Product::query();
+            foreach($promotion as $promo) {
+                $products = $products->orWhere('id', '=', $promo->product_id);
+            }
+            $products = new ProductCollection($products->paginate($limit));
             return $this->sendResponse($products,"All promotion products data getting successfully!");
 
         }catch(Exception $e){
