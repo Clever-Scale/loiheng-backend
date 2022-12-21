@@ -35,7 +35,7 @@ class ProductController extends BaseController
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
-            return $products->get();
+            // return $products->get();
             // if($request->price_range){
             //     $products = $products->whereBetween('price', $request->price_range);
             // }
