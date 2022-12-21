@@ -22,6 +22,21 @@ class PromotionController extends BaseController
             foreach($promotion as $promo) {
                 $products = $products->orWhere('id', '=', $promo->product_id);
             }
+            if(isset($request->category_id)){
+                $products = $products->whereHas('category', function ($query)  {
+                    $cat_array = explode(',',request('category_id'));
+                    $query->whereIn('id', $cat_array);
+                });
+            }
+            if(isset($request->brand_id)){
+                $products = $products->whereHas('brand', function ($query)  {
+                    $brand_array = explode(',',request('brand_id'));
+                    $query->whereIn('id', $brand_array);
+                });
+            }
+            if(isset($request->is_feature_product)){
+                $products = $products->where('is_feature_product', $request->is_feature_product);
+            }
             $products = new ProductCollection($products->paginate($limit));
             return $this->sendResponse($products,"All promotion products data getting successfully!");
 
