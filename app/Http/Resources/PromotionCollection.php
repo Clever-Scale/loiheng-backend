@@ -15,7 +15,7 @@ class PromotionCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'promo_products' => PromotionResource::collection($this->collection),
+            'products' => PromotionResource::collection($this->collection),
             'pagination' => [
                 "current_page" => $this->currentPage(),
                 "first_page_url" => $this->getOptions()['path'] . '?' . $this->getOptions()['pageName'] . '=1',
