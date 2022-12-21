@@ -16,6 +16,7 @@ class ProductController extends BaseController
     public function allProducts(Request $request)
     {
         try{
+            $limit = $request->limit;
             $products = Product::query();
             if(isset($request->category_id)){
                 if (count($request->category_id) > 0) {
@@ -35,17 +36,21 @@ class ProductController extends BaseController
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
-            $products = new ProductCollection($products->paginate($request->limit));
+            // if($request->price_range){
+            //     $products = $products->whereBetween('price', $request->price_range);
+            // }
+            $products = new ProductCollection($products->paginate($limit));
             return $this->sendResponse($products,"All products data getting successfully!");
 
         }catch(Exception $e){
             return $this->sendError($e->getMessage());
         }
     }
-    public function newArrivals()
+    public function newArrivals(Request $request)
     {
         try{
-            $new_arrivals = new ProductCollection(Product::where('is_new_arrival', 1)->paginate(10));
+            $limit = $request->limit;
+            $new_arrivals = new ProductCollection(Product::where('is_new_arrival', 1)->paginate($limit));
             return $this->sendResponse($new_arrivals,"New arrival products data getting successfully!");
 
         }catch(Exception $e){
@@ -53,10 +58,11 @@ class ProductController extends BaseController
         }
     }
 
-    public function featuredProducts()
+    public function featuredProducts(Request $request)
     {
         try{
-            $featured_products = new ProductCollection(Product::where('is_feature_product', 1)->paginate(10));
+            $limit = $request->limit;
+            $featured_products = new ProductCollection(Product::where('is_feature_product', 1)->paginate($limit));
             return $this->sendResponse($featured_products,"Featured products data getting successfully!");
 
         }catch(Exception $e){
@@ -75,10 +81,11 @@ class ProductController extends BaseController
         }
     }
 
-    public function productByCategoryId($id)
+    public function productByCategoryId(Request $request, $id)
     {
         try{
-            $products = new ProductCollection(Product::where('category_id',$id)->paginate(10));
+            $limit = $request->limit;
+            $products = new ProductCollection(Product::where('category_id',$id)->paginate($limit));
             return $this->sendResponse($products,"Product data getting by category successfully!");
 
         }catch(Exception $e){
@@ -86,10 +93,11 @@ class ProductController extends BaseController
         }
     }
 
-    public function productByBrandId($id)
+    public function productByBrandId(Request $request, $id)
     {
         try{
-            $products = new ProductCollection(Product::where('brand_id',$id)->paginate(10));
+            $limit = $request->limit;
+            $products = new ProductCollection(Product::where('brand_id',$id)->paginate($limit));
             return $this->sendResponse($products,"Product data getting by brand successfully!");
 
         }catch(Exception $e){

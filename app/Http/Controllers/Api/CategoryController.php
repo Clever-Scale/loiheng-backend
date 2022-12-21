@@ -10,10 +10,11 @@ use App\Http\Resources\CategoryCollection;
 
 class CategoryController extends BaseController
 {
-    public function categories()
+    public function categories(Request $request)
     {
         try{
-            $category = new CategoryCollection(Category::where('parent', '=', 0)->paginate(10));
+            $limit = $request->limit;
+            $category = new CategoryCollection(Category::where('parent', '=', 0)->paginate($limit));
             return $this->sendResponse($category,"Category data getting successfully!");
 
         }catch(Exception $e){
