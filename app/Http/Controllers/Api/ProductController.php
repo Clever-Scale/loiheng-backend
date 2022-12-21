@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use App\Models\Promotion;
 use Illuminate\Support\Carbon;
+use Psy\CodeCleaner\IssetPass;
 
 class ProductController extends BaseController
 {
@@ -16,45 +17,25 @@ class ProductController extends BaseController
     {
         try{
             $products = Product::query();
-            $category_fields = [];
-            $brand_fields = [];
-            if (isset($request->category_id)) {
-                $category = [
-                    "title" => "category_id",
-                    "value" => $request->category_id,
-                ];
-                array_push($category_fields, $category);
-            };
-            if (isset($request->brand_id)) {
-                $brand = [
-                    "title" => "brand_id",
-                    "value" => $request->brand_id,
-                ];
-                array_push($brand_fields, $brand);
-            };
-            if (count($category_fields) > 0) {
-                foreach ($category_fields as $cat_field) {
-                    $products = $products->where($cat_field['title'], $cat_field['value']);
+            if(isset($request->category_id)){
+                if (count($request->category_id) > 0) {
+                    for($i=0; $i < count($request->category_id); $i++){
+                        $products = $products->orWhere('category_id', $request->category_id[$i]);
+                    }
                 }
             }
-            if (count($brand_fields) > 0) {
-                foreach ($brand_fields as $field) {
-                    $products = $products->where($field['title'], $field['value']);
+            if(isset($request->brand_id)){
+                if (count($request->brand_id) > 0) {
+                    for($i=0; $i < count($request->brand_id); $i++){
+                        $products = $products->orWhere('brand_id', $request->brand_id[$i]);
+                    }
                 }
             }
-            // if($request->category_id){
-            //     $products = $products->where('category_id', $request->category_id);
-            // }
-            // if($request->brand_id){
-            //     $products = $products->where('brand_id', $request->brand_id);
-            // }
-            if($request->is_feature_product){
+            return $products->get();
+            if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
-            // if($request->price_range){
-            //     $products = $products->whereBetween('price', $request->price_range);
-            // }
-            $products = new ProductCollection($products->paginate(10));
+            $products = new ProductCollection($products->paginate($request->limit));
             return $this->sendResponse($products,"All products data getting successfully!");
 
         }catch(Exception $e){
