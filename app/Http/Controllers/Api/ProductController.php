@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
+use App\Models\Category;
 use App\Models\Promotion;
 use Illuminate\Support\Carbon;
 use Psy\CodeCleaner\IssetPass;
@@ -19,23 +20,19 @@ class ProductController extends BaseController
             $limit = $request->limit;
             $products = Product::query();
             if(isset($request->category_id)){
-                if (count($request->category_id) > 0) {
-                    for($i=0; $i < count($request->category_id); $i++){
-                        $products = $products->orWhere('category_id', $request->category_id[$i]);
-                    }
-                }
+                $products = $products->whereHas('category', function ($query)  {
+                    $query->whereIn('id', request('category_id'));
+                });
             }
             if(isset($request->brand_id)){
-                if (count($request->brand_id) > 0) {
-                    for($i=0; $i < count($request->brand_id); $i++){
-                        $products = $products->orWhere('brand_id', $request->brand_id[$i]);
-                    }
-                }
+                $products = $products->whereHas('brand', function ($query)  {
+                    $query->whereIn('id', request('brand_id'));
+                });
             }
-            return $products->get();
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
+            // return $products->get();
             // if($request->price_range){
             //     $products = $products->whereBetween('price', $request->price_range);
             // }
