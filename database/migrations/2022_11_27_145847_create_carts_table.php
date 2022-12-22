@@ -17,11 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->string('status')->nullable();
-            $table->boolean('is_preorder')->default(0)->nullable();
-            $table->boolean('is_active')->default(1)->nullable();
+            $table->boolean('is_active')->nullable()->default(true);
             $table->timestamps();
         });
     }
