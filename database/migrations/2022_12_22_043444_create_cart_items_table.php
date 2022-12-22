@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreign('product_id')->references('id')->on('products');
             $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('cart_id')->references('id')->on('carts');
-            $table->unsignedBigInteger('cart_id')->nullable();
+            // $table->foreign('cart_id')->references('id')->on('carts');
+            // $table->unsignedBigInteger('cart_id')->nullable();
             $table->string('qty')->default(0)->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
