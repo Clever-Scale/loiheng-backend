@@ -15,9 +15,8 @@ class CartController extends BaseController
     public function getByUserIdCart(Request $request)
     {
         try{
-            $limit = $request->limit;
             $user = auth('sanctum')->user();
-            $carts = new CartCollection(Cart::where('user_id', $user->id)->where('is_active', true)->paginate($limit));
+            $carts =  CartResource::collection(Cart::where('user_id', $user->id)->where('is_active', true)->get());
             // $carts = json_decode(json_encode($carts));
             return $this->sendResponse($carts,"Cart data getting successfully!");
 
@@ -31,13 +30,11 @@ class CartController extends BaseController
         try{
             $user = auth('sanctum')->user();
             $cart = Cart::where('user_id', $user->id)->where('is_active', true)->first();
-            // return $cart->id;
-            if($cart->is_active != true){
+            if(is_null($cart) || $cart->is_active != true){
                 $cart = Cart::create([
                     'user_id' => $user->id
                 ]);
             }
-            // return $cart;
             $old_cart_id = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->value('id');
             $old_qty = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->value('qty');
             if($old_cart_id){
@@ -46,7 +43,7 @@ class CartController extends BaseController
                 }else{
                     $old_qty = $request->qty;
                 }
-                $oldCartData = CartItem::where('id', $old_cart_id)->update([
+                CartItem::where('id', $old_cart_id)->update([
                     'product_id' => $request->product_id,
                     'cart_id' => $cart->id,
                     'qty' => $old_qty
@@ -58,7 +55,7 @@ class CartController extends BaseController
                 }else{
                     $qty = $request->qty;
                 }
-                $new_cart = CartItem::create([
+                CartItem::create([
                     'product_id' => $request->product_id,
                     'cart_id' => $cart->id,
                     'qty' => $qty
