@@ -43,7 +43,6 @@ class PromotionController extends BaseController
                 if(isset($request->is_feature_product)){
                     $products = $products->where('is_feature_product', $request->is_feature_product);
                 }
-                return $products->get();
                 $products = new ProductCollection($products->paginate($limit));
                 return $this->sendResponse($products,"All promotion products data getting successfully!");
             }else{
