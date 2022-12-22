@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
+use App\Models\Cart;
+use App\Models\CartItem;
 
 class OrderController extends BaseController
 {
@@ -53,6 +55,12 @@ class OrderController extends BaseController
                 'order_no' => $order_no,
                 'delivery_fee' => $request->delivery_fee,
             ]);
+
+            if($order){
+                $cart = Cart::where('user_id', $user->id)->where('id', $order->cart_id)->update([
+                    'is_active' => false
+                ]);
+            }
             return $this->sendResponse($order,"Order successfully!.");
         }catch(Exception $e){
             return $this->sendError($e->getMessage());

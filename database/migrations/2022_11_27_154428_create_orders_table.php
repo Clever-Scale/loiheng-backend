@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('order_no')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('user_id');
-            // $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-            // $table->unsignedBigInteger('cart_id');
+            $table->foreign('cart_id')->references('id')->on('carts');
+            $table->unsignedBigInteger('cart_id');
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->unsignedBigInteger('address_id');
             $table->foreign('delivery_id')->references('id')->on('deliveries');
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('discount_price')->nullable();
             $table->enum('status', ['pending', 'confirm', 'ontheway', 'complete'])->default('pending')->nullable();
             $table->string('delivery_fee')->nullable();
-            $table->boolean('is_active')->default(0)->nullable();
+            $table->boolean('is_active')->default(1)->nullable();
             $table->boolean('is_preorder')->default(0)->nullable();
             $table->timestamps();
         });
