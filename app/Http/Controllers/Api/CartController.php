@@ -95,26 +95,31 @@ class CartController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $old = Cart::where('user_id', $user->id)->where('id', $id)->value('id');
-            if($old != null){
-                Cart::findOrFail($id)->delete();
-                return $this->sendMessageResponse("Cart removed successfully!.");
+            $user_cart = Cart::where('user_id', $user->id)->where('is_active', true)->first();
+            if(!is_null($user_cart)){
+                CartItem::where('id', $id)->delete();
+                return $this->sendMessageResponse("Cart Item removed successfully!.");
             }else{
-                return $this->sendErrorMessageResponse('something went wrong!');
+                return $this->sendErrorMessageResponse('Cart item is not have!');
             }
         }catch(Exception $e){
             return $this->sendError($e->getMessage());
         }
     }
 
-    public function increaseCart($id)
+    public function increaseCart(Request $request, $id)
     {
         try{
             $user = auth('sanctum')->user();
-            $old_qty = Cart::where('user_id', $user->id)->where('id', $id)->value('qty');
-            if($old_qty != null){
-                $old_qty = $old_qty + 1;
-                Cart::findOrFail($id)->update([
+            $user_cart = Cart::where('user_id', $user->id)->where('is_active', true)->first();
+            if(!is_null($user_cart)){
+                $old_qty = CartItem::where('id', $id)->value('qty');
+                if(is_null($request->qty)){
+                    $old_qty =  $old_qty + 1;
+                }else{
+                    $old_qty = $request->qty;
+                }
+                CartItem::findOrFail($id)->update([
                     'qty' => $old_qty,
                 ]);
                 return $this->sendMessageResponse("Increased successfully!.");
@@ -125,19 +130,24 @@ class CartController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
-    public function descreaseCart($id)
+    public function descreaseCart(Request $request, $id)
     {
         try{
             $user = auth('sanctum')->user();
-            $old_qty = Cart::where('user_id', $user->id)->where('id', $id)->value('qty');
-            if($old_qty != null){
-                $old_qty = $old_qty - 1;
+            $user_cart = Cart::where('user_id', $user->id)->where('is_active', true)->first();
+            if(!is_null($user_cart)){
+                $old_qty = CartItem::where('id', $id)->value('qty');
+                if(is_null($request->qty)){
+                    $old_qty = $old_qty - 1;
+                }else{
+                    $old_qty = $request->qty;
+                }
                 if($old_qty <= 0){
-                    Cart::findOrFail($id)->update([
+                    CartItem::findOrFail($id)->update([
                         'qty' => 0,
                     ]);
                 }else{
-                    Cart::findOrFail($id)->update([
+                    CartItem::findOrFail($id)->update([
                         'qty' => $old_qty,
                     ]);
                 }
