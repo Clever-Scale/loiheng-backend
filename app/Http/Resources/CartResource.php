@@ -22,7 +22,8 @@ class CartResource extends JsonResource
         $subtotal = 0;
         $exchange_rate = Setting::where('key', 'exchange_rate')->value('value');
         foreach($cart_item as $item){
-            $subtotal =   $subtotal + $item->product->price;
+            $item_price = $item->product->price * $item->qty;
+            $subtotal =   $subtotal + $item_price;
         }
         $subtotal = $subtotal * $exchange_rate;
         return [
