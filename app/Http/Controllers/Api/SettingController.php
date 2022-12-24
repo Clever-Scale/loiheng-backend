@@ -14,6 +14,7 @@ class SettingController extends BaseController
     {
         try{
             $setting =  SettingResource::collection(Setting::where('key', $key)->get());
+            $setting = $setting->first();
             return $this->sendResponse($setting,"Setting data getting successfully!");
 
         }catch(Exception $e){
