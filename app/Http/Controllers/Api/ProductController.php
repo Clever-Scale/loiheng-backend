@@ -20,6 +20,9 @@ class ProductController extends BaseController
 
             $limit = $request->limit;
             $products = Product::query();
+            if (isset($request->search)) {
+                $products = $products->where('name', 'like', '%' . $request->search . '%');
+            }
             if(isset($request->category_id)){
                 $products = $products->whereHas('category', function ($query)  {
                     $cat_array = explode(',',request('category_id'));
@@ -35,10 +38,16 @@ class ProductController extends BaseController
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
+            if(isset($request->highest_price)){
+                $products = $products->orderBy('price', 'DESC');
+            }
+            if(isset($request->lowest_price)){
+                $products = $products->orderBy('price', 'ASC');
+            }
             // return $products->get();
-            // if($request->price_range){
-            //     $products = $products->whereBetween('price', $request->price_range);
-            // }
+            if($request->start_price_range && $request->end_price_range){
+                $products = $products->whereBetween('price', [$request->start_price_range, $request->end_price_range]);
+            }
             $products = new ProductCollection($products->paginate($limit));
             return $this->sendResponse($products,"All products data getting successfully!");
 
