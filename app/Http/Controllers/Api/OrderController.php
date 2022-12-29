@@ -32,7 +32,7 @@ class OrderController extends BaseController
         try{
             $user = auth('sanctum')->user();
             $address_id = "";
-            if($request->address_id = 0){
+            if($request->address_id == 0){
                 $address = Address::create([
                     'user_id' => $user->id,
                     'full_name' => $request->full_name,
