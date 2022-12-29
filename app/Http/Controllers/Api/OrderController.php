@@ -32,9 +32,7 @@ class OrderController extends BaseController
         try{
             $user = auth('sanctum')->user();
             $address_id = "";
-            if(!is_null($request->address_id)){
-                $address_id = $request->address_id;
-            }else{
+            if($request->address_id = 0){
                 $address = Address::create([
                     'user_id' => $user->id,
                     'full_name' => $request->full_name,
@@ -46,6 +44,8 @@ class OrderController extends BaseController
                     'street_address' => $request->street_address,
                 ]);
                 $address_id = $address->id;
+            }else{
+                $address_id = $request->address_id;
             }
             $order_code = Order::orderBy('id', 'DESC')->pluck('id')->first();
             if ($order_code == null or $order_code == "") {
