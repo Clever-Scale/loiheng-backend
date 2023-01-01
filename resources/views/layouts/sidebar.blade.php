@@ -44,21 +44,21 @@
             </a>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link collapsed {{ request()->routeIs('promo.index') ? '' : 'collapsed' }}"
+            <a class="nav-link  {{ request()->routeIs('promo.index') ? '' : 'collapsed' }}"
                 href="{{ route('promo.index') }}">
                 <i class="bi bi-percent"></i>
                 <span>Promotions</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed {{ request()->routeIs('banner-slider') ? '' : 'collapsed' }}"
+            <a class="nav-link  {{ request()->routeIs('banner-slider') || request()->routeIs('banner-slider.edit') ? '' : 'collapsed' }}"
                 href="{{ route('banner-slider') }}">
                 <i class="bi bi-card-image"></i>
                 <span>Banner Sliders</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed {{ request()->routeIs('customer') || request()->routeIs('customer.edit') ? '' : 'collapsed' }}"
+            <a class="nav-link  {{ request()->routeIs('customer') || request()->routeIs('customer.edit') ? '' : 'collapsed' }}"
                 href="{{ route('customer') }}">
                 <i class="bi bi-person"></i>
                 <span>Customers</span>
@@ -94,7 +94,7 @@
             </a>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('orders') }}">
+            <a class="nav-link {{ request()->routeIs('orders') ? '' : 'collapsed' }}" href="{{ route('orders') }}">
                 <i class="bi bi-cart3"></i>
                 <span>Orders</span>
             </a>
@@ -103,13 +103,14 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('contact') }}">
+            <a class="nav-link {{ request()->routeIs('contact') ? '' : 'collapsed' }}" href="{{ route('contact') }}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('settings') }}">
+            <a class="nav-link {{ request()->routeIs('settings') || request()->routeIs('settings.edit') ? '' : 'collapsed' }}"
+                href="{{ route('settings') }}">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>

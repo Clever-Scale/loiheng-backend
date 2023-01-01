@@ -1,16 +1,20 @@
 @extends('layouts.mainlayout')
 @section('title', 'Banner Image Create')
 @section('content')
-    <div class="pagetitle">
-        <h1>Banner Image Page</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('brand') }}">Banner Image</a></li>
-            </ol>
-        </nav>
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="pagetitle">
+            <h1>Banner Image Page</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('brand') }}">Banner Image</a></li>
+                </ol>
+            </nav>
+        </div>
+        <a href="{{ route('banner-slider') }}" class="d-flex align-items-center btn btn-primary">
+            <i class="bi bi-arrow-left-circle"></i> &nbsp; Back
+        </a>
     </div>
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -42,7 +46,8 @@
 
                             <div class="row my-3">
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i>
+                                        &nbsp;Save</button>
                                 </div>
                             </div>
                         </form>

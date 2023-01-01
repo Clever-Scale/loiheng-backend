@@ -16,7 +16,7 @@
             </nav>
         </div><!-- End Page Title -->
         <a href="{{ route('product.create') }}" class="d-flex align-items-center btn btn-primary">
-            <i class="bi bi-plus-lg"></i>Add
+            <i class="bi bi-plus-lg"></i>&nbsp; Add
         </a>
     </div>
 
@@ -145,7 +145,8 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i>
+                                        &nbsp;Save</button>
                                 </div>
                             </form>
                         </div>

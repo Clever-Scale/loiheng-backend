@@ -60,7 +60,7 @@ class CustomerController extends Controller
                             <ul class="dropdown-menu p-4">
                                 <li>
                                     <a href="' . route("customer.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
-                                    <i class="bi bi-pencil-square"></i> Edit
+                                   Edit
                                     </a>
                                 </li>
                                 <li>
