@@ -15,7 +15,7 @@
             </nav>
         </div><!-- End Page Title -->
         <a href="{{ route('delivery.create') }}" class="d-flex align-items-center btn btn-primary">
-            <i class="bi bi-plus-lg"></i>Add
+            <i class="bi bi-plus-lg"></i>&nbsp;Add
         </a>
     </div>
 

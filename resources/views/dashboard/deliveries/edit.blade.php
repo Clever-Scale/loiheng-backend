@@ -1,14 +1,19 @@
 @extends('layouts.mainlayout')
 @section('title', 'Delivery Create')
 @section('content')
-    <div class="pagetitle">
-        <h1>Delivery Page</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('delivery') }}">Delivery</a></li>
-            </ol>
-        </nav>
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="pagetitle">
+            <h1>Delivery Page</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('delivery') }}">Delivery</a></li>
+                </ol>
+            </nav>
+        </div>
+        <a href="{{ route('delivery') }}" class="d-flex align-items-center btn btn-primary">
+            <i class="bi bi-arrow-left-circle"></i> &nbsp; Back
+        </a>
     </div>
 
     <section class="section">
@@ -64,7 +69,8 @@
                             </div>
                             <div class="row my-3">
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i>
+                                        &nbsp;Save</button>
                                 </div>
                             </div>
                     </div>

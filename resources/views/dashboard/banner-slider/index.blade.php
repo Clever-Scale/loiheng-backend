@@ -12,7 +12,7 @@
             </nav>
         </div><!-- End Page Title -->
         <a href="{{ route('banner-slider.create') }}" class="d-flex align-items-center btn btn-primary">
-            <i class="bi bi-plus-lg"></i>Add
+            <i class="bi bi-plus-lg"></i>&nbsp;Add
         </a>
         {{-- Model start --}}
         {{-- <div class="modal  fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

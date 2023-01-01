@@ -16,7 +16,7 @@
             </nav>
         </div><!-- End Page Title -->
         <a href="{{ route('customer.create') }}" class="d-flex align-items-center btn btn-primary">
-            <i class="bi bi-plus-lg"></i>Add
+            <i class="bi bi-plus-lg"></i> &nbsp; Add
         </a>
     </div>
 
@@ -185,7 +185,7 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
                 ],
-                select: true,
+                select: false,
                 ajax: "{{ route('getcustomerlist') }}",
                 columns: [{
                         data: 'id',
