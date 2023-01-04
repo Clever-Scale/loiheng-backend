@@ -36,6 +36,23 @@ class OrderController extends Controller
                             '</div>
                         </div>';
                     })
+                    ->addColumn('status', function ($row) {
+                        switch ($row->status) {
+                            case 'confirm':
+                                return '<span class="badge rounded-pill text-bg-warning">'.$row->status.'</span>';
+                                break;
+                            case 'ontheway':
+                                return '<span class="badge rounded-pill text-bg-info">'.$row->status.'</span>';
+                                break;
+                            case 'complete':
+                                return '<span class="badge rounded-pill text-bg-success">'.$row->status.'</span>';
+                                break;
+                            default:
+                                return '<span class="badge rounded-pill text-bg-primary">'.$row->status.'</span>';
+                                break;
+                        }
+
+                    })
                     ->addColumn('total_price', function ($row) {
                         return '<p style="font-size: 18px; color: green; font-weight: 600;">' . $row->total_price . ' $</p>';
                     })
@@ -52,19 +69,6 @@ class OrderController extends Controller
                                         Show
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="' . route("product.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
-                                        Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <form method="post" action="' . route("product.delete", ["id" => $row->id]) . ' "
-                                    id="from1" data-flag="0">
-                                    ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-danger btn-sm delete"
-                                                style="width: 100%">Delete</button>
-                                        </form>
-                                </li>
                             </ul>
                         </div>';
                     })
@@ -78,17 +82,24 @@ class OrderController extends Controller
 
                         }
                     })
-                    ->rawColumns(['created_at', 'total_price', 'action', ])
+                    ->rawColumns(['created_at', 'total_price', 'action', 'status' ])
                     ->make(true);
         }
     }
 
     public function show($id)
     {
-        $orders = OrderResource::collection(Order::where('id', $id)->get());
-        // dd($orders);
-        $orders = $orders->first();
+        $order = OrderResource::collection(Order::where('id', $id)->get());
+        $order = json_decode(json_encode($order->first()));
+        // dd($order);
 
-        return view('dashboard.orders.show', compact('orders'));
+        return view('dashboard.orders.show', compact('order'));
+    }
+
+    public function statusChange($id, Request $request)
+    {
+       Order::find($id)->update([
+        'status' => $request->status,
+       ]);
     }
 }

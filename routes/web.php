@@ -111,6 +111,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     // Order start //
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/orders/show/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::put('/orders/status/{id}', [OrderController::class, 'statusChange'])->name('orders.status');
     Route::get('/orders/list', [OrderController::class, 'getOrderList'])->name('getorderlist');
     // Order end //
 
