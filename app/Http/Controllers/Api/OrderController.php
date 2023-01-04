@@ -31,6 +31,19 @@ class OrderController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
+            $cart_id = $request->cart_id;
+            if($request->product_id){
+                $cart = Cart::create([
+                    "user_id" => $user->id
+                ]);
+                $cart_id = $cart->id;
+
+                $cart_item = CartItem::create([
+                    'product_id' => $request->product_id,
+                    'cart_id' => $cart_id,
+                    'qty' => $request->qty,
+                ]);
+            }
             $address_id = "";
             if($request->address_id == 0){
                 $address = Address::create([
@@ -58,7 +71,7 @@ class OrderController extends BaseController
                 $num = $order_code + 1;
                 $order_code =sprintf('%04d',$num);
             }
-            $order_no = 'LH' . $order_code;
+            $order_no = 'LHO' . $order_code;
             if(isset($request->coupon_price)){
                 $total_price = $request->subtotal - $request->coupon_price;
             }else{
@@ -66,7 +79,7 @@ class OrderController extends BaseController
             }
             $order = Order::create([
                 'user_id' => $user->id,
-                'cart_id' => $request->cart_id,
+                'cart_id' => $cart_id,
                 'address_id' => $address_id,
                 'delivery_id' => $request->delivery_id,
                 'payment_method' => $request->payment_method,
@@ -86,4 +99,5 @@ class OrderController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
 }
