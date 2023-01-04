@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
@@ -47,7 +48,7 @@ class OrderController extends Controller
                             </button>
                             <ul class="dropdown-menu p-4">
                                 <li>
-                                    <a href="' . route("product.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
+                                    <a href="' . route("orders.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
                                         Show
                                     </a>
                                 </li>
@@ -80,5 +81,14 @@ class OrderController extends Controller
                     ->rawColumns(['created_at', 'total_price', 'action', ])
                     ->make(true);
         }
+    }
+
+    public function show($id)
+    {
+        $orders = OrderResource::collection(Order::where('id', $id)->get());
+        // dd($orders);
+        $orders = $orders->first();
+
+        return view('dashboard.orders.show', compact('orders'));
     }
 }

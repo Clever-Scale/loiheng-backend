@@ -99,6 +99,12 @@
                 <span>Orders</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('company') ? '' : 'collapsed' }}" href="{{ route('company') }}">
+                <i class="bi bi-cart3"></i>
+                <span>Company Profile</span>
+            </a>
+        </li>
 
 
 
