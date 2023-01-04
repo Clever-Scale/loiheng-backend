@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Dashboard\BannerSliderController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CompanyProfileController;
 use App\Http\Controllers\Dashboard\ContactController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\DeliveryController;
@@ -109,6 +110,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
 
     // Order start //
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/orders/show/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/list', [OrderController::class, 'getOrderList'])->name('getorderlist');
     // Order end //
 
@@ -123,6 +125,12 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::get('/contact/list', [ContactController::class, 'getContactList'])->name('getcontactlist');
     Route::delete('/contact/{id}/delete', [ContactController::class, 'delete'])->name('contact.delete');
+    // Contact end //
+
+    // Contact start //
+    Route::get('/company-profile', [CompanyProfileController::class, 'index'])->name('company');
+    Route::get('/company-profile/{id}/edit', [CompanyProfileController::class, 'edit'])->name('company.edit');
+    Route::put('/company-profile/{id}/update', [CompanyProfileController::class, 'update'])->name('company.update');
     // Contact end //
 
 
