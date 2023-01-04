@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Order Show Page</h1>
+            <h1>Order Detail Page</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
@@ -23,12 +23,18 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center align-items-center">
                             <div>
-                                <img src="{{ asset($orders->user->profile_img ? $orders->user[0]->profile_img : 'assets/img/pp.jpg') }}"
+                                <img src="{{ asset($order->user[0]->profile_img ? $order->user[0]->profile_img : 'assets/img/pp.jpg') }}"
                                     alt="" class="img-fluid">
-                                <h6 style="text-transform: capitalize; padding-top: 10px">
-                                    {{ $orders->user->fullname }}
-                                    <span style="font-size: 14px; font-weight: 800">()</span>
-                                </h6>
+                                <hr>
+                                <p style="text-transform: capitalize; padding-top: 10px; font-weight: 600">
+                                    {{ $order->user[0]->fullname }}
+                                </p>
+                                @if ($order->user[0]->email)
+                                    <p><i class="bi bi-envelope pr-2"></i> {{ $order->user[0]->email }}</p>
+                                @endif
+                                @if ($order->user[0]->phone_no)
+                                    <p><i class="bi bi-telephone pr-2"></i> {{ $order->user[0]->phone_no }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -48,19 +54,7 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
                                             data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                            aria-controls="profile-tab-pane" aria-selected="false">Product Picture </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
-                                            data-bs-target="#contact-tab-pane" type="button" role="tab"
-                                            aria-controls="contact-tab-pane" aria-selected="false">Product
-                                            Specification</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="service-tab" data-bs-toggle="tab"
-                                            data-bs-target="#service-tab-pane" type="button" role="tab"
-                                            aria-controls="service-tab-pane" aria-selected="false">Product
-                                            Service</button>
+                                            aria-controls="profile-tab-pane" aria-selected="false">Product</button>
                                     </li>
                                 </ul>
                                 <div class="tab-content" id="myTabContent">
@@ -70,36 +64,44 @@
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
-                                                        <th>Product Name</th>
+                                                        <th>Order Code</th>
                                                         <td>
-                                                            <p style="text-transform: capitalize">
+                                                            <p style="text-transform: capitalize p-0">
+                                                                {{ $order->order_no }}
                                                             </p>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th>Product Price</th>
+                                                        <th>Total Price</th>
                                                         <td>
-                                                            <p style="text-transform: capitalize">
+                                                            <p style="text-transform: capitalize; color: green">
+                                                                {{ $order->total_price }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th>SKU</th>
+                                                        <th>Payment</th>
                                                         <td>
                                                             <p style="text-transform: capitalize">
+                                                                {{ $order->payment_method }}
                                                             </p>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th>Stock</th>
+                                                        <th>Status</th>
                                                         <td>
-                                                            <p style="text-transform: capitalize">
-                                                            </p>
+                                                            @if ($order->status == 'pending')
+                                                                <span
+                                                                    class="badge rounded-pill text-bg-primary">{{ $order->status }}</span>
+                                                            @elseif ($order->status == 'compelte')
+                                                                <span
+                                                                    class="badge rounded-pill text-bg-success">{{ $order->status }}</span>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <hr>
+                                            {{-- <hr>
                                             <div class="py-2 row">
                                                 <div class="col-md-6">
                                                     <h5>Brand: </h5>
@@ -118,59 +120,46 @@
                                             </div>
                                             <div>
 
+                                            </div> --}}
+                                        </div>
+
+                                        <h5>Address</h5>
+
+                                        <div style="border: 1px solid grey">
+                                            <h4 class="p-2">{{ $order->address[0]->full_name }}</h4>
+                                            <hr>
+                                            <div class="p-2">
+                                                <p><strong>Region:</strong> {{ $order->address[0]->region }}</p>
+                                                <p><strong>City:</strong> {{ $order->address[0]->city }}</p>
+                                                <p><strong>Township:</strong> {{ $order->address[0]->township }}</p>
+                                                <p><strong>Street:</strong> {{ $order->address[0]->street_address }}</p>
+                                                <p><strong>Phone No:</strong> {{ $order->address[0]->phone }}</p>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                         aria-labelledby="profile-tab" tabindex="0">
-                                        <div class="py-4 row">
-                                            {{-- @foreach ($products[0]->product_pictures as $data)
-                                                <div class="col-md-12 pb-2">
-                                                    <img src="{{ $data->image }}" alt="" width="100%"
-                                                        height="500px">
+                                        @foreach ($order->cart[0]->cart_item as $data)
+                                            @foreach ($data->product as $prod)
+                                                <div class="py-4 my-2 row" style="border: 1px solid grey;">
+                                                    <div class="col-md-4">
+                                                        <img src="{{ $prod->cover_img }}" alt="" width="100%"
+                                                            height="200px">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h3>{{ $prod->name }}</h3>
+                                                        <span
+                                                            class="badge rounded-pill text-bg-primary">{{ $prod->brand[0]->name }}</span>
+                                                        <span
+                                                            class="badge rounded-pill text-bg-success">{{ $prod->category[0]->name }}</span>
+                                                        <p class="pt-4" style="font-weight: 500">{{ $prod->price }} MMK
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            @endforeach --}}
-                                        </div>
+                                            @endforeach
+                                        @endforeach
 
-                                    </div>
-                                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
-                                        aria-labelledby="contact-tab" tabindex="0">
-                                        <div class="py-4">
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    {{-- @foreach ($products[0]->product_specs as $spec)
-                                                        <tr>
-                                                            <th>{{ $spec->spec_key }}</th>
-                                                            <td>
-                                                                <p style="text-transform: capitalize">
-                                                                    {{ $spec->spec_value }}
-                                                                </p>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach --}}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="service-tab-pane" role="tabpanel"
-                                        aria-labelledby="service-tab" tabindex="0">
-                                        <div class="py-4">
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    {{-- @foreach ($products[0]->product_warranties as $spec)
-                                                        <tr>
-                                                            <th>{{ $spec->service_key }}</th>
-                                                            <td>
-                                                                <p style="text-transform: capitalize">
-                                                                    {{ $spec->service_value }}
-                                                                </p>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach --}}
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
