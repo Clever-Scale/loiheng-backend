@@ -73,6 +73,9 @@ class OrderController extends Controller
                         </div>';
                     })
                     ->filter(function ($instance) use ($request) {
+                        if ($request->get('status')){
+                            $instance->where('status', $request->get('status'));
+                        }
                         if($request->has('from_date')){
                             $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
                             $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
@@ -101,5 +104,7 @@ class OrderController extends Controller
        Order::find($id)->update([
         'status' => $request->status,
        ]);
+
+       return back()->with('status-change', "Order status has been changed successful!");
     }
 }

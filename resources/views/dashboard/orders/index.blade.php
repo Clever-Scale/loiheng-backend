@@ -20,7 +20,18 @@
                     <div class="card-body">
                         <div class="card-title">Order Filter</div>
                         <div class="row">
-
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="status" style="font-weight: 700">Order Status:</label>
+                                    <select id="status" class="form-select" aria-label="Default select example">
+                                        <option value="0">Select Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="confirm">Confirm</option>
+                                        <option value="ontheway">On The Way</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="category" style="font-weight: 700">Date Range Picker:</label>
@@ -78,7 +89,8 @@
                 ajax: {
                     url: "{{ route('getorderlist') }}",
                     data: function(d) {
-                        d.from_date = $('#from_date').val(),
+                        d.status = $('#status').val(),
+                            d.from_date = $('#from_date').val(),
                             d.to_date = $('#to_date').val(),
                             d.search = $('input[type="search"]').val()
                     }
@@ -123,6 +135,9 @@
                 ]
             });
             $('#daterange').change(function() {
+                table.draw();
+            });
+            $('#status').change(function() {
                 table.draw();
             });
             $('#orderDataTable').on('click', 'button.delete', function(e) {
