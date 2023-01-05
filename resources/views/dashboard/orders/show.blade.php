@@ -11,9 +11,51 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
-        <a href="{{ route('orders') }}" class="d-flex align-items-center btn btn-primary">
-            <i class="bi bi-arrow-left-circle px-2"></i> Back
-        </a>
+        <div class="d-flex">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Change Status
+            </button>
+            &nbsp;
+            <a href="{{ route('orders') }}" class="d-flex align-items-center btn btn-primary">
+                <i class="bi bi-arrow-left-circle px-2"></i> Back
+            </a>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Change Status</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('orders.status', ['id' => $order->id]) }}" method="POST" novalidate
+                        enctype="multipart/form-data" class="needs-validation">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <select class="form-select" aria-label="Default select example" name="status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="confirm">Confirm</option>
+                                            <option value="ontheway">On The Way</option>
+                                            <option value="complete">Complete</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submmit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <section class="section">
@@ -93,7 +135,13 @@
                                                             @if ($order->status == 'pending')
                                                                 <span
                                                                     class="badge rounded-pill text-bg-primary">{{ $order->status }}</span>
-                                                            @elseif ($order->status == 'compelte')
+                                                            @elseif ($order->status == 'confirm')
+                                                                <span
+                                                                    class="badge rounded-pill text-bg-warning">{{ $order->status }}</span>
+                                                            @elseif ($order->status == 'ontheway')
+                                                                <span
+                                                                    class="badge rounded-pill text-bg-info">{{ $order->status }}</span>
+                                                            @elseif ($order->status == 'complete')
                                                                 <span
                                                                     class="badge rounded-pill text-bg-success">{{ $order->status }}</span>
                                                             @endif
@@ -123,7 +171,7 @@
                                             </div> --}}
                                         </div>
 
-                                        <h5>Address</h5>
+                                        <h5>Order Address</h5>
 
                                         <div style="border: 1px solid grey">
                                             <h4 class="p-2">{{ $order->address[0]->full_name }}</h4>
@@ -153,7 +201,8 @@
                                                             class="badge rounded-pill text-bg-primary">{{ $prod->brand[0]->name }}</span>
                                                         <span
                                                             class="badge rounded-pill text-bg-success">{{ $prod->category[0]->name }}</span>
-                                                        <p class="pt-4" style="font-weight: 500">{{ $prod->price }} MMK
+                                                        <p class="pt-4" style="font-weight: 500">{{ $prod->price }}
+                                                            MMK
                                                         </p>
                                                     </div>
                                                 </div>
