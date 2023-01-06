@@ -61,7 +61,7 @@
                                             style="color: red">*</span> :</label>
                                     <input type="text" name="price"
                                         class="@error('price') is-invalid @enderror form-control py-1"
-                                        value="{{ $products[0]->price }}">
+                                        value="{{ $products[0]->original_price }}">
                                     @error('price')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -254,7 +254,7 @@
                     <div class="card">
                         <div class="card-body ">
                             <div class="d-flex justify-content-between mb-3 align-items-center">
-                                <h5 class="card-title">Create Product</h5>
+                                <h5 class="card-title">Create Product Image</h5>
                                 <div class="py-2">
                                     <a id="btnAddImage" class="btn btn-success">Add
                                         Image</a>
@@ -271,42 +271,55 @@
                                     Action
                                 </div>
                             </div>
-                            @php
+                            {{-- @php
                                 $ppicid = 0;
                                 $ppic = 0;
                                 $ppicd = 0;
                                 $edi = 0;
                                 $edo = 0;
                                 $edk = 0;
-                            @endphp
+                            @endphp --}}
                             @foreach ($products[0]->product_pictures as $pic)
-                                <input type="hidden" name="img_product_id[{{ $ppicid++ }}]"
-                                    value="{{ $pic->id }}">
+                                {{-- <input type="hidden" name="img_product_id[{{ $ppicid++ }}]"
+                                    value="{{ $pic->id }}"> --}}
                                 <div class="row py-2 border-t" style="border-top: 1px solid grey">
                                     <div class="col-md-4">
-                                        <label for="picture{{ $edk++ }}">
-                                            <img id="blah{{ $edi++ }}" src="{{ asset($pic->image) }}"
+                                        <label for="picture">
+                                            <img id="blah" src="{{ asset($pic->image) }}"
                                                 class="rounded shadow-sm p-1"
                                                 style="transition: 0.4s; height: 100px; width: 100px" />
                                         </label>
-                                        <input accept="image/*" name="edit_image[{{ $ppic++ }}]" type='file'
-                                            id="picture{{ $edo++ }}" class="mx-2" hidden />
+                                        {{-- <input accept="image/*" name="edit_image[{{ $ppic++ }}]" type='file'
+                                            id="picture{{ $edo++ }}" class="mx-2" hidden /> --}}
                                     </div>
                                     <div class="col-md-4">
                                         <div class="d-flex align-items-center" style="height: 100%">
-                                            <input type="number" name="edit_display_order[{{ $ppicd++ }}]"
+                                            {{-- <input type="number" name="edit_display_order[{{ $ppicd++ }}]"
                                                 class="@error('display_order') is-invalid @enderror form-control py-1"
                                                 value="{{ $pic->display_order }}">
                                             @error('name')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
+                                            <p>{{ $pic->display_order }}</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-
-                                    </div>
+                                    {{-- <div class="col-md-4">
+                                        <div class="d-flex align-items-center" style="height: 100%"
+                                            id="comment{{ $pic->id }}">
+                                            <input type="hidden" value="{{ $pic->id }}" name="pictureId"
+                                                id="pictureId">
+                                            <button type="button"
+                                                class="btn btn-danger tt{{ $pic->id }}">Remove</button>
+                                            <script>
+                                                $(`#comment${$pic->id}`).on('click', `button.tt${$pic->id}`, function(e) {
+                                                    e.preventDefault();
+                                                    alert("Hi");
+                                                });
+                                            </script>
+                                        </div>
+                                    </div> --}}
                                 </div>
                             @endforeach
                             <div id="addImage"></div>
@@ -505,5 +518,22 @@
 
         });
     </script>
+
+    {{-- <script>
+        $('#comment').on('submit', function(e) {
+            e.preventDefault();
+            var pictureId = $('#pictureId').val();
+            $.ajax({
+                type: "POST",
+                url: "{{ route('product.image.delete') }}",
+                data: {
+                    pictureId: pictureId,
+                }
+                success: function(msg) {
+                    alert(msg);
+                }
+            });
+        });
+    </script> --}}
 
 @endsection
