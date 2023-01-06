@@ -78,6 +78,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
     Route::post('/product/promotion', [ProductController::class, 'promotion'])->name('promotion');
+    Route::post('/product/product_image', [ProductController::class, 'productImageDelete'])->name('product.image.delete');
     // Product end //
 
     // Promotion start //

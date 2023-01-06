@@ -471,4 +471,10 @@ class ProductController extends Controller
             return redirect()->route('product')->with('create-promotion', 'Product promotion created successfully!');
         }
     }
+
+    public function productImageDelete(Request $request)
+    {
+        dd($request->all());
+        ProductPicture::find($request->pictureId)->delete();
+    }
 }
