@@ -228,18 +228,18 @@
                                 </div>
                             </div>
                             <div class="row py-2" style="border-bottom: 1px solid grey">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     Picture
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-6">
                                     Display Order
-                                </div>
-                                <div class="col-md-4">
+                                </div> --}}
+                                <div class="col-md-6">
                                     Action
                                 </div>
                             </div>
                             <div class="row py-2">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label for="picture">
                                         <img id="blah" src="{{ asset('assets/img/images.jpg') }}"
                                             class="rounded shadow-sm p-1"
@@ -248,7 +248,7 @@
                                     <input accept="image/*" name="image[]" type='file' id="picture" class="mx-2"
                                         hidden />
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="d-flex align-items-center" style="height: 100%">
                                         <input type="number" name="display_order[]"
                                             class="@error('display_order') is-invalid @enderror form-control py-1">
@@ -261,7 +261,7 @@
                                 </div>
                                 <div class="col-md-4">
 
-                                </div>
+                                </div> --}}
                             </div>
                             <div id="addImage"></div>
 
@@ -396,19 +396,14 @@
                 k = k + 1;
                 var newDivImage = $(
                     `<div class="row py-2" id="img${k}" style="border-top: 1px solid grey">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="imgInp${k}">
                                 <img id="blah${k}" src="{{ asset('assets/img/images.jpg') }}" class="rounded shadow-sm p-1" style="transition: 0.4s; height: 100px; width: 100px" />
                             </label>
                             <input accept="image/*" name="image[]" type='file' id="imgInp${k}" class="mx-2" hidden />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="d-flex align-items-center" style="height: 100%">
-                                <input type="number" name="display_order[]" class="@error('display_order') is-invalid @enderror form-control py-1">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center justify-content-center" style="height: 100%">
                                 <button id="removeImage${k}" class="btn btn-danger py-1 shadow-sm px-2">Remove</button>
                             </div>
                         </div>
