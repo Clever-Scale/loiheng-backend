@@ -20,7 +20,7 @@ class OrderController extends Controller
     public function getOrderList(Request $request)
     {
         if ($request->ajax()) {
-            $data = Order::select('*');
+            $data = Order::select('*')->orderBy('created_at', 'desc');
             return DataTables::of($data)
                     ->editColumn('user_id', function ($user) {
                         return User::findOrFail( $user->user_id)->fullname;

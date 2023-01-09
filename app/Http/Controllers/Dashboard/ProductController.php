@@ -472,9 +472,13 @@ class ProductController extends Controller
         }
     }
 
-    public function productImageDelete(Request $request)
+    public function productImageDelete($id)
     {
-        dd($request->all());
-        ProductPicture::find($request->pictureId)->delete();
+
+        ProductPicture::find($id)->delete();
+
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
     }
 }

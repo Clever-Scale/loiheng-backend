@@ -305,21 +305,14 @@
                                             <p>{{ $pic->display_order }}</p>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-4">
-                                        <div class="d-flex align-items-center" style="height: 100%"
-                                            id="comment{{ $pic->id }}">
-                                            <input type="hidden" value="{{ $pic->id }}" name="pictureId"
-                                                id="pictureId">
-                                            <button type="button"
-                                                class="btn btn-danger tt{{ $pic->id }}">Remove</button>
-                                            <script>
-                                                $(`#comment${$pic->id}`).on('click', `button.tt${$pic->id}`, function(e) {
-                                                    e.preventDefault();
-                                                    alert("Hi");
-                                                });
-                                            </script>
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center" style="height: 100%">
+                                            {{-- <input type="hidden" value="{{ $pic->id }}" name="pictureId"
+                                                id="pictureId"> --}}
+                                            <button type="button" class="btn btn-danger deleteRecord"
+                                                data-id="{{ $pic->id }}">Remove</button>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             @endforeach
                             <div id="addImage"></div>
@@ -366,7 +359,7 @@
     </script>
     <script>
         var sites = {!! json_encode($products[0]->product_pictures) !!};
-        console.log(sites);
+        // console.log(sites);
         for (let ed = 0; ed <= sites.length; ed++) {
             function readURL(input) {
                 if (input.files && input.files[0]) {
@@ -519,21 +512,36 @@
         });
     </script>
 
-    {{-- <script>
-        $('#comment').on('submit', function(e) {
-            e.preventDefault();
-            var pictureId = $('#pictureId').val();
+    <script>
+        $(".deleteRecord").click(function() {
+            var id = $(this).data("id");
+            var token = $("meta[name='csrf-token']").attr("content");
+
             $.ajax({
-                type: "POST",
-                url: "{{ route('product.image.delete') }}",
+                url: "/product/product_image/" + id,
+                type: 'DELETE',
                 data: {
-                    pictureId: pictureId,
-                }
-                success: function(msg) {
-                    alert(msg);
+                    "id": id,
+                    "_token": token,
+                },
+                success: function(data) {
+                    if ($.isEmptyObject(data.error)) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Image removed successfully!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        location.reload();
+                    } else {
+                        printErrorMsg(data.error);
+                    }
                 }
             });
+
         });
-    </script> --}}
+    </script>
+
 
 @endsection
