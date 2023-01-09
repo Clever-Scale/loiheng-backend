@@ -254,7 +254,7 @@ class ProductController extends Controller
                         ProductPicture::create([
                             'product_id' => $product->id,
                             'image' => $path,
-                            'display_order' => $request->display_order[$k],
+                            // 'display_order' => $request->display_order[$k],
                         ]);
                 }
             }
@@ -432,7 +432,7 @@ class ProductController extends Controller
                         ProductPicture::create([
                             'product_id' => $id,
                             'image' => $path,
-                            'display_order' => $request->display_order[$t],
+                            // 'display_order' => $request->display_order[$t],
                         ]);
                 }
             }
