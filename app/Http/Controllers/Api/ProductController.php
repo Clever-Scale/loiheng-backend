@@ -38,10 +38,13 @@ class ProductController extends BaseController
             if(isset($request->is_feature_product)){
                 $products = $products->where('is_feature_product', $request->is_feature_product);
             }
-            if(isset($request->highest_price)){
+            if(isset($request->is_new_arrival)){
+                $products = $products->where('is_new_arrival', $request->is_new_arrival);
+            }
+            if($request->highest_price == 1){
                 $products = $products->orderBy('price', 'DESC');
             }
-            if(isset($request->lowest_price)){
+            if($request->lowest_price == 1){
                 $products = $products->orderBy('price', 'ASC');
             }
             // return $products->get();
