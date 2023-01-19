@@ -9,8 +9,12 @@ use App\Models\Address;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
+use App\Mail\OrderMail;
+use App\Models\Product;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends BaseController
 {
@@ -31,18 +35,24 @@ class OrderController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $cart_id = $request->cart_id;
+            $cart_data = CartResource::collection(Cart::where('is_active', 1)->where('user_id', $user->id)->get());
+            $cart_data = $cart_data->first();
+            $cart_data = json_decode(json_encode($cart_data));
+            $cart_id = $cart_data->id;
             if($request->product_id){
                 $cart = Cart::create([
                     "user_id" => $user->id
                 ]);
                 $cart_id = $cart->id;
 
-                $cart_item = CartItem::create([
+                $cart_data = CartItem::create([
                     'product_id' => $request->product_id,
                     'cart_id' => $cart_id,
                     'qty' => $request->qty,
                 ]);
+                $cart_data = CartResource::collection(Cart::where('id', $cart->id)->where('user_id', $user->id)->get());
+                $cart_data = $cart_data->first();
+                $cart_data = json_decode(json_encode($cart_data));
             }
             $address_id = "";
             if($request->address_id == 0){
@@ -73,9 +83,9 @@ class OrderController extends BaseController
             }
             $order_no = 'LHO' . $order_code;
             if(isset($request->coupon_price)){
-                $total_price = $request->subtotal - $request->coupon_price;
+                $total_price = $cart_data->subtotal - $request->coupon_price;
             }else{
-                $total_price = $request->subtotal;
+                $total_price = $cart_data->subtotal;
             }
             $order = Order::create([
                 'user_id' => $user->id,
@@ -89,10 +99,25 @@ class OrderController extends BaseController
                 'order_no' => $order_no,
             ]);
 
+            $orderdetail = OrderResource::collection(Order::where('id', $order->id)->get());
+            $orderdetail = $orderdetail->first();
+
+        //    return $order;
+
             if($order){
-                $cart = Cart::where('user_id', $user->id)->where('id', $order->cart_id)->update([
+                $cart = Cart::where('user_id', $user->id)->where('id', $order->cart->id)->update([
                     'is_active' => false
                 ]);
+
+                $cartItem = CartItem::where('cart_id', $cart_data->id)->get();
+                foreach($cartItem as $cat){
+                    $stock = Product::where('id', $cat->product_id)->value('stock');
+                    Product::where('id', $cat->product_id)->update([
+                        'stock' => $stock - $cat->qty
+                    ]);
+                }
+                Mail::to($user->email)->send(new OrderMail($orderdetail));
+
             }
             return $this->sendResponse($order,"Order successfully!.");
         }catch(Exception $e){
