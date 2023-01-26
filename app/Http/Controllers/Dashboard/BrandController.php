@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Promotion;
 use Illuminate\Support\Facades\Session;
 
 class BrandController extends Controller
@@ -20,7 +22,7 @@ class BrandController extends Controller
         if (session('brand-update')) {
             toast(Session::get('brand-update'), "success");
         }
-        $brands = Brand::orderBy('id', 'desc')->get();
+        $brands = Brand::where('is_active', 1)->orderBy('id', 'desc')->get();
         return view('dashboard.brands.index', compact('brands'));
     }
 
@@ -87,7 +89,21 @@ class BrandController extends Controller
 
     public function delete($id)
     {
-        Brand::find($id)->delete();
+        // Brand::find($id)->delete();
+        Brand::findorFail($id)->update([
+            'is_active' => 0
+        ]);
+
+        Product::where('brand_id', $id)->update([
+            'is_active' => 0,
+        ]);
+
+        $product = Product::where('brand_id', $id)->get();
+        foreach($product as $prod){
+            Promotion::where('product_id', $prod->id)->update([
+                'is_active' => false
+            ]);
+        }
         return redirect()->route('brand')->with('brand-delete', 'Brand has been deleted successfully!');
     }
 }

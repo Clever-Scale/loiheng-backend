@@ -79,7 +79,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         {{-- <th scope="col">Cover</th> --}}
-                                        <th scope="col">Product Code</th>
+                                        <th scope="col">SKU</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Stock</th>
                                         <th scope="col">Price</th>
@@ -194,8 +194,8 @@
                     //     name: 'cover_img'
                     // },
                     {
-                        data: 'product_code',
-                        name: 'product_code'
+                        data: 'sku',
+                        name: 'sku'
                     },
                     {
                         data: 'name',
