@@ -18,14 +18,14 @@ class PromotionController extends Controller
         if (session('create-promotion')) {
             toast(Session::get('create-promotion'), "success");
         }
-        $promotion = Promotion::get();
+        $promotion = Promotion::where('is_active', 1)->get();
         return view('dashboard.promotion.index', compact('promotion'));
     }
 
     public function list(Request $request)
     {
         if ($request->ajax()) {
-            $data = Promotion::select('*');
+            $data = Promotion::where('is_active', 1)->select('*');
             return DataTables::of($data)
                     ->editColumn('user_id', function ($u) {
                         return User::findOrFail($u->user_id)->fullname;

@@ -81,7 +81,7 @@ class OrderController extends BaseController
                 $num = $order_code + 1;
                 $order_code =sprintf('%04d',$num);
             }
-            $order_no = 'LHO' . $order_code;
+            $order_no = 'LH-' . $order_code;
             if(isset($request->coupon_price)){
                 $total_price = $cart_data->subtotal - $request->coupon_price;
             }else{

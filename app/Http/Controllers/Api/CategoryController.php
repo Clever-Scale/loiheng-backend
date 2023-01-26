@@ -14,7 +14,7 @@ class CategoryController extends BaseController
     {
         try{
             $limit = $request->limit;
-            $category = new CategoryCollection(Category::where('parent', '=', 0)->paginate($limit));
+            $category = new CategoryCollection(Category::where('is_active', 1)->where('parent', '=', 0)->paginate($limit));
             return $this->sendResponse($category,"Category data getting successfully!");
 
         }catch(Exception $e){

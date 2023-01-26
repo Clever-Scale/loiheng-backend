@@ -20,13 +20,13 @@ class CategoryController extends Controller
         if (session('category-update')) {
             toast(Session::get('category-update'), "success");
         }
-        $categories = Category::orderBy('id', 'desc')->get();
+        $categories = Category::where('is_active', 1)->orderBy('id', 'desc')->get();
         return view('dashboard.categories.index', compact('categories'));
     }
 
     public function create()
     {
-        $categories = Category::where('parent', 0)->get();
+        $categories = Category::where('is_active', 1)->where('parent', 0)->get();
         return view('dashboard.categories.create', compact('categories'));
     }
 
@@ -57,8 +57,8 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        $categories = Category::where('parent', 0)->get();
+        $category = Category::where('is_active', 1)->findOrFail($id);
+        $categories = Category::where('is_active', 1)->where('parent', 0)->get();
         return view('dashboard.categories.edit', compact('category', 'categories'));
     }
 

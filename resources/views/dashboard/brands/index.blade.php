@@ -61,7 +61,6 @@
                                                     <form action="{{ route('brand.delete', ['id' => $brand->id]) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="_method" value="DELETE">
                                                         <button type="submit" class="delete-btn mx-2  delete">
                                                             <i class="bi bi-trash"></i>
                                                             <span style="padding-left: 4px">Delete</span>

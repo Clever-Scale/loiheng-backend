@@ -55,7 +55,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/brand/save', [BrandController::class, 'save'])->name('brand.save');
     Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
     Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
-    Route::delete('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
+    Route::post('/brand/{id}/delete', [BrandController::class, 'delete'])->name('brand.delete');
     // Brand end //
 
     // Brand start //
