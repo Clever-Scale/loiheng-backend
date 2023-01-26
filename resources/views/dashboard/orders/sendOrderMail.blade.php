@@ -120,7 +120,6 @@
 
             <p>လူကြီးမင်း၏အော်ဒါ {{ $data->order_no }} ကို မကြာမီအချိန်တွင်းလက်ခံရရှိမည်ဖြစ်ပြီး လာပို့မည်ဆိုပါက
                 ကြိုတင်အကြောင်းကြားပေးပါမည်။
-                ရောင်းချသူများစွာမှ အော်ဒါမှာယူထားပါက လူကြီးမင်းထံသို့ပစ္စည်းများခွဲရောက်ပါလိမ့်မည်။
                 သင်​၏အော်ဒါအသေးစိတ်အချက်အလက်ကို အောက်တွင်စစ်ဆေးနိုင်ပါသည်။</p>
             <p>အော်ဒါတင်ပြီးပါက လူကြီးမင်းထည့်သွင်းထားသောလိပ်စာအား ပြောင်းလဲ၍မရနိုင်ပါ။</p>
             <p>Please note, we are unable to change your delivery address once your order is placed.​</p>
@@ -149,18 +148,18 @@
                     @if ($data->discount_price)
                         <tr>
                             <td>Discount </td>
-                            <td>KS{{ $data->discount_price }}</td>
+                            <td>KS {{ number_format($data->discount_price) }}</td>
                         </tr>
                     @endif
                     @if ($data->coupon_price)
                         <tr>
                             <td>Discount </td>
-                            <td>KS{{ $data->coupon_price }}</td>
+                            <td>KS {{ number_format($data->coupon_price) }}</td>
                         </tr>
                     @endif
                     <tr>
                         <td>Total Price </td>
-                        <td>KS{{ $data->total_price }}</td>
+                        <td>KS {{ number_format($data->total_price) }}</td>
                     </tr>
                 </tbody>
             </table>

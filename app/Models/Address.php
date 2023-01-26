@@ -25,4 +25,13 @@ class Address extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+     // this is a recommended way to declare event handlers
+     public static function boot() {
+        parent::boot();
+
+        static::deleting(function($user) { // before delete() method call this
+             $user->delete();
+             // do the rest of the cleanup...
+        });
+    }
 }

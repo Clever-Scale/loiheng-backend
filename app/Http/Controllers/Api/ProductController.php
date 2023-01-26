@@ -51,7 +51,7 @@ class ProductController extends BaseController
             if($request->start_price_range && $request->end_price_range){
                 $products = $products->whereBetween('price', [$request->start_price_range, $request->end_price_range]);
             }
-            $products = new ProductCollection($products->paginate($limit));
+            $products = new ProductCollection($products->where('is_active', 1)->paginate($limit));
             return $this->sendResponse($products,"All products data getting successfully!");
 
         }catch(Exception $e){
@@ -62,7 +62,7 @@ class ProductController extends BaseController
     {
         try{
             $limit = $request->limit;
-            $new_arrivals = new ProductCollection(Product::where('is_new_arrival', 1)->paginate($limit));
+            $new_arrivals = new ProductCollection(Product::where('is_active', 1)->where('is_new_arrival', 1)->paginate($limit));
             return $this->sendResponse($new_arrivals,"New arrival products data getting successfully!");
 
         }catch(Exception $e){
@@ -74,7 +74,7 @@ class ProductController extends BaseController
     {
         try{
             $limit = $request->limit;
-            $featured_products = new ProductCollection(Product::where('is_feature_product', 1)->paginate($limit));
+            $featured_products = new ProductCollection(Product::where('is_active', 1)->where('is_feature_product', 1)->paginate($limit));
             return $this->sendResponse($featured_products,"Featured products data getting successfully!");
 
         }catch(Exception $e){

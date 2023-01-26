@@ -38,9 +38,9 @@ class ProductController extends Controller
         if (session('name')) {
             toast(Session::get('name'), "success");
         }
-        $categories = Category::get();
-        $brands = Brand::get();
-        $products = ProductResource::collection(Product::orderBy('id', 'desc')->get());
+        $categories = Category::where('is_active',1)->get();
+        $brands = Brand::where('is_active', 1)->get();
+        $products = ProductResource::collection(Product::where('is_active', 1)->orderBy('id', 'desc')->get());
         $products = json_decode(json_encode($products));
         // dd($products);
         return view('dashboard.products.index', compact('products', 'categories', 'brands'));
@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function getProductList(Request $request)
     {
         if ($request->ajax()) {
-            $data = Product::select('*');
+            $data = Product::where('is_active', 1)->select('*');
             return DataTables::of($data)
                     ->escapeColumns(['description'])
                     ->editColumn('category_id', function ($cat) {
@@ -148,8 +148,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Category::get();
-        $brands = Brand::get();
+        $categories = Category::where('is_active', 1)->get();
+        $brands = Brand::where('is_active', 1)->get();
         return view('dashboard.products.create', compact('categories', 'brands'));
     }
 
@@ -265,16 +265,16 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $products =  ProductResource::collection(Product::where('id', $id)->get());
+        $products =  ProductResource::collection(Product::where('id', $id)->where('is_acitve', 1)->get());
         $products = json_decode(json_encode($products));
         return view('dashboard.products.show', compact('products'));
     }
 
     public function edit($id)
     {
-        $categories = Category::get();
-        $brands = Brand::get();
-        $products =  ProductResource::collection(Product::where('id', $id)->get());
+        $categories = Category::where('is_active', 1)->get();
+        $brands = Brand::where('is_acitve',1)->get();
+        $products =  ProductResource::collection(Product::where('id', $id)->where('is_active', 1)->get());
         $products = json_decode(json_encode($products));
         // dd($products);
         return view('dashboard.products.edit', compact('categories', 'brands', 'products'));
