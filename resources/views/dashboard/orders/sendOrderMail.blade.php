@@ -123,7 +123,7 @@
                 သင်​၏အော်ဒါအသေးစိတ်အချက်အလက်ကို အောက်တွင်စစ်ဆေးနိုင်ပါသည်။</p>
             <p>အော်ဒါတင်ပြီးပါက လူကြီးမင်းထည့်သွင်းထားသောလိပ်စာအား ပြောင်းလဲ၍မရနိုင်ပါ။</p>
             <p>Please note, we are unable to change your delivery address once your order is placed.​</p>
-            <table class="order-table table-striped" style="width:50%;border-collapse: collapse;margin-top: 20px;">
+            <table class="order-table table-striped" style="width:100%;border-collapse: collapse;margin-top: 20px;">
                 <tbody class="bb">
                     <tr>
                         <td>Order Number</td>
