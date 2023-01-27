@@ -35,10 +35,6 @@ class OrderController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
-            $cart_data = CartResource::collection(Cart::where('is_active', 1)->where('user_id', $user->id)->get());
-            $cart_data = $cart_data->first();
-            $cart_data = json_decode(json_encode($cart_data));
-            $cart_id = $cart_data->id;
             if($request->product_id){
                 $cart = Cart::create([
                     "user_id" => $user->id
@@ -53,6 +49,11 @@ class OrderController extends BaseController
                 $cart_data = CartResource::collection(Cart::where('id', $cart->id)->where('user_id', $user->id)->get());
                 $cart_data = $cart_data->first();
                 $cart_data = json_decode(json_encode($cart_data));
+            }else{
+                $cart_data = CartResource::collection(Cart::where('is_active', 1)->where('user_id', $user->id)->get());
+                $cart_data = $cart_data->first();
+                $cart_data = json_decode(json_encode($cart_data));
+                $cart_id = $cart_data->id;
             }
             $address_id = "";
             if($request->address_id == 0){
