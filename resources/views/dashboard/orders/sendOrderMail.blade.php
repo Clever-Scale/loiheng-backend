@@ -131,7 +131,7 @@
                     </tr>
                     <tr>
                         <td>Order Date</td>
-                        <td>{{ $data->created_at }}</td>
+                        <td>{{ \Carbon\Carbon::create($data->created_at)->toFormattedDateString() }}</td>
                     </tr>
                     <tr>
                         <td>Transaction Type</td>

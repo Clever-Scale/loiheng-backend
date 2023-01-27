@@ -37,6 +37,11 @@ class PromotionController extends Controller
                             <p style="overflow: hidden; width: 150px; white-space: nowrap; text-overflow: ellipsis" >'.$pname.'</p>
                         </a>';
                     })
+                    ->addColumn('stock', function ($p) {
+                        $pname = Product::findOrFail($p->product_id)->stock;
+                        return '
+                        <p>'.$pname.'</p>';
+                    })
                     ->addColumn('product_img', function ($row) {
                         $pro_img = Product::findOrFail($row->product_id)->cover_img;
                         $url = asset($pro_img ? $pro_img : "assets/img/pp.jpg");
@@ -45,7 +50,7 @@ class PromotionController extends Controller
                     })
                     ->addColumn('price', function ($row) {
                         $price = Product::findOrFail($row->product_id)->price;
-                        return '<p>'.$price.'</p>';
+                        return '<p>'.number_format($price).'</p>';
                     })
                     ->addColumn('promo_price', function ($row) {
                         $price = Product::findOrFail($row->product_id)->price;
@@ -88,7 +93,7 @@ class PromotionController extends Controller
                             </ul>
                         </div>';
                     })
-                    ->rawColumns(['created_at', 'action', 'product_img', 'promo_price', 'price', 'product_id'  ])
+                    ->rawColumns(['created_at', 'action', 'product_img', 'promo_price', 'stock', 'price', 'product_id'  ])
                     ->make(true);
         }
     }
