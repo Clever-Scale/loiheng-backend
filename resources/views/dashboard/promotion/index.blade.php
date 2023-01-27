@@ -33,6 +33,7 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Product Image</th>
                                         <th scope="col">Product</th>
+                                        <th scope="col">Stock</th>
                                         <th scope="col"> Price</th>
                                         <th scope="col">Percent</th>
                                         <th scope="col">Promo Price</th>
@@ -139,6 +140,10 @@
                     {
                         data: 'product_id',
                         name: 'product_id'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock'
                     },
                     {
                         data: 'price',

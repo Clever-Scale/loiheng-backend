@@ -26,7 +26,7 @@ class OrderMail extends Mailable
 
     public function build()
     {
-        return $this->subject('test')
+        return $this->subject('Loi Heng International Pte Ltd')
         ->view('dashboard.orders.sendOrderMail');
     }
 }
