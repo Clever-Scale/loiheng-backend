@@ -265,7 +265,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $products =  ProductResource::collection(Product::where('id', $id)->where('is_acitve', 1)->get());
+        $products =  ProductResource::collection(Product::where('id', $id)->where('is_active', 1)->get());
         $products = json_decode(json_encode($products));
         return view('dashboard.products.show', compact('products'));
     }
@@ -273,7 +273,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $categories = Category::where('is_active', 1)->get();
-        $brands = Brand::where('is_acitve',1)->get();
+        $brands = Brand::where('is_active',1)->get();
         $products =  ProductResource::collection(Product::where('id', $id)->where('is_active', 1)->get());
         $products = json_decode(json_encode($products));
         // dd($products);
