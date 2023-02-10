@@ -443,7 +443,10 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        Product::find($id)->delete();
+        Product::find($id)->update([
+            'is_active' => false
+        ]);
+
         return redirect()->route('product')->with('product-delete', 'Product has been deleted successfully!');
     }
 
