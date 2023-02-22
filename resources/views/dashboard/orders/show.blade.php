@@ -117,7 +117,7 @@
                                                         <th>Subtotal Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">
-                                                                {{ $order->cart[0]->subtotal }} MMK
+                                                                {{ number_format($order->cart[0]->subtotal) }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -125,7 +125,7 @@
                                                         <th>Delivery Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">
-                                                                {{ $order->delivery_fee }} MMK
+                                                                {{ number_format($order->delivery_fee) }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -133,7 +133,7 @@
                                                         <th>Total Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">
-                                                                {{ $order->total_price }} MMK
+                                                                {{ number_format($order->total_price) }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -212,13 +212,25 @@
                                                             height="200px">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <h3>{{ $prod->name }}</h3>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h3>{{ $prod->name }}</h3>
+                                                            <h6>Qty : <span
+                                                                    class="badge rounded-pill text-bg-danger">{{ $data->qty }}</span>
+                                                            </h6>
+                                                        </div>
                                                         <span
                                                             class="badge rounded-pill text-bg-primary">{{ $prod->brand[0]->name }}</span>
                                                         <span
                                                             class="badge rounded-pill text-bg-success">{{ $prod->category[0]->name }}</span>
-                                                        <p class="pt-4" style="font-weight: 500">{{ $prod->price }}
-                                                            MMK
+                                                        <p class="pt-4" style="font-weight: 500">Price:
+                                                            <span
+                                                                style="font-weight: 700">{{ number_format($prod->original_price) }}
+                                                                $</span>
+                                                        </p>
+                                                        <p class="pt-2" style="font-weight: 500">Exchange Price:
+                                                            <span
+                                                                style="font-weight: 700">{{ number_format($prod->price) }}
+                                                                MMK</span>
                                                         </p>
                                                     </div>
                                                 </div>

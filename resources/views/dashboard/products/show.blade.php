@@ -78,7 +78,16 @@
                                                     <tr>
                                                         <th>Product Price</th>
                                                         <td>
-                                                            <p style="text-transform: capitalize">{{ $products[0]->price }}
+                                                            <p style="text-transform: capitalize">
+                                                                $ {{ number_format($products[0]->original_price) }}
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Exchange Price</th>
+                                                        <td>
+                                                            <p style="text-transform: capitalize">
+                                                                {{ number_format($products[0]->price) }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>

@@ -52,10 +52,12 @@ class ProductController extends Controller
             return DataTables::of($data)
                     ->escapeColumns(['description'])
                     ->editColumn('category_id', function ($cat) {
-                        return Category::findOrFail( $cat->category_id)->name;
+                        $cate = Category::findOrFail( $cat->category_id)->name;
+                        return '<span class="badge text-bg-primary">'.$cate.'</span>';
                     })
                     ->editColumn('brand_id', function ($row) {
-                        return Brand::findOrFail( $row->brand_id)->name;
+                        $brand = Brand::findOrFail( $row->brand_id)->name;
+                        return '<span class="badge text-bg-info">'.$brand.'</span>';
                     })
                     ->addColumn('cover_img', function ($row) {
                         $url = asset($row->cover_img ? $row->cover_img : "assets/img/images.jpg");
@@ -80,7 +82,7 @@ class ProductController extends Controller
                         </div>';
                     })
                     ->addColumn('price', function ($row) {
-                        return '<p style="font-size: 18px; color: green; font-weight: 600;">' . $row->price . ' $</p>';
+                        return '<p style="font-size: 18px; color: green; font-weight: 600;">' . number_format($row->price) . ' $</p>';
                     })
                     ->addColumn('action', function ($row) {
                         return '

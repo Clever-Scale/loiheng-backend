@@ -54,7 +54,7 @@ class OrderController extends Controller
 
                     })
                     ->addColumn('total_price', function ($row) {
-                        return '<p style="font-size: 18px; color: green; font-weight: 600;">' . $row->total_price . ' $</p>';
+                        return '<p style="font-size: 18px; color: green; font-weight: 600;">' . number_format($row->total_price) . ' MMK</p>';
                     })
                     ->addColumn('action', function ($row) {
                         return '
