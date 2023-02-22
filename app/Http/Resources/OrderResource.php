@@ -18,10 +18,12 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
+        $cart = CartResource::collection(Cart::where('id', $this->cart_id)->get());
+        $cart = $cart->first();
         return [
             'id' => $this->id,
             'user' => User::where('id', $this->user_id)->first(),
-            'cart' => CartResource::collection(Cart::where('id', $this->cart_id)->first()),
+            'cart' => $cart,
             'address' => Address::where('id', $this->address_id)->first(),
             'delivery' => Delivery::where('id', $this->delivery_id)->first(),
             'payment_method' => $this->payment_method,
