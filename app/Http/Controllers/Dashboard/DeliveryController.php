@@ -81,14 +81,11 @@ class DeliveryController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'fee' => 'required',
-            'rage' => 'required',
         ]);
 
         Delivery::create([
                 'name' => $request->name,
                 'fee' => $request->fee,
-                'rage'=>$request->rage,
-                'description' => $request->description,
 
         ]);
         return redirect()->route('delivery')->with('delivery-created', "Delivery has been created successfully!");
@@ -108,14 +105,11 @@ class DeliveryController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'fee' => 'required',
-            'rage' => 'required',
         ]);
 
         Delivery::where('id', $id)->update([
                 'name' => $request->name,
                 'fee' => $request->fee,
-                'rage'=>$request->rage,
-                'description' => $request->description,
 
         ]);
         return redirect()->route('delivery')->with('delivery-edit', "Delivery has been updated successfully!");
@@ -123,7 +117,9 @@ class DeliveryController extends Controller
 
     public function delete($id)
     {
-        Delivery::find($id)->delete();
+        Delivery::find($id)->update([
+            'is_active' => false
+        ]);
         return redirect()->route('delivery')->with('delivery-delete', 'Delivery has been deleted successfully!');
     }
 }
