@@ -90,7 +90,7 @@ class OrderController extends BaseController
                 'coupon_code' => $request->coupon_code,
                 'coupon_price' => $request->coupon_price,
                 'total_price' => $total_price,
-                'delivery_fee' => $delivery_fee->fee,
+                'delivery_fee' => $delivery_fee->fee ? $delivery_fee->fee  : "",
                 'order_no' => $this->generateOrderCode(),
             ]);
 
