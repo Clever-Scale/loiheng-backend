@@ -209,7 +209,7 @@
                                         @foreach ($orders as $order)
                                             <tr>
                                                 <th scope="row">{{ $order->order_no }}</th>
-                                                <td>{{ $order->user[0]->fullname }}</td>
+                                                <td>{{ $order->user->fullname }}</td>
                                                 <td> {{ number_format($order->total_price) }} MMK</td>
                                                 <td><span class="badge bg-success">{{ $order->status }}</span></td>
                                             </tr>

@@ -65,17 +65,17 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center align-items-center">
                             <div>
-                                <img src="{{ asset($order->user[0]->profile_img ? $order->user[0]->profile_img : 'assets/img/pp.jpg') }}"
+                                <img src="{{ asset($order->user->profile_img ? $order->user->profile_img : 'assets/img/pp.jpg') }}"
                                     alt="" class="img-fluid">
                                 <hr>
                                 <p style="text-transform: capitalize; padding-top: 10px; font-weight: 600">
-                                    {{ $order->user[0]->fullname }}
+                                    {{ $order->user->fullname }}
                                 </p>
-                                @if ($order->user[0]->email)
-                                    <p><i class="bi bi-envelope pr-2"></i> {{ $order->user[0]->email }}</p>
+                                @if ($order->user->email)
+                                    <p><i class="bi bi-envelope pr-2"></i> {{ $order->user->email }}</p>
                                 @endif
-                                @if ($order->user[0]->phone_no)
-                                    <p><i class="bi bi-telephone pr-2"></i> {{ $order->user[0]->phone_no }}</p>
+                                @if ($order->user->phone_no)
+                                    <p><i class="bi bi-telephone pr-2"></i> {{ $order->user->phone_no }}</p>
                                 @endif
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                                         <th>Subtotal Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">
-                                                                {{ number_format($order->cart[0]->subtotal) }} MMK
+                                                                {{ number_format($order->cart->subtotal) }} MMK
                                                             </p>
                                                         </td>
                                                     </tr>
@@ -190,21 +190,21 @@
                                         <h5>Order Address</h5>
 
                                         <div style="border: 1px solid grey">
-                                            <h4 class="p-2">{{ $order->address[0]->full_name }}</h4>
+                                            <h4 class="p-2">{{ $order->address->full_name }}</h4>
                                             <hr>
                                             <div class="p-2">
-                                                <p><strong>Region:</strong> {{ $order->address[0]->region }}</p>
-                                                <p><strong>City:</strong> {{ $order->address[0]->city }}</p>
-                                                <p><strong>Township:</strong> {{ $order->address[0]->township }}</p>
-                                                <p><strong>Street:</strong> {{ $order->address[0]->street_address }}</p>
-                                                <p><strong>Phone No:</strong> {{ $order->address[0]->phone }}</p>
+                                                <p><strong>Region:</strong> {{ $order->address->region }}</p>
+                                                <p><strong>City:</strong> {{ $order->address->city }}</p>
+                                                <p><strong>Township:</strong> {{ $order->address->township }}</p>
+                                                <p><strong>Street:</strong> {{ $order->address->street_address }}</p>
+                                                <p><strong>Phone No:</strong> {{ $order->address->phone }}</p>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                                         aria-labelledby="profile-tab" tabindex="0">
-                                        @foreach ($order->cart[0]->cart_item as $data)
+                                        @foreach ($order->cart->cart_item as $data)
                                             @foreach ($data->product as $prod)
                                                 <div class="py-4 my-2 row" style="border: 1px solid grey;">
                                                     <div class="col-md-4">
