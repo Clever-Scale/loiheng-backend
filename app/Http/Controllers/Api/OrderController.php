@@ -69,7 +69,7 @@ class OrderController extends BaseController
                 $address_id = $request->address_id;
             }
 
-            $delivery_fee = DB::table('deliveries')->where($request->delivery_id)->first();
+            $delivery_fee = Delivery::where('id',$request->delivery_id)->first();
 
             if(isset($request->coupon_price)){
                 $total_price = $cart_data->subtotal - $request->coupon_price;
