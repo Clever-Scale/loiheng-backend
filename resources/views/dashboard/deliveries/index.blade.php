@@ -32,9 +32,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">NAME</th>
+                                        <th scope="col">Township</th>
                                         <th scope="col">FEE</th>
-                                        <th scope="col">RANGE</th>
                                         <th scope="col">CREATED AT</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
@@ -72,10 +71,6 @@
                     {
                         data: 'fee',
                         name: 'fee',
-                    },
-                    {
-                        data: 'rage',
-                        name: 'rage'
                     },
                     {
                         data: 'created_at',

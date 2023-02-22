@@ -114,6 +114,22 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
+                                                        <th>Subtotal Price</th>
+                                                        <td>
+                                                            <p style="text-transform: capitalize; color: green">
+                                                                {{ $order->cart[0]->subtotal }} MMK
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Delivery Price</th>
+                                                        <td>
+                                                            <p style="text-transform: capitalize; color: green">
+                                                                {{ $order->delivery_fee }} MMK
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
                                                         <th>Total Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">

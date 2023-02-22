@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CartCollection;
 use App\Http\Resources\CartResource;
 use App\Models\CartItem;
+use App\Models\Product;
+use App\Models\Promotion;
 
 class CartController extends BaseController
 {
@@ -37,6 +39,9 @@ class CartController extends BaseController
             }
             $old_cart_id = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->value('id');
             $old_qty = CartItem::where('cart_id', $cart->id)->where('product_id', $request->product_id)->value('qty');
+            $net_price = Product::where('id', $request->product_id)->first();
+            $now = date('Y-m-d');
+            $discount = Promotion::where('product_id', $request->product_id)->where('expired_date', '>=', $now)->first();
             if($old_cart_id){
                 if(is_null($request->qty)){
                     $old_qty =  $old_qty + 1;
@@ -46,7 +51,9 @@ class CartController extends BaseController
                 CartItem::where('id', $old_cart_id)->update([
                     'product_id' => $request->product_id,
                     'cart_id' => $cart->id,
-                    'qty' => $old_qty
+                    'qty' => $old_qty,
+                    'net_price' => $net_price->price,
+                    'discount' => $discount ? $discount->percent : "",
                 ]);
                 $cartData =  CartResource::collection(Cart::where('id', $cart->id)->get());
             }else{
@@ -58,7 +65,9 @@ class CartController extends BaseController
                 CartItem::create([
                     'product_id' => $request->product_id,
                     'cart_id' => $cart->id,
-                    'qty' => $qty
+                    'qty' => $qty,
+                    'net_price' => $net_price->price,
+                    'discount' => $discount ? $discount->percent : "",
                 ]);
                 $cartData =  CartResource::collection(Cart::where('id', $cart->id)->get());
 

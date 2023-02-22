@@ -13,7 +13,9 @@ class CartItem extends Model
         'cart_id',
         'product_id',
         'is_active',
-        'qty'
+        'qty',
+        'net_price',
+        'discount'
     ];
     public function product()
     {

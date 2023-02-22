@@ -39,7 +39,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="fee" style="font-weight: 700">Fee:</label>
                                     <input type="text" name="fee"
                                         class="@error('fee') is-invalid @enderror form-control py-1"
@@ -50,7 +50,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                {{-- <div class="col-md-6 mb-3">
                                     <label for="rage" style="font-weight: 700">Rage:</label>
                                     <input type="number" name="rage"
                                         class="@error('rage') is-invalid @enderror form-control py-1"
@@ -64,7 +64,7 @@
                                 <div class="col-md-12  mb-3">
                                     <label for="name" style="font-weight: 700">Full Description:</label>
                                     <textarea id="summernote" name="description"></textarea>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row my-3">
                                 <div class="d-flex justify-content-end">
