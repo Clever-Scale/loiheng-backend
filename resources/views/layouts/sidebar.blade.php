@@ -51,6 +51,13 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link  {{ request()->routeIs('coupon-code') ? '' : 'collapsed' }}"
+                href="{{ route('coupon-code') }}">
+                <i class="bi bi-cash-coin"></i>
+                <span>Coupon Code</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link  {{ request()->routeIs('banner-slider') || request()->routeIs('banner-slider.edit') ? '' : 'collapsed' }}"
                 href="{{ route('banner-slider') }}">
                 <i class="bi bi-card-image"></i>

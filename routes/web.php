@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\CompanyProfileController;
 use App\Http\Controllers\Dashboard\ContactController;
+use App\Http\Controllers\Dashboard\CouponCodeController;
 use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\DeliveryController;
 use App\Http\Controllers\Dashboard\HomeController;
@@ -134,6 +135,16 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/company-profile/{id}/edit', [CompanyProfileController::class, 'edit'])->name('company.edit');
     Route::put('/company-profile/{id}/update', [CompanyProfileController::class, 'update'])->name('company.update');
     // Contact end //
+
+    // Coupon Code start //
+    Route::get('/coupon-code', [CouponCodeController::class, 'index'])->name('coupon-code');
+    Route::get('/coupon-code/create', [CouponCodeController::class, 'create'])->name('coupon-code.create');
+    Route::post('/coupon-code/save', [CouponCodeController::class, 'save'])->name('coupon-code.save');
+    // Route::get('/coupon-code/edit/{id}', [CouponCodeController::class, 'edit'])->name('coupon-code.edit');
+    // Route::put('/coupon-code/update/{id}', [CouponCodeController::class, 'update'])->name('coupon-code.update');
+    Route::post('/coupon-code/delete/{id}', [CouponCodeController::class, 'delete'])->name('coupon-code.delete');
+    Route::get('/coupon-code/list', [CouponCodeController::class, 'list'])->name('coupon-code.list');
+    // Coupon Code end //
 
 
 });

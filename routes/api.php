@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\CouponCodeController;
 use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
@@ -73,6 +74,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('wishlist-create', [WishlistController::class, 'creteWishlist']);
         Route::delete('wishlist-remove/{id}', [WishlistController::class, 'removeWishlist']);
         // Wishlist end //
+
+        // Coupon code start //
+        Route::post('apply-coupon-code/{code}', [CouponCodeController::class, 'applyCouponCode']);
+        // Coupon code end //
     });
 
     // Brand start //

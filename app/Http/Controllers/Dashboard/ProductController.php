@@ -294,9 +294,9 @@ class ProductController extends Controller
         'brand_id' => 'required',
         'stock' => 'required'
         ],[
-            "cover_img.required" => "Pleace select cover image!",
-            "category_id.required" => "Pleace select category!",
-            "brand_id.required" => "Pleace select brand!",
+            "cover_img.required" => "Please select cover image!",
+            "category_id.required" => "Please select category!",
+            "brand_id.required" => "Please select brand!",
         ]);
 
         // Cover start
