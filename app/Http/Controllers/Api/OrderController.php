@@ -9,15 +9,17 @@ use App\Mail\OrderMail;
 use App\Models\Address;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Models\Delivery;
 use App\Models\Promotion;
+use App\Models\CouponCode;
 use Illuminate\Http\Request;
+use App\Models\CouponForCustomer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
-use App\Models\Delivery;
 
 class OrderController extends BaseController
 {
@@ -38,6 +40,13 @@ class OrderController extends BaseController
     {
         try{
             $user = auth('sanctum')->user();
+            // Re check coupon code start //
+            if(isset($request->coupon_code)){
+                $code = DB::table('coupon_codes')->where('code', $request->coupon_code)->first();
+                $this->checkCouponCode($code, $user->id);
+            }
+            // Re check coupon code start //
+
             if($request->product_id){
                 $cart = Cart::create([
                     "user_id" => $user->id
@@ -69,10 +78,16 @@ class OrderController extends BaseController
                 $address_id = $request->address_id;
             }
 
-            $delivery_fee = Delivery::where('id',$request->delivery_id)->first();
-
-            if(isset($request->coupon_price)){
-                $total_price = $cart_data->subtotal - $request->coupon_price;
+            $delivery_fee = DB::table('deliveries')->where('id',$request->delivery_id)->first();
+            $coupon_price = 0;
+            if(isset($request->coupon_code)){
+                $code = DB::table('coupon_codes')->where('code', $request->coupon_code)->first();
+                if($code->type == "percent"){
+                    $coupon_price =  $code->value / 100 * $cart_data->subtotal;
+                }else if($code->type == "amount"){
+                    $coupon_price = $code->value;
+                }
+                $total_price = $cart_data->subtotal - $coupon_price;
             }else{
                 $total_price = $cart_data->subtotal;
             }
@@ -81,6 +96,8 @@ class OrderController extends BaseController
                 $total_price = $total_price + $delivery_fee->fee;
             }
 
+
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'cart_id' => $cart_id,
@@ -88,7 +105,7 @@ class OrderController extends BaseController
                 'delivery_id' => $request->delivery_id,
                 'payment_method' => $request->payment_method,
                 'coupon_code' => $request->coupon_code,
-                'coupon_price' => $request->coupon_price,
+                'coupon_price' => $coupon_price ? $coupon_price : 0,
                 'total_price' => $total_price,
                 'delivery_fee' => $delivery_fee->fee ? $delivery_fee->fee  : "",
                 'order_no' => $this->generateOrderCode(),
@@ -113,6 +130,18 @@ class OrderController extends BaseController
                 }
                 Mail::to($user->email)->send(new OrderMail($orderdetail));
 
+            }
+
+            if($order && isset($request->coupon_code)){
+                $coup_code = DB::table('coupon_codes')->where('code', $request->coupon_code)->first();
+                CouponCode::where('id', $coup_code->id)->update([
+                    'count' => $coup_code->count - 1
+                ]);
+                if($coup_code->is_customer == true){
+                    CouponForCustomer::where('coupon_code_id', $coup_code->id)->where('customer_id', $user->id)->update([
+                        'is_active' => false
+                    ]);
+                }
             }
             return $this->sendResponse($order,"Order successfully!.");
         }catch(Exception $e){
@@ -152,6 +181,31 @@ class OrderController extends BaseController
         ]);
 
         return $address->id;
+    }
+
+    public function checkCouponCode($code, $userId)
+    {
+        if($code){
+            if($code->is_customer == true){
+                $customer_code = CouponForCustomer::where('coupon_code_id', $code->id)->where('customer_id', $userId)->first();
+                if(is_null($customer_code)){
+                    return $this->sendErrorMessageResponse("You can't use this coupon code!");
+                }else if($customer_code->is_active == false){
+                    return $this->sendErrorMessageResponse("You code is already used!");
+                }
+            }
+            if($code->is_active == false){
+                return $this->sendErrorMessageResponse('Your code is invalid!');
+            }
+            if($code->expired_date < date('Y-m-d')){
+                return $this->sendErrorMessageResponse('Your code is expired!');
+            }
+            if($code->count <= 0){
+                return $this->sendErrorMessageResponse('Your code reach at limit!');
+            }
+        }else{
+            return $this->sendErrorMessageResponse('Your code is invalid!');
+        }
     }
 
 }
