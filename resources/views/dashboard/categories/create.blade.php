@@ -1,5 +1,9 @@
 @extends('layouts.mainlayout')
 @section('title', 'Category Create')
+@section('links')
+    <script src="https://cdn.tiny.cloud/1/u0rhncdra3pyjqomyg64xbtqtzihjvo54gl02bmrl1i19t7m/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+@endsection
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
@@ -61,7 +65,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="name" style="font-weight: 700">Description:</label>
-                                    <textarea id="summernote" name="description"></textarea>
+                                    {{-- <textarea id="summernote" name="description"></textarea> --}}
+                                    <textarea name="description"></textarea>
                                 </div>
                             </div>
 
@@ -81,6 +86,13 @@
         </div>
     </section>
     <script>
+        tinymce.init({
+            selector: "textarea",
+            plugins: "anchor autolink charmap emoticons  link lists  searchreplace table visualblocks wordcount",
+            toolbar: "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link  table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
+        });
+    </script>
+    {{-- <script>
         $('#summernote').summernote({
             placeholder: 'Hello stand alone ui',
             tabsize: 2,
@@ -93,7 +105,7 @@
                 ['table', ['table']],
             ]
         });
-    </script>
+    </script> --}}
     <script>
         picture.onchange = evt => {
             const [file] = picture.files

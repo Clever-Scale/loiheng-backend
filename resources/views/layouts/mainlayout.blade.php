@@ -30,6 +30,7 @@
     <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    @yield('links')
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
@@ -56,7 +57,8 @@
         }
     </style>
 
-    @yield('links')
+
+
 </head>
 
 <body>
@@ -233,15 +235,17 @@
     <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Template Main JS File -->
-    <script src="{{ asset('assets/js/main.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
     @yield('script')
 </body>
 
