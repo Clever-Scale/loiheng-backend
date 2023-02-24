@@ -43,7 +43,7 @@
                                 </div> --}}
                                 <div class="col-md-12  mb-3">
                                     <label for="value" style="font-weight: 700">Value:</label>
-                                    <textarea id="summernote" name="value">{{ $setting->value }}</textarea>
+                                    <textarea class="tinymce-editor" name="value">{{ $setting->value }}</textarea>
                                 </div>
                             </div>
                             <div class="row my-3">
