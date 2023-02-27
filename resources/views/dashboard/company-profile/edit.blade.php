@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-md-12  mb-3">
                                     <label for="content" style="font-weight: 700">Content:</label>
-                                    <textarea id="summernote" name="content">{{ $company->content }}</textarea>
+                                    <textarea class="tinymce-editor" name="content">{{ $company->content }}</textarea>
                                 </div>
                             </div>
                             <div class="row my-3">

@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="name" style="font-weight: 700">Description:</label>
-                                    <textarea id="summernote" name="description">{{ $brand->description }}</textarea>
+                                    <textarea class="tinymce-editor" name="description">{{ $brand->description }}</textarea>
                                 </div>
                             </div>
                             <div class="row my-3">

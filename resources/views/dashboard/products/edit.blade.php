@@ -141,13 +141,13 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12 col-xl-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="name" style="font-weight: 700">Full Description:</label>
-                                    <textarea id="summernote" name="description">{{ $products[0]->description }}</textarea>
+                                    <textarea class="tinymce-editor" name="description">{{ $products[0]->description }}</textarea>
                                 </div>
-                                <div class="col-md-12 col-xl-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="name" style="font-weight: 700">Short Description:</label>
-                                    <textarea id="shortdescription" name="short_description">{{ $products[0]->short_description }}</textarea>
+                                    <textarea class="tinymce-editor" name="short_description">{{ $products[0]->short_description }}</textarea>
                                 </div>
                                 <hr>
                                 <div class="col-md-12">

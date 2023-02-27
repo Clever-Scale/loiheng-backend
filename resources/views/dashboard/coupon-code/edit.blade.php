@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="name" style="font-weight: 700">Note:</label>
-                                    <textarea id="summernote" name="note">{{ $coupon->note }}</textarea>
+                                    <textarea class="tinymce-editor" name="note">{{ $coupon->note }}</textarea>
                                 </div>
                             </div>
 

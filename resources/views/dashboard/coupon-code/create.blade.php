@@ -116,7 +116,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="name" style="font-weight: 700">Note:</label>
-                                    <textarea id="summernote" name="note"></textarea>
+                                    <textarea class="tinymce-editor" name="note"></textarea>
                                 </div>
                             </div>
 
