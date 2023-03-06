@@ -80,7 +80,7 @@ class OrderController extends BaseController
 
             $delivery_fee = DB::table('deliveries')->where('id',$request->delivery_id)->first();
             $coupon_price = 0;
-            if(isset($request->coupon_code)){
+            if(!is_null($request->coupon_code)){
                 $code = DB::table('coupon_codes')->where('code', $request->coupon_code)->first();
                 if($code->type == "percent"){
                     $coupon_price =  $code->value / 100 * $cart_data->subtotal;
