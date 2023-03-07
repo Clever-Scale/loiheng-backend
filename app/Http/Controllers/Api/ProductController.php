@@ -35,17 +35,25 @@ class ProductController extends BaseController
                     $query->whereIn('id', $brand_array);
                 });
             }
-            if(isset($request->is_feature_product)){
-                $products = $products->where('is_feature_product', 1);
-            }
-            if(isset($request->is_new_arrival)){
-                $products = $products->where('is_new_arrival', 1);
-            }
-            if($request->highest_price == 1){
-                $products = $products->orderBy('price', 'DESC');
-            }
-            if($request->lowest_price == 1){
-                $products = $products->orderBy('price', 'ASC');
+            if(isset($request->sort_by)){
+                switch ($request->sort_by) {
+                    case 'is_feature_product':
+                        $products = $products->where('is_feature_product', 1);
+                        break;
+                    case 'is_new_arrival':
+                        $products = $products->where('is_new_arrival', 1);
+                        break;
+                    case 'highest_price':
+                        $products = $products->orderBy('price', 'DESC');
+                        break;
+                    case 'lowest_price':
+                        $products = $products->orderBy('price', 'ASC');
+                        break;
+                    default:
+                        $products = $products;
+                        break;
+                }
+
             }
             // return $products->get();
             if($request->start_price_range && $request->end_price_range){
