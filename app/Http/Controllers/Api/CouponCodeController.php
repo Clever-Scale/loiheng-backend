@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\CouponUsedUser;
 use App\Models\CouponForCustomer;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CouponCodeResource;
+use App\Http\Resources\CustomerCouponResource;
 use Illuminate\Support\Facades\Auth;
 
 class CouponCodeController extends BaseController
@@ -42,5 +44,17 @@ class CouponCodeController extends BaseController
         }else{
             return $this->sendErrorMessageResponse('Your code is invalid!');
         }
+    }
+
+    public function getCouponCode(Request $request)
+    {
+        $auth_user = Auth::user();
+        $coupon = CouponCodeResource::collection(CouponCode::where('is_active', 1)->where('is_customer', 0)->where('count', '>' , 0)->get());
+        if(isset($request->is_customer)){
+            $coupon = CustomerCouponResource::collection(CouponForCustomer::where('customer_id', $auth_user->id)->get());
+        }
+        return $this->sendResponse($coupon, 'Coupon code getting successfully!');
+
+
     }
 }

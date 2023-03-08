@@ -77,6 +77,7 @@ Route::group(['namespace' => 'Api'], function() {
 
         // Coupon code start //
         Route::post('apply-coupon-code/{code}', [CouponCodeController::class, 'applyCouponCode']);
+        Route::get('coupon-codes', [CouponCodeController::class, 'getCouponCode']);
         // Coupon code end //
     });
 
