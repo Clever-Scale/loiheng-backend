@@ -40,8 +40,25 @@ class PromotionController extends BaseController
                         $query->whereIn('id', $brand_array);
                     });
                 }
-                if(isset($request->is_feature_product)){
-                    $products = $products->where('is_feature_product', $request->is_feature_product);
+                if(isset($request->sort_by)){
+                    switch ($request->sort_by) {
+                        case 'is_feature_product':
+                            $products = $products->where('is_feature_product', 1);
+                            break;
+                        case 'is_new_arrival':
+                            $products = $products->where('is_new_arrival', 1);
+                            break;
+                        case 'highest_price':
+                            $products = $products->orderBy('price', 'DESC');
+                            break;
+                        case 'lowest_price':
+                            $products = $products->orderBy('price', 'ASC');
+                            break;
+                        default:
+                            $products = $products;
+                            break;
+                    }
+
                 }
                 $products = new ProductCollection($products->where('is_active', 1)->where('stock', '>', "0")->paginate($limit));
                 return $this->sendResponse($products,"All promotion products data getting successfully!");
