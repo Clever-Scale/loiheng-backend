@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\CouponCode;
-use App\Models\CouponForCustomer;
 use Illuminate\Http\Request;
+use App\Models\CouponUsedUser;
+use App\Models\CouponForCustomer;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class CouponCodeController extends BaseController
 {
     public function applyCouponCode($code)
     {
+
         $code = CouponCode::where('code', $code)->first();
+        $auth_user = Auth::user();
         if($code){
+            $is_used = CouponUsedUser::where('coupon_id', $code->id)->where('user_id', $auth_user->id)->first();
+            if(isset($is_used)){
+                return $this->sendErrorMessageResponse('You already used this code!');
+            }
             if($code->is_customer == true){
-                $auth_user = Auth::user();
                 $customer_code = CouponForCustomer::where('coupon_code_id', $code->id)->where('customer_id', $auth_user->id)->first();
                 if(is_null($customer_code)){
                     return $this->sendErrorMessageResponse("You can't use this coupon code!");

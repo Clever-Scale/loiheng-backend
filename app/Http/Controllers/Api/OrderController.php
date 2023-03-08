@@ -20,6 +20,7 @@ use App\Http\Resources\CartResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
+use App\Models\CouponUsedUser;
 
 class OrderController extends BaseController
 {
@@ -43,7 +44,32 @@ class OrderController extends BaseController
             // Re check coupon code start //
             if(isset($request->coupon_code)){
                 $code = DB::table('coupon_codes')->where('code', $request->coupon_code)->first();
-                $this->checkCouponCode($code, $user->id);
+                // $this->checkCouponCode($code, $user->id);
+                if($code){
+                    $is_used = CouponUsedUser::where('coupon_id', $code->id)->where('user_id', $user->id)->first();
+                    if(isset($is_used)){
+                        return $this->sendErrorMessageResponse('You already used this code!');
+                    }
+                    if($code->is_customer == true){
+                        $customer_code = CouponForCustomer::where('coupon_code_id', $code->id)->where('customer_id', $user->id)->first();
+                        if(is_null($customer_code)){
+                            return $this->sendErrorMessageResponse("You can't use this coupon code!");
+                        }else if($customer_code->is_active == false){
+                            return $this->sendErrorMessageResponse("You code is already used!");
+                        }
+                    }
+                    if($code->is_active == false){
+                        return $this->sendErrorMessageResponse('Your code is invalid!');
+                    }
+                    if($code->expired_date < date('Y-m-d')){
+                        return $this->sendErrorMessageResponse('Your code is expired!');
+                    }
+                    if($code->count <= 0){
+                        return $this->sendErrorMessageResponse('Your code reach at limit!');
+                    }
+                }else{
+                    return $this->sendErrorMessageResponse('Your code is invalid!');
+                }
             }
             // Re check coupon code start //
 
@@ -142,6 +168,10 @@ class OrderController extends BaseController
                         'is_active' => false
                     ]);
                 }
+                CouponUsedUser::create([
+                    'coupon_id' => $coup_code->id,
+                    'user_id' => $user->id
+                ]);
             }
             return $this->sendResponse($order,"Order successfully!.");
         }catch(Exception $e){
@@ -181,31 +211,6 @@ class OrderController extends BaseController
         ]);
 
         return $address->id;
-    }
-
-    public function checkCouponCode($code, $userId)
-    {
-        if($code){
-            if($code->is_customer == true){
-                $customer_code = CouponForCustomer::where('coupon_code_id', $code->id)->where('customer_id', $userId)->first();
-                if(is_null($customer_code)){
-                    return $this->sendErrorMessageResponse("You can't use this coupon code!");
-                }else if($customer_code->is_active == false){
-                    return $this->sendErrorMessageResponse("You code is already used!");
-                }
-            }
-            if($code->is_active == false){
-                return $this->sendErrorMessageResponse('Your code is invalid!');
-            }
-            if($code->expired_date < date('Y-m-d')){
-                return $this->sendErrorMessageResponse('Your code is expired!');
-            }
-            if($code->count <= 0){
-                return $this->sendErrorMessageResponse('Your code reach at limit!');
-            }
-        }else{
-            return $this->sendErrorMessageResponse('Your code is invalid!');
-        }
     }
 
 }
