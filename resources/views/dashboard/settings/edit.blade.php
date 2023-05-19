@@ -41,10 +41,17 @@
                                         </span>
                                     @enderror
                                 </div> --}}
-                                <div class="col-md-12  mb-3">
-                                    <label for="value" style="font-weight: 700">Value:</label>
-                                    <textarea class="tinymce-editor" name="value">{{ $setting->value }}</textarea>
-                                </div>
+                                @if ($setting->key == 'exchange_rate')
+                                    <div class="col-md-12  mb-3">
+                                        <label for="value" style="font-weight: 700">Value:</label>
+                                        <textarea class="form-control" name="value">{{ $setting->value }}</textarea>
+                                    </div>
+                                @else
+                                    <div class="col-md-12  mb-3">
+                                        <label for="value" style="font-weight: 700">Value:</label>
+                                        <textarea class="tinymce-editor" name="value">{{ $setting->value }}</textarea>
+                                    </div>
+                                @endif
                             </div>
                             <div class="row my-3">
                                 <div class="d-flex justify-content-end">
