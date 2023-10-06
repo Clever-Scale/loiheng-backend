@@ -7,11 +7,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Coupon Code Page</h1>
+            <h1>Coupon Code</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item active">Coupon Code</li>
+                    <li class="breadcrumb-item active">List</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -26,7 +27,33 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Coupon Code List </h5>
+                        <h5 class="card-title">Coupon Code Table </h5>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="pr-2"> Show: </div>
+                                <div>
+                                    <select id="limit" class="form-select">
+                                        <option value="10" {{ request()->get('limit') == '10' ? 'selected' : '' }}>10
+                                            Rows
+                                        </option>
+                                        <option value="20" {{ request()->get('limit') == '20' ? 'selected' : '' }}>20
+                                            Rows
+                                        </option>
+                                        <option value="50" {{ request()->get('limit') == '50' ? 'selected' : '' }}>50
+                                            Rows
+                                        </option>
+                                        <option value="100" {{ request()->get('limit') == '100' ? 'selected' : '' }}>100
+                                            Rows
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="text" id="myInput" value="{{ request()->get('key') }}"
+                                    class="form-control" placeholder="Search.....">
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="couponDataTable">
                                 <thead>
@@ -37,17 +64,112 @@
                                         <th scope="col">TYPE</th>
                                         <th scope="col">EXPIRED DATE</th>
                                         <th scope="col">COUNT</th>
-                                        <th scope="col">CREATED BY</th>
-                                        <th scope="col">Active</th>
                                         <th scope="col">CREATED AT</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="table-group-divider">
+                                    @if (count($coupon_codes) <= 0)
+                                        <tr>
+                                            <th scope="row" colspan="8">
+                                                <div class="d-flex align-items-center justify-content-center"
+                                                    style="height: 100%; padding: 100px 0px">
+                                                    There is nothing</div>
+                                            </th>
+                                        </tr>
+                                    @else
+                                        @foreach ($coupon_codes as $key => $coupon_code)
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        {{ $key + 1 }}</div>
+                                                </th>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <h6 style="text-transform: capitalize">{{ $coupon_code->code }}</h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <h6 style="text-transform: capitalize">{{ $coupon_code->value }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <h6 style="text-transform: capitalize">{{ $coupon_code->type }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div>
+                                                            <i class="bi bi-calendar-date mx-2"></i>
+                                                        </div>
+                                                        <div class="px-2 ">
+                                                            {{ \Carbon\Carbon::create($coupon_code->expired_date)->toFormattedDateString() }}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <h6 style="text-transform: capitalize">{{ $coupon_code->count }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div>
+                                                            <i class="bi bi-calendar-date mx-2"></i>
+                                                        </div>
+                                                        <div class="px-2 ">
+                                                            {{ \Carbon\Carbon::create($coupon_code->created_at)->toFormattedDateString() }}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div class="dropdown">
+                                                            <button class="btn" type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                <i class="bi bi-three-dots-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu p-4">
+                                                                <li>
+                                                                    <div style="width: 100%">
 
-
+                                                                        <form
+                                                                            action="{{ route('coupon-code.delete', ['id' => $coupon_code->id]) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="delete-btn  delete"
+                                                                                style="width: 100%">
+                                                                                <i class="bi bi-trash"></i>
+                                                                                <span
+                                                                                    style="padding-left: 4px">Delete</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-between align-items-center py-2">
+                                <div>
+                                    <p>Showing: {{ count($coupon_codes) }}</p>
+                                </div>
+                                <div>
+
+                                    {{ $coupon_codes->appends(request()->except('page'))->links() }}
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -58,68 +180,32 @@
     </section>
 @endsection
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput").keypress(function(e) {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                if (e.which == 13) {
+                    location.replace(
+                        `/coupon-code?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}`
+                    );
+                }
+            });
+            $("#limit").on('change', function() {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                location.replace(
+                    `/coupon-code?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}`
+                );
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function() {
-            var table = $('#couponDataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('coupon-code.list') }}",
-                columns: [{
-                        data: 'id',
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: 'code',
-                        name: 'code'
-                    },
-                    {
-                        data: 'value',
-                        name: 'value'
-                    },
-                    {
-                        data: 'type',
-                        name: 'type'
-                    },
-                    {
-                        data: 'expired_date',
-                        name: 'expired_date'
-                    },
-
-                    {
-                        data: 'count',
-                        name: 'count'
-                    },
-                    {
-                        data: 'created_by',
-                        name: 'created_by'
-                    },
-                    {
-                        data: 'is_active',
-                        name: 'is_active'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                    },
-
-                ]
-            });
-            $('#daterange').change(function() {
-                table.draw();
-            });
             $('#couponDataTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
-
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You want to delete record",
@@ -133,34 +219,10 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $(e.target).closest('form').submit() // Post the surrounding form
-
                     }
                 })
-
             });
-
         });
     </script>
-
-    <script>
-        $('input[name="daterange"]').daterangepicker({
-            opens: 'left',
-            drops: 'buttom',
-        }, function(start, end, label) {
-            document.getElementById("from").innerHTML =
-                `<input name='from_date' id="from_date" type='date' value="${start.format('YYYY-MM-DD') }" hidden />`;
-            document.getElementById("to").innerHTML =
-                `<input name='to_date' id="to_date" type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
-            // console.log(start.format('YYYY-MM-DD'));
-        });
-    </script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
 
 @endsection

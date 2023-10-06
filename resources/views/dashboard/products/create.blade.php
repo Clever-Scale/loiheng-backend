@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Product Page</h1>
+            <h1>Products</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('product') }}">Product</a></li>
+                    <li class="breadcrumb-item active">New Product</li>
                 </ol>
             </nav>
         </div>
@@ -23,26 +24,37 @@
                     class="needs-validation">
                     @csrf
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="padding: 10px 30px">
                             <h5 class="card-title">Create Product</h5>
                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                             <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label for="cover_img" style="font-weight: 700">Cover Picture <span
-                                            style="color: red">*</span> :</label><br>
-                                    <label for="cover_img" class="@error('cover_img') is-invalid @enderror">
-                                        <img id="coverPic" src="{{ asset('assets/img/images.jpg') }}"
-                                            class="rounded shadow-sm p-1"
-                                            style="transition: 0.4s; height: 100px; width: 100px" />
-                                    </label>
-                                    <input accept="image/*" name="cover_img" type='file' id="cover_img" class="mx-2" />
-                                    @error('cover_img')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="col-md-4 mb-3">
+                                    <div class="col-md-12">
+                                        <label for="cover_img" style="font-weight: 700">Cover Picture <span
+                                                style="color: red">*</span> :</label><br>
+                                        <label for="cover_img" class="@error('cover_img') is-invalid @enderror"
+                                            style="border: 2px solid grey; width: 100%; padding: 4px; height: 300px; border-style: dotted; display: flex;justify-content: center; align-items: center; border-radius: 10px">
+                                            <div id="coverText" style="text-align: center">
+                                                <b>Select File</b>
+                                                <br>
+                                                <span style="font-size: 12px; color: grey">select file here or click <span
+                                                        style="color: blue; text-decoration: underline">browse</span>
+                                                    through
+                                                    your machine</span>
+                                            </div>
+                                            <img id="coverPic" class="rounded "
+                                                style="transition: 0.4s; height: 100%; width: 100%; display: none;" />
+                                        </label>
+                                        <input accept="image/*" name="cover_img" type='file' id="cover_img"
+                                            class="mx-2" hidden />
+                                        @error('cover_img')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
-
+                                <div class="col-md-8"></div>
                                 <div class="col-md-6 mb-3">
                                     <label for="name" style="font-weight: 700">Product Name <span
                                             style="color: red">*</span> :</label>
@@ -114,7 +126,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="stock" style="font-weight: 700">Stock <span style="color: red">*</span>
+                                    <label for="stock" style="font-weight: 700">Stock <span
+                                            style="color: red">*</span>
                                         :</label>
                                     <input type="number" name="stock"
                                         class="@error('stock') is-invalid @enderror form-control py-1"
@@ -221,7 +234,7 @@
                     <div class="card">
                         <div class="card-body ">
                             <div class="d-flex justify-content-between mb-3 align-items-center">
-                                <h5 class="card-title">Create Product</h5>
+                                <h5 class="card-title">Images</h5>
                                 <div class="py-2">
                                     <a id="btnAddImage" class="btn btn-success">Add
                                         Image</a>
@@ -316,6 +329,8 @@
             const [file] = cover_img.files
             if (file) {
                 coverPic.src = URL.createObjectURL(file)
+                document.querySelector("#coverPic").style.display = "block";
+                document.querySelector("#coverText").style.display = "none";
             }
         }
     </script>

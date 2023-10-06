@@ -3,58 +3,18 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Banner Slider Page</h1>
+            <h1>Banner Slider</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item active">Banner Slider</li>
+                    <li class="breadcrumb-item active">List</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
         <a href="{{ route('banner-slider.create') }}" class="d-flex align-items-center btn btn-primary">
             <i class="bi bi-plus-lg"></i>&nbsp;Add
         </a>
-        {{-- Model start --}}
-        {{-- <div class="modal  fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog ">
-                <form action="{{ route('banner-slider.save') }}" method="POST" novalidate enctype="multipart/form-data"
-                    class="needs-validation">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Banner Slider</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="created_by" value="{{ Auth::user()->id }}">
-                            @if (Session::has('err'))
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>Warning!</strong> {{ Session::get('err') }}
-                                    <button type="button" class="btn-close text-red-500 flex items-center"
-                                        data-bs-dismiss="alert" aria-label="Close"><i
-                                            class="fa-solid fa-xmark"></i></button>
-                                </div>
-                            @endif
-                            <div class="d-flex justify-content-center">
-                                <label for="image">
-                                    <img id="blah" src="{{ asset('assets/img/up.jpg') }}" class="rounded shadow-sm p-1"
-                                        style="transition: 0.4s; height: 400px; width: 100%" />
-                                </label>
-                                <input accept="image/*" name="image" type='file' id="image" class="mx-2"
-                                    hidden />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div> --}}
-        {{-- Model end --}}
     </div>
 
     <section class="section">
@@ -64,18 +24,122 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Banner Slider List </h5>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="pr-2"> Show: </div>
+                                <div>
+                                    <select id="limit" class="form-select">
+                                        <option value="10" {{ request()->get('limit') == '10' ? 'selected' : '' }}>10
+                                            Rows
+                                        </option>
+                                        <option value="20" {{ request()->get('limit') == '20' ? 'selected' : '' }}>20
+                                            Rows
+                                        </option>
+                                        <option value="50" {{ request()->get('limit') == '50' ? 'selected' : '' }}>50
+                                            Rows
+                                        </option>
+                                        <option value="100" {{ request()->get('limit') == '100' ? 'selected' : '' }}>100
+                                            Rows
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover " id="bannerSliderDataTable">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Picture</th>
-                                        <th scope="col">Created By</th>
+                                        <th scope="col">LOGO</th>
                                         <th scope="col">CREATED AT</th>
                                         <th scope="col">ACTION</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @if (count($banners) <= 0)
+                                        <tr>
+                                            <th scope="row" colspan="4">
+                                                <div class="d-flex align-items-center justify-content-center"
+                                                    style="height: 100%; padding: 100px 0px">
+                                                    There is nothing</div>
+                                            </th>
+                                        </tr>
+                                    @else
+                                        @foreach ($banners as $key => $banner)
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        {{ $key + 1 }}</div>
+                                                </th>
+                                                <td><img src="{{ $banner->image ? $banner->image : asset('assets/img/images.jpg') }}"
+                                                        style="object-fit: cover; width: 50px; height: 50px; border-radius: 50%"
+                                                        alt="">
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div>
+                                                            <i class="bi bi-calendar-date mx-2"></i>
+                                                        </div>
+                                                        <div class="px-2 ">
+                                                            {{ \Carbon\Carbon::create($banner->created_at)->toFormattedDateString() }}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div class="dropdown">
+                                                            <button class="btn" type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                <i class="bi bi-three-dots-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu p-4">
+                                                                <li>
+                                                                    <div class="edit-btn mb-2" style="width: 100%">
+                                                                        <a href="{{ route('banner-slider.edit', ['id' => $banner->id]) }}"
+                                                                            class="px-2">
+                                                                            <i class="bi bi-pencil-square"></i>
+                                                                            <span style="padding-left: 4px">Edit</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div style="width: 100%">
+
+                                                                        <form
+                                                                            action="{{ route('banner-slider.delete', ['id' => $banner->id]) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="delete-btn  delete"
+                                                                                style="width: 100%">
+                                                                                <i class="bi bi-trash"></i>
+                                                                                <span
+                                                                                    style="padding-left: 4px">Delete</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                    @endif
+
+                                </tbody>
                             </table>
+                            <div class="d-flex justify-content-between align-items-center py-2">
+                                <div>
+                                    <p><b>Showing:</b> {{ count($banners) }} </p>
+                                </div>
+                                <div>
+
+                                    {{ $banners->appends(request()->except('page'))->links() }}
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -87,61 +151,20 @@
 @endsection
 @section('script')
     <script>
-        image.onchange = evt => {
-            const [file] = image.files
-            if (file) {
-                blah.src = URL.createObjectURL(file)
-            }
-        }
-    </script>
-    <script>
-        // var user = {{ Session::get('err') }};
-        if ({{ Session::has('err') }}) {
-            $(document).ready(function() {
-                $('#exampleModal').modal('show');
+        $(document).ready(function() {
+            $("#limit").on('change', function() {
+                var limit = $('#limit').val();
+                location.replace(
+                    `/banner-slider?${limit ? 'limit='+limit : ''}`
+                );
             });
-        }
-        // console.log("This is javascript session" + user);
+        });
     </script>
     <script type="text/javascript">
         $(function() {
-            var table = $('#bannerSliderDataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('getbannerlist') }}"
-                },
-                columns: [{
-                        data: 'id',
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: 'image',
-                        name: 'image'
-                    },
-                    {
-                        data: 'created_by',
-                        name: 'created_by'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                    },
-
-                ]
-            });
             $('#bannerSliderDataTable').on('click', 'button.delete', function(e) {
                 // console.log(e);
                 e.preventDefault();
-
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You want to delete record",
@@ -155,13 +178,9 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $(e.target).closest('form').submit() // Post the surrounding form
-
                     }
                 })
-
             });
-
         });
     </script>
-
 @endsection

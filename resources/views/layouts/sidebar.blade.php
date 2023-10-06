@@ -8,15 +8,21 @@
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('orders') ? '' : 'collapsed' }}" href="{{ route('orders') }}">
+                <i class="bi bi-cart3"></i>
+                <span>Orders</span>
+            </a>
+        </li>
 
         <li class="nav-heading">Pages</li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapsed' }}"
+            <a class="nav-link {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('coupon-code') || request()->routeIs('coupon-code.create') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapsed' }}"
                 data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Catalog</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-menu-button-wide"></i><span>Catalogs</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav"
-                class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapse' }} "
+                class="nav-content {{ request()->routeIs('category') || request()->routeIs('category.create') || request()->routeIs('category.edit') || request()->routeIs('coupon-code') || request()->routeIs('coupon-code.create') || request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') || request()->routeIs('product') || request()->routeIs('product.edit') || request()->routeIs('product.show') || request()->routeIs('product.create') ? '' : 'collapse' }} "
                 data-bs-parent="#sidebar-nav">
 
                 <li>
@@ -34,34 +40,18 @@
                         <i class="bi bi-tags" style="font-size: 20px"></i><span>Products</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('coupon-code') }}">
+                        <i class="bi bi-cash-coin" style="font-size: 20px"></i><span>Coupon Code</span>
+                    </a>
+                </li>
             </ul>
-        </li>
-
-        {{-- <li class="nav-item">
-            <a class="nav-link {{ Request::is('category') ? '' : 'collapsed' }}" href="/">
-                <i class="bi bi-person"></i>
-                <span>Customers</span>
-            </a>
-        </li> --}}
-        <li class="nav-item">
-            <a class="nav-link  {{ request()->routeIs('promo.index') ? '' : 'collapsed' }}"
-                href="{{ route('promo.index') }}">
-                <i class="bi bi-percent"></i>
-                <span>Promotions</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link  {{ request()->routeIs('coupon-code') ? '' : 'collapsed' }}"
-                href="{{ route('coupon-code') }}">
-                <i class="bi bi-cash-coin"></i>
-                <span>Coupon Code</span>
-            </a>
         </li>
         <li class="nav-item">
             <a class="nav-link  {{ request()->routeIs('banner-slider') || request()->routeIs('banner-slider.edit') ? '' : 'collapsed' }}"
                 href="{{ route('banner-slider') }}">
                 <i class="bi bi-card-image"></i>
-                <span>Banner Sliders</span>
+                <span>Banners</span>
             </a>
         </li>
         <li class="nav-item">
@@ -87,28 +77,10 @@
                 <span>Deliveries</span>
             </a>
         </li>
-        {{-- <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
-                <i class="bi bi-card-heading"></i>
-                <span>Posts</span>
-            </a>
-        </li> --}}
-        {{-- <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('brand') || request()->routeIs('brand.edit') || request()->routeIs('brand.create') ? '' : 'collapsed' }}"
-                href="{{ route('brand') }}">
-                <i class="bi bi-flower3"></i>
-                <span>Brands</span>
-            </a>
-        </li> --}}
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('orders') ? '' : 'collapsed' }}" href="{{ route('orders') }}">
-                <i class="bi bi-cart3"></i>
-                <span>Orders</span>
-            </a>
-        </li>
+
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('company') ? '' : 'collapsed' }}" href="{{ route('company') }}">
-                <i class="bi bi-cart3"></i>
+                <i class="bi bi-person"></i>
                 <span>Company Profile</span>
             </a>
         </li>

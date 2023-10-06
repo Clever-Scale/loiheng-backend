@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Category Page</h1>
+            <h1>Categories</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('category') }}">Category</a></li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +22,7 @@
             <div class="col-lg-12">
 
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 10px 30px">
                         <h5 class="card-title">Edit Category</h5>
 
                         <form action="{{ route('category.update', ['id' => $category->id]) }}" method="POST" novalidate
@@ -31,7 +32,7 @@
                             <input type="hidden" name="created_by" value="{{ $category->created_by }}">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label for="name" style="font-weight: 700">Category Picture:</label>
+                                    <label for="name" style="font-weight: 700">Category Picture:</label><br>
                                     <label for="picture">
                                         <img id="blah"
                                             src="{{ asset($category->picture ? $category->picture : 'assets/img/images.jpg') }}"
@@ -40,7 +41,7 @@
                                     </label>
                                     <input accept="image/*" name="picture" type='file' id="picture" class="mx-2" />
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="name" style="font-weight: 700">Name:</label>
                                     <input type="name" name="name"
                                         class="@error('name') is-invalid @enderror form-control py-1" required
@@ -51,7 +52,17 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="flexCheckDefault"
+                                            {{ $category->parent ? '' : 'checked' }}>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Is Parent Category
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3 myClass"
+                                    style="display: {{ $category->parent ? 'block' : 'none' }}">
                                     <label for="name" style="font-weight: 700">Parent Category:</label>
                                     <select class="form-select" aria-label="Default select example" name="parent">
                                         <option value="0" name="parent">Select Category</option>
@@ -104,6 +115,17 @@
                 blah.src = URL.createObjectURL(file)
             }
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#flexCheckDefault").click(function(event) {
+                console.log($(this).is(":checked"));
+                if ($(this).is(":checked"))
+                    $(".myClass").hide();
+                else
+                    $(".myClass").show();
+            });
+        });
     </script>
 
 @endsection

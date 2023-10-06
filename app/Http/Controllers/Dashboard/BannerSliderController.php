@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BannerSliderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('banner-create')) {
             toast(Session::get('banner-create'), "success");
@@ -20,7 +20,9 @@ class BannerSliderController extends Controller
         if (session('banner-delete')) {
             toast(Session::get('banner-delete'), "success");
         }
-        return view('dashboard.banner-slider.index');
+
+        $banners = BannerSlider::orderBy('created_at', 'desc')->paginate($request->limit ?? "10");
+        return view('dashboard.banner-slider.index', compact('banners'));
     }
 
     public function getBannerSliderList(Request $request)

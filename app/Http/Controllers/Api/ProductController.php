@@ -20,8 +20,12 @@ class ProductController extends BaseController
 
             $limit = $request->limit;
             $products = Product::query();
-            if (isset($request->search)) {
-                $products = $products->where('name', 'like', '%' . $request->search . '%');
+            if(!is_null($request->search)){
+                $products = $products->where(function ($query) use  ($request) {
+                    $query->orWhere('name', 'LIKE', "%$request->search%");
+                    $query->orWhere('sku', 'LIKE', "%$request->search%");
+                    $query->orWhere('product_code', 'LIKE', "%$request->search%");
+                });
             }
             if(isset($request->category_id)){
                 $products = $products->whereHas('category', function ($query)  {

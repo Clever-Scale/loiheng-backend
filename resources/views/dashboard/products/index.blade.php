@@ -7,11 +7,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Product Page</h1>
+            <h1>Products</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item active">Product</li>
+                    <li class="breadcrumb-item active">List</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -22,74 +23,275 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">Product Filter</div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="category" style="font-weight: 700">Category:</label>
-                                    <select id="category_id" class="form-select" aria-label="Default select example">
-                                        <option value="0">Select Category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="category" style="font-weight: 700">Brand:</label>
-                                    <select id="brand_id" class="form-select" aria-label="Default select example">
-                                        <option value="0">Select Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="category" style="font-weight: 700">Date Range Picker:</label>
-                                    <div
-                                        style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%">
-                                        <input type="text" class="form-control" name="daterange" id="daterange" />
-                                        <div id="from"></div>
-                                        <div id="to"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-12">
 
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Product List </h5>
-                        <div class="table-responsive">
+                    <div class="card-body" style="padding: 10px 30px">
+                        <h5 class="card-title">Product Table</h5>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="pr-2">
+                                        <h5>Filters : </h5>
+                                    </div>
+                                    <div>
+                                        <select id="limit" class="form-select">
+                                            <option value="10" {{ request()->get('limit') == '10' ? 'selected' : '' }}>
+                                                10
+                                                Rows
+                                            </option>
+                                            <option value="20" {{ request()->get('limit') == '20' ? 'selected' : '' }}>
+                                                20
+                                                Rows
+                                            </option>
+                                            <option value="50" {{ request()->get('limit') == '50' ? 'selected' : '' }}>
+                                                50
+                                                Rows
+                                            </option>
+                                            <option value="100" {{ request()->get('limit') == '100' ? 'selected' : '' }}>
+                                                100
+                                                Rows
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center px-2">
+                                    <div>
+                                        <select id="brand_id" class="form-select">
+                                            <option value="">Select Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}"
+                                                    {{ request()->get('brand_id') == $brand->id ? 'selected' : '' }}>
+                                                    {{ $brand->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center px-2">
+                                    <div>
+                                        <select id="category_id" class="form-select">
+                                            <option value="">Select Category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"
+                                                    {{ request()->get('category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%"
+                                    class="px-2">
+                                    <input type="text" class="form-control" name="daterange" id="daterange" />
+                                    <div id="from"></div>
+                                    <div id="to"></div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-danger" id="clear_filter">Clear Filter</button>
+                                </div>
+
+                            </div>
+                            <div>
+                                <input type="text" id="myInput" value="{{ request()->get('key') }}"
+                                    class="form-control" placeholder="Search.....">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="table-responsive ">
                             <table class="table table-striped table-hover" id="productDataTable"
                                 style="width: 100%; height: 100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        {{-- <th scope="col">Cover</th> --}}
+                                        <th scope="col">INFO</th>
                                         <th scope="col">SKU</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Stock</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Brand</th>
-                                        <th scope="col">Created By</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">DISCOUNT</th>
+                                        <th scope="col">PRICE</th>
+                                        <th scope="col">CREATED BY</th>
+                                        <th scope="col">ACTION</th>
                                     </tr>
                                 </thead>
+                                <tbody class="table-group-divider">
+                                    @if (count($products) <= 0)
+                                        <tr>
+                                            <th scope="row" colspan="7">
+                                                <div class="d-flex align-items-center justify-content-center"
+                                                    style="height: 100%; padding: 100px 0px">
+                                                    There is nothing</div>
+                                            </th>
+                                        </tr>
+                                    @else
+                                        @foreach ($products as $key => $product)
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        {{ $key + 1 }}</div>
+                                                </th>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="px-2">
+                                                            <img src="{{ $product->cover_img ? $product->cover_img : asset('assets/img/images.jpg') }}"
+                                                                alt=""
+                                                                style="object-fit: cover; width: 70px; height: 70px; border-radius: 50%">
+                                                        </div>
+                                                        <div>
+                                                            <h5 style="text-transform: capitalize">{{ $product->name }}
+                                                            </h5>
+                                                            <span
+                                                                class="badge rounded-pill text-bg-primary">{{ $product->stock }}
+                                                                Left</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <h6 style="text-transform: capitalize">
+                                                            {{ $product->sku }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        @php
+                                                            $now = today()->format('Y-m-d');
+                                                            $isExpired = true;
+                                                            $promo_price = 0;
+                                                            if ($product->discount) {
+                                                                if ($now > $product->discount->expired_date) {
+                                                                    $isExpired = true;
+                                                                } else {
+                                                                    $isExpired = false;
+                                                                }
+                                                                // Promo Price
+                                                                $promo_price = ($product->discount->percent / 100) * $product->price;
+                                                                $promo_price = $product->price - $promo_price;
+                                                            }
+                                                        @endphp
+                                                        @if ($product->discount)
+                                                            <div style="display: flex; flex-direction: column">
+                                                                <h6 style="text-transform: capitalize">
+                                                                    {{ $product->discount->percent . '%' }}
+                                                                    @if ($isExpired)
+                                                                        <span
+                                                                            class="badge rounded-pill text-bg-danger">Expired</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge rounded-pill text-bg-success">Active</span>
+                                                                    @endif
+                                                                </h6>
+                                                                <span
+                                                                    style="font-size: 12px">{{ 'Expired In: ' . $product->discount->expired_date }}</span>
+
+                                                            </div>
+                                                        @else
+                                                            <h6 style="text-transform: capitalize">
+                                                                0%
+                                                            </h6>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        @if ($product->discount)
+                                                            <div>
+                                                                <div>
+
+                                                                    <del style="text-transform: capitalize">
+                                                                        {{ number_format($product->price) }} MMK
+                                                                    </del>
+                                                                </div>
+                                                                <h6 style="text-transform: capitalize">
+                                                                    {{ number_format($promo_price) }} MMK
+                                                                </h6>
+
+                                                            </div>
+                                                        @else
+                                                            <h6 style="text-transform: capitalize">
+                                                                {{ number_format($product->price) }} MMK</h6>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div>
+                                                            <i class="bi bi-calendar-date "></i>
+                                                        </div>
+                                                        <div class="px-2">
+                                                            <span>{{ \Carbon\Carbon::create($product->created_at)->toFormattedDateString() }}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                        <div class="dropdown">
+                                                            <button class="btn" type="button"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bi bi-three-dots-vertical"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu p-4">
+                                                                <li>
+                                                                    <div class="edit-btn mb-2" style="width: 100%">
+                                                                        <a href="{{ route('product.edit', ['id' => $product->id]) }}"
+                                                                            class="px-2">
+                                                                            <i class="bi bi-pencil-square"></i>
+                                                                            <span style="padding-left: 4px">Edit</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="button"
+                                                                        class="btn btn-warning btn-sm mb-2"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#exampleModal{{ $product->id }}"
+                                                                        style="width:100%">
+                                                                        <i class="bi bi-percent"></i>
+                                                                        Discount
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <a class="btn btn-secondary btn-sm mb-2"
+                                                                        style="width: 100%"
+                                                                        href="{{ route('product.show', ['id' => $product->id]) }}">
+                                                                        <i class="bi bi-eye"></i>
+                                                                        <span style="padding-left: 4px">Show</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <div style="width: 100%">
+
+                                                                        <form
+                                                                            action="{{ route('product.delete', ['id' => $product->id]) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="delete-btn  delete"
+                                                                                style="width: 100%">
+                                                                                <i class="bi bi-trash"></i>
+                                                                                <span
+                                                                                    style="padding-left: 4px">Delete</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
                             </table>
+                            <div class="d-flex justify-content-between align-items-center py-2">
+                                <div>
+                                    <p>Showing: {{ count($products) }}</p>
+                                </div>
+                                <div>
+
+                                    {{ $products->appends(request()->except('page'))->links() }}
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -106,14 +308,15 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('promotion') }}" method="POST" novalidate enctype="multipart/form-data"
-                                class="needs-validation">
+                            <form action="{{ route('promotion') }}" method="POST" novalidate
+                                enctype="multipart/form-data" class="needs-validation">
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-group pb-1">
                                         <label for="name">Name:*</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            name="name" required>
+                                            name="name"
+                                            value="{{ $product->discount ? $product->discount->name : '' }}" required>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -123,7 +326,9 @@
                                     <div class="form-group pb-1">
                                         <label for="name">Percent Amount:*</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            name="percent" required>
+                                            name="percent"
+                                            value="{{ $product->discount ? $product->discount->percent : '' }}" required
+                                            maxlength="3">
                                         @error('percent')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -133,7 +338,9 @@
                                     <div class="form-group pb-1">
                                         <label for="name">Expired Date:*</label>
                                         <input type="date" class="form-control @error('name') is-invalid @enderror"
-                                            name="expired_date" required>
+                                            name="expired_date"
+                                            value="{{ $product->discount ? $product->discount->expired_date : '' }}"
+                                            required>
                                         @error('expired_date')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -159,7 +366,7 @@
 
 @section('script')
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $(function() {
             var table = $('#productDataTable').DataTable({
                 processing: true,
@@ -189,10 +396,6 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    // {
-                    //     data: 'cover_img',
-                    //     name: 'cover_img'
-                    // },
                     {
                         data: 'sku',
                         name: 'sku'
@@ -263,18 +466,20 @@
             });
 
         });
-    </script>
+    </script> --}}
 
     <script>
         $('input[name="daterange"]').daterangepicker({
             opens: 'left',
             drops: 'buttom',
         }, function(start, end, label) {
-            document.getElementById("from").innerHTML =
-                `<input name='from_date' id="from_date" type='date' value="${start.format('YYYY-MM-DD') }" hidden />`;
-            document.getElementById("to").innerHTML =
-                `<input name='to_date' id="to_date" type='date' value="${end.format('YYYY-MM-DD')}" hidden/>`;
-            // console.log(start.format('YYYY-MM-DD'));
+            var limit = $('#limit').val();
+            var key = $('#myInput').val().toLowerCase();
+            var brand_id = $('#brand_id').val();
+            var category_id = $('#category_id').val();
+            location.replace(
+                `/product?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}${brand_id ? '&brand_id='+brand_id : ''}${category_id ? '&category_id='+category_id : ''}${start ? '&from_date='+start.format('YYYY-MM-DD') : ''}${end ? '&to_date='+end.format('YYYY-MM-DD') : ''}`
+            );
         });
     </script>
     <script>
@@ -285,6 +490,76 @@
             });
         }
         // console.log("This is javascript session" + user);
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#myInput").keypress(function(e) {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                var brand_id = $('#brand_id').val();
+                var category_id = $('#category_id').val();
+                if (e.which == 13) {
+                    location.replace(
+                        `/product?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}${brand_id ? '&brand_id='+brand_id : ''}${category_id ? '&category_id='+category_id : ''}`
+                    );
+                }
+            });
+            $("#limit").on('change', function() {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                var brand_id = $('#brand_id').val();
+                var category_id = $('#category_id').val();
+                location.replace(
+                    `/product?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}${brand_id ? '&brand_id='+brand_id : ''}${category_id ? '&category_id='+category_id : ''}`
+                );
+            });
+            $("#brand_id").on('change', function() {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                var brand_id = $('#brand_id').val();
+                var category_id = $('#category_id').val();
+                location.replace(
+                    `/product?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}${brand_id ? '&brand_id='+brand_id : ''}${category_id ? '&category_id='+category_id : ''}`
+                );
+            });
+            $("#category_id").on('change', function() {
+                var limit = $('#limit').val();
+                var key = $('#myInput').val().toLowerCase();
+                var brand_id = $('#brand_id').val();
+                var category_id = $('#category_id').val();
+                location.replace(
+                    `/product?${limit ? 'limit='+limit : ''}${key ? '&key='+key : ''}${brand_id ? '&brand_id='+brand_id : ''}${category_id ? '&category_id='+category_id : ''}`
+                );
+            });
+            $("#clear_filter").click(function() {
+                location.replace(
+                    `/product`
+                );
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            $('#productDataTable').on('click', 'button.delete', function(e) {
+                // console.log(e);
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to delete record",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(e.target).closest('form').submit() // Post the surrounding form
+                    }
+                })
+            });
+        });
     </script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>

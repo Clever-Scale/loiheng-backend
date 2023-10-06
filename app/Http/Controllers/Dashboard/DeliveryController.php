@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DeliveryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('delivery-created')) {
             toast(Session::get('delivery-created'), "success");
@@ -22,7 +22,15 @@ class DeliveryController extends Controller
         if (session('delivery-edit')) {
             toast(Session::get('delivery-edit'), "success");
         }
-        return view('dashboard.deliveries.index');
+        $deliveries = Delivery::query();
+        if(!is_null($request->key)){
+            $deliveries = $deliveries->where(function ($query) use  ($request) {
+                $query->orWhere('name', 'LIKE', "%$request->key%");
+                $query->orWhere('fee', 'LIKE', "%$request->key%");
+            });
+        }
+        $deliveries = $deliveries->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('dashboard.deliveries.index', compact('deliveries'));
     }
 
     public function getDeliveryList(Request $request)

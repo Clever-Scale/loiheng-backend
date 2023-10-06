@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Coupon Code Page</h1>
+            <h1>Coupon Code</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('coupon-code') }}">Coupon Code</a></li>
+                    <li class="breadcrumb-item active">New Coupon Code</li>
                 </ol>
             </nav>
         </div>

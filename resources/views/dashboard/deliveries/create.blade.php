@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Delivery Page</h1>
+            <h1>Delivery</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('delivery') }}">Delivery</a></li>
+                    <li class="breadcrumb-item active">New Delivery</li>
                 </ol>
             </nav>
         </div>

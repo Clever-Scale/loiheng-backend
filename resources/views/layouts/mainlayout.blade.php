@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Loiheng - @yield('title')</title>
+    <title>Loi Heng - @yield('title')</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -54,6 +54,11 @@
             list-style: decimal !important;
             list-style-position: inside !important;
         }
+
+        table,
+        td {
+            height: 80px;
+        }
     </style>
 
     @yield('links')
@@ -67,7 +72,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ route('homepage') }}" class="logo d-flex align-items-center">
                 <img src="{{ asset('assets/img/logo-only.png') }}" alt="">
-                <span class="d-none d-lg-block">Loiheng</span>
+                <span class="d-none d-lg-block">Loi Heng</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->

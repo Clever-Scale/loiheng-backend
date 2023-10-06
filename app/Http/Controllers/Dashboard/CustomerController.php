@@ -14,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('customer-created')) {
             toast(Session::get('customer-created'), "success");
@@ -25,7 +25,14 @@ class CustomerController extends Controller
         if (session('customer-edit')) {
             toast(Session::get('customer-edit'), "success");
         }
-        $customers = User::where('is_admin', '=', 'user')->get();
+        $customers = User::query();
+        if(!is_null($request->key)){
+            $customers = $customers->where(function ($query) use  ($request) {
+                $query->orWhere('fullname', 'LIKE', "%$request->key%");
+                $query->orWhere('email', 'LIKE', "%$request->key%");
+            });
+        }
+        $customers = $customers->orderBy('created_at', 'desc')->where('is_admin', 'user')->paginate($request->limit ?? 10);
         return view('dashboard.customers.index', compact('customers'));
     }
 

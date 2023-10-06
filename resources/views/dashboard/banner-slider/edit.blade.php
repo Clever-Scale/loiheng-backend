@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Banner Image Page</h1>
+            <h1>Banner Slider</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('brand') }}">Banner Image</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('brand') }}">Banner Slider</a></li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
             </nav>
         </div>

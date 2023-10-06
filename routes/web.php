@@ -37,7 +37,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/banner-slider/save', [BannerSliderController::class, 'save'])->name('banner-slider.save');
     Route::get('/banner-slider/{id}/edit', [BannerSliderController::class, 'edit'])->name('banner-slider.edit');
     Route::put('/banner-slider/{id}/update', [BannerSliderController::class, 'update'])->name('banner-slider.update');
-    Route::delete('/banner-slider/{id}/delete', [BannerSliderController::class, 'delete'])->name('banner-slider.delete');
+    Route::post('/banner-slider/{id}/delete', [BannerSliderController::class, 'delete'])->name('banner-slider.delete');
     Route::get('/banner-slider/list', [BannerSliderController::class, 'getBannerSliderList'])->name('getbannerlist');
     // Banner Slider end //
 
@@ -47,7 +47,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/category/save', [CategoryController::class, 'save'])->name('category.save');
     Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('/category/{id}/update', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/category/{id}/delete', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::post('/category/{id}/delete', [CategoryController::class, 'delete'])->name('category.delete');
     // Category end //
 
     // Brand start //
@@ -65,7 +65,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/delivery/save', [DeliveryController::class, 'save'])->name('delivery.save');
     Route::get('/delivery/{id}/edit', [DeliveryController::class, 'edit'])->name('delivery.edit');
     Route::put('/delivery/{id}/update', [DeliveryController::class, 'update'])->name('delivery.update');
-    Route::delete('/delivery/{id}/delete', [DeliveryController::class, 'delete'])->name('delivery.delete');
+    Route::post('/delivery/{id}/delete', [DeliveryController::class, 'delete'])->name('delivery.delete');
     Route::get('/delivery/list', [DeliveryController::class, 'getDeliveryList'])->name('getdeliverylist');
     // Brand end //
 
@@ -76,7 +76,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/product/{id}/show', [ProductController::class, 'show'])->name('product.show');
     Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
-    Route::delete('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
+    Route::post('/product/{id}/delete', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/product/list', [ProductController::class, 'getProductList'])->name('getproductlist');
     Route::post('/product/promotion', [ProductController::class, 'promotion'])->name('promotion');
     Route::delete('/product/product_image/{id}', [ProductController::class, 'productImageDelete'])->name('product.image.delete');
@@ -86,7 +86,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('promotion', [PromotionController::class, 'index'])->name('promo.index');
     Route::get('promotion/list', [PromotionController::class, 'list'])->name('promo.list');
     Route::put('promotion/{id}/update', [PromotionController::class, 'update'])->name('promo.update');
-    Route::delete('promotion/{id}/delete', [PromotionController::class, 'delete'])->name('promo.delete');
+    Route::post('promotion/{id}/delete', [PromotionController::class, 'delete'])->name('promo.delete');
     // Promotion end //
 
     // User start //
@@ -95,7 +95,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/users/save', [UserController::class, 'save'])->name('user.save');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/users/{id}/update', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/users/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
+    Route::post('/users/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
     // User end //
 
 
@@ -106,7 +106,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::post('/customers/save', [CustomerController::class, 'save'])->name('customer.save');
     Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
     Route::put('/customers/{id}/update', [CustomerController::class, 'update'])->name('customer.update');
-    Route::delete('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
+    Route::post('/customers/{id}/delete', [CustomerController::class, 'delete'])->name('customer.delete');
     Route::get('/customers/list', [CustomerController::class, 'getCustomerList'])->name('getcustomerlist');
     // Customer end //
 
@@ -127,7 +127,7 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     // Contact start //
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::get('/contact/list', [ContactController::class, 'getContactList'])->name('getcontactlist');
-    Route::delete('/contact/{id}/delete', [ContactController::class, 'delete'])->name('contact.delete');
+    Route::post('/contact/{id}/delete', [ContactController::class, 'delete'])->name('contact.delete');
     // Contact end //
 
     // Contact start //

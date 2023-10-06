@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class BrandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('brand-create')) {
             toast(Session::get('brand-create'), "success");
@@ -22,7 +22,11 @@ class BrandController extends Controller
         if (session('brand-update')) {
             toast(Session::get('brand-update'), "success");
         }
-        $brands = Brand::where('is_active', 1)->orderBy('id', 'desc')->get();
+        $brands = Brand::query();
+        if(!is_null($request->key)){
+            $brands = $brands->where('name', 'LIKE', "%$request->key%");
+        }
+        $brands = $brands->where("is_active", 1)->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
         return view('dashboard.brands.index', compact('brands'));
     }
 

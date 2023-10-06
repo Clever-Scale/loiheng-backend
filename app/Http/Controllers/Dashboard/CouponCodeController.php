@@ -15,12 +15,19 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CouponCodeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('success')) {
             toast(Session::get('success'), "success");
         }
-        return view('dashboard.coupon-code.index');
+        $coupon_codes = CouponCode::query();
+        if(!is_null($request->key)){
+            $coupon_codes = $coupon_codes->where(function ($query) use  ($request) {
+                $query->orWhere('code', 'LIKE', "%$request->key%");
+            });
+        }
+        $coupon_codes = $coupon_codes->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('dashboard.coupon-code.index', compact('coupon_codes'));
     }
 
     public function create()

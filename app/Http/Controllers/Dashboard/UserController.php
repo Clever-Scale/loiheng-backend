@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('user-delete')) {
             toast(Session::get('user-delete'), "success");
@@ -22,7 +22,14 @@ class UserController extends Controller
         if (session('user-edit')) {
             toast(Session::get('user-edit'), "success");
         }
-        $users = User::where('is_admin', '=', 'admin')->get();
+        $users = User::query();
+        if(!is_null($request->key)){
+            $users = $users->where(function ($query) use  ($request) {
+                $query->orWhere('fullname', 'LIKE', "%$request->key%");
+                $query->orWhere('email', 'LIKE', "%$request->key%");
+            });
+        }
+        $users = $users->orderBy('created_at', 'desc')->where('is_admin', 'admin')->paginate($request->limit ?? 10);
         return view('dashboard.users.index', compact('users'));
     }
 

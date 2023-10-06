@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Product;
 use App\Models\Category;
+use App\Models\Promotion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('category-create')) {
             toast(Session::get('category-create'), "success");
@@ -20,7 +22,12 @@ class CategoryController extends Controller
         if (session('category-update')) {
             toast(Session::get('category-update'), "success");
         }
-        $categories = Category::where('is_active', 1)->orderBy('id', 'desc')->get();
+        $categories = Category::query();
+        if(!is_null($request->key)){
+            $categories = $categories->where('name', 'LIKE', "%$request->key%");
+        }
+
+        $categories = $categories->where("is_active", 1)->orderBy('created_at', 'desc')->paginate($request->limit ? $request->limit : 10);
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -96,7 +103,20 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        Category::find($id)->delete();
+        Category::findorFail($id)->update([
+            'is_active' => 0
+        ]);
+
+        Category::where('brand_id', $id)->update([
+            'is_active' => 0,
+        ]);
+
+        $product = Product::where('category_id', $id)->get();
+        foreach($product as $prod){
+            Promotion::where('product_id', $prod->id)->update([
+                'is_active' => false
+            ]);
+        }
         return redirect()->route('category')->with('category-delete', 'Category has been deleted successfully!');
     }
 }

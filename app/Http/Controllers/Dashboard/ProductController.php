@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('product-create')) {
             toast(Session::get('product-create'), "success");
@@ -40,113 +40,133 @@ class ProductController extends Controller
         }
         $categories = Category::where('is_active',1)->get();
         $brands = Brand::where('is_active', 1)->get();
-        $products = ProductResource::collection(Product::where('is_active', 1)->orderBy('id', 'desc')->get());
-        $products = json_decode(json_encode($products));
-        // dd($products);
+        $products = Product::query();
+        if(!is_null($request->key)){
+            $products = $products->where(function ($query) use  ($request) {
+                $query->orWhere('name', 'LIKE', "%$request->key%");
+                $query->orWhere('sku', 'LIKE', "%$request->key%");
+                $query->orWhere('product_code', 'LIKE', "%$request->key%");
+            });
+        }
+        if(!is_null($request->brand_id)){
+            $products = $products->where('brand_id', $request->brand_id);
+        }
+        if(!is_null($request->category_id)){
+            $products = $products->where('category_id', $request->category_id);
+        }
+        if(!is_null($request->from_date) && !is_null($request->to_date)){
+            $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
+            $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
+            $start_date = $from_date != null ? "$from_date 00:00:00" : null;
+            $end_date = $to_date != null ? "$to_date 23:59:59" : null;
+            $products = $products->whereBetween('created_at', [$start_date, $end_date]);
+        }
+        $products = $products->where("is_active", 1)->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        // dd(json_decode(json_encode($products)));
         return view('dashboard.products.index', compact('products', 'categories', 'brands'));
     }
-    public function getProductList(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Product::where('is_active', 1)->select('*');
-            return DataTables::of($data)
-                    ->escapeColumns(['description'])
-                    ->editColumn('category_id', function ($cat) {
-                        $cate = Category::findOrFail( $cat->category_id)->name;
-                        return '<span class="badge text-bg-primary">'.$cate.'</span>';
-                    })
-                    ->editColumn('brand_id', function ($row) {
-                        $brand = Brand::findOrFail( $row->brand_id)->name;
-                        return '<span class="badge text-bg-info">'.$brand.'</span>';
-                    })
-                    ->addColumn('cover_img', function ($row) {
-                        $url = asset($row->cover_img ? $row->cover_img : "assets/img/images.jpg");
-                        return '<img src="' . $url . '"
-                    alt="Profile Image" style="width: 60px; height: 60px; border-radius: 4px;">';
-                    })
-                    ->addColumn('name', function($row) {
-                        return '
-                        <a  data-bs-toggle="tooltip" data-bs-placement="top" title="'.$row->name.'">
-                            <p style="overflow: hidden; width: 150px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
-                        </a>';
-                    })
-                    ->addColumn('created_at', function ($row) {
-                        return '
-                        <div class="d-flex ">
-                        <div>
-                            <i class="bi bi-calendar-date mx-2"></i>
-                        </div>
-                            <div class="px-2 ">
-                                ' . Carbon::create($row->created_at)->toFormattedDateString() .
-                            '</div>
-                        </div>';
-                    })
-                    ->addColumn('price', function ($row) {
-                        return '<p style="font-size: 18px; color: green; font-weight: 600;">' . number_format($row->price) . ' $</p>';
-                    })
-                    ->addColumn('action', function ($row) {
-                        return '
-                        <div class="dropdown">
-                            <button class="btn" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu p-4">
-                                <li>
-                                    <button type="button" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'"  style="width:100%">
-                                        Discount
-                                    </button>
-                                </li>
-                                <li>
-                                    <a href="' . route("product.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
-                                        Show
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="' . route("product.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
-                                        Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <form method="post" action="' . route("product.delete", ["id" => $row->id]) . ' "
-                                    id="from1" data-flag="0">
-                                    ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-danger btn-sm delete"
-                                                style="width: 100%">Delete</button>
-                                        </form>
-                                </li>
-                            </ul>
-                        </div>';
-                    })
-                    ->filter(function ($instance) use ($request) {
-                        if ($request->get('category_id')){
-                            $instance->where('category_id', $request->get('category_id'));
-                        }
-                        if ($request->get('brand_id')){
-                            $instance->where('brand_id', $request->get('brand_id'));
-                        }
-                        if($request->has('from_date')){
-                            $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
-                            $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
-                            $start_date = $from_date != null ? "$from_date 00:00:00" : null;
-                            $end_date = $to_date != null ? "$to_date 23:59:59" : null;
-                            $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
+    // public function getProductList(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $data = Product::where('is_active', 1)->select('*');
+    //         return DataTables::of($data)
+    //                 ->escapeColumns(['description'])
+    //                 ->editColumn('category_id', function ($cat) {
+    //                     $cate = Category::findOrFail( $cat->category_id)->name;
+    //                     return '<span class="badge text-bg-primary">'.$cate.'</span>';
+    //                 })
+    //                 ->editColumn('brand_id', function ($row) {
+    //                     $brand = Brand::findOrFail( $row->brand_id)->name;
+    //                     return '<span class="badge text-bg-info">'.$brand.'</span>';
+    //                 })
+    //                 ->addColumn('cover_img', function ($row) {
+    //                     $url = asset($row->cover_img ? $row->cover_img : "assets/img/images.jpg");
+    //                     return '<img src="' . $url . '"
+    //                 alt="Profile Image" style="width: 60px; height: 60px; border-radius: 4px;">';
+    //                 })
+    //                 ->addColumn('name', function($row) {
+    //                     return '
+    //                     <a  data-bs-toggle="tooltip" data-bs-placement="top" title="'.$row->name.'">
+    //                         <p style="overflow: hidden; width: 150px; white-space: nowrap; text-overflow: ellipsis" >'.$row->name.'</p>
+    //                     </a>';
+    //                 })
+    //                 ->addColumn('created_at', function ($row) {
+    //                     return '
+    //                     <div class="d-flex ">
+    //                     <div>
+    //                         <i class="bi bi-calendar-date mx-2"></i>
+    //                     </div>
+    //                         <div class="px-2 ">
+    //                             ' . Carbon::create($row->created_at)->toFormattedDateString() .
+    //                         '</div>
+    //                     </div>';
+    //                 })
+    //                 ->addColumn('price', function ($row) {
+    //                     return '<p style="font-size: 18px; color: green; font-weight: 600;">' . number_format($row->price) . ' $</p>';
+    //                 })
+    //                 ->addColumn('action', function ($row) {
+    //                     return '
+    //                     <div class="dropdown">
+    //                         <button class="btn" type="button" data-bs-toggle="dropdown"
+    //                             aria-expanded="false">
+    //                             <i class="bi bi-three-dots-vertical"></i>
+    //                         </button>
+    //                         <ul class="dropdown-menu p-4">
+    //                             <li>
+    //                                 <button type="button" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal'.$row->id.'"  style="width:100%">
+    //                                     Discount
+    //                                 </button>
+    //                             </li>
+    //                             <li>
+    //                                 <a href="' . route("product.show", ["id" => $row->id]) . '" class="btn btn-success btn-sm mb-2" style="width:100%">
+    //                                     Show
+    //                                 </a>
+    //                             </li>
+    //                             <li>
+    //                                 <a href="' . route("product.edit", ["id" => $row->id]) . '" class="btn btn-primary btn-sm mb-2" style="width:100%">
+    //                                     Edit
+    //                                 </a>
+    //                             </li>
+    //                             <li>
+    //                                 <form method="post" action="' . route("product.delete", ["id" => $row->id]) . ' "
+    //                                 id="from1" data-flag="0">
+    //                                 ' . csrf_field() . '<input type="hidden" name="_method" value="DELETE">
+    //                                         <button type="submit" class="btn btn-danger btn-sm delete"
+    //                                             style="width: 100%">Delete</button>
+    //                                     </form>
+    //                             </li>
+    //                         </ul>
+    //                     </div>';
+    //                 })
+    //                 ->filter(function ($instance) use ($request) {
+    //                     if ($request->get('category_id')){
+    //                         $instance->where('category_id', $request->get('category_id'));
+    //                     }
+    //                     if ($request->get('brand_id')){
+    //                         $instance->where('brand_id', $request->get('brand_id'));
+    //                     }
+    //                     if($request->has('from_date')){
+    //                         $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
+    //                         $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
+    //                         $start_date = $from_date != null ? "$from_date 00:00:00" : null;
+    //                         $end_date = $to_date != null ? "$to_date 23:59:59" : null;
+    //                         $instance = $instance->whereBetween('created_at', [$start_date, $end_date]);
 
-                        }
-                        if (!empty($request->get('search'))) {
-                            $instance->where('name', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('product_code', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('sku', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('price', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('description', 'Like', "%{$request->get('search')}%")
-                            ->orWhere('short_description', 'Like', "%{$request->get('search')}%")
-                            ;
-                        }
-                    })
-                    ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img', 'name'  ])
-                    ->make(true);
-        }
-    }
+    //                     }
+    //                     if (!empty($request->get('search'))) {
+    //                         $instance->where('name', 'Like', "%{$request->get('search')}%")
+    //                         ->orWhere('product_code', 'Like', "%{$request->get('search')}%")
+    //                         ->orWhere('sku', 'Like', "%{$request->get('search')}%")
+    //                         ->orWhere('price', 'Like', "%{$request->get('search')}%")
+    //                         ->orWhere('description', 'Like', "%{$request->get('search')}%")
+    //                         ->orWhere('short_description', 'Like', "%{$request->get('search')}%")
+    //                         ;
+    //                     }
+    //                 })
+    //                 ->rawColumns(['description', 'created_at', 'action', 'price', 'cover_img', 'name'  ])
+    //                 ->make(true);
+    //     }
+    // }
 
     public function create()
     {
@@ -460,9 +480,16 @@ class ProductController extends Controller
             'expired_date' => 'required',
         ]);
         $user = auth('sanctum')->user();
-        $old_promo = Promotion::where('product_id', $request->product_id)->value('id');
-        if($old_promo) {
-            return redirect()->route('product')->with('already-promo', 'This product is already promotion! Edit in promotion table!');
+        $exitProduct = Promotion::where('product_id', $request->product_id)->value('id');
+        if($exitProduct) {
+            Promotion::where('id', $exitProduct)->update([
+                'name' => $request->name,
+                'percent' => $request->percent,
+                'expired_date' => $request->expired_date,
+                'user_id' => $user->id,
+
+            ]);
+            return redirect()->route('product')->with('create-promotion', 'Product promotion updated successfully!');
         }else{
             Promotion::create([
                 'name' => $request->name,
@@ -472,7 +499,6 @@ class ProductController extends Controller
                 'product_id' => $request->product_id,
 
             ]);
-
             return redirect()->route('product')->with('create-promotion', 'Product promotion created successfully!');
         }
     }

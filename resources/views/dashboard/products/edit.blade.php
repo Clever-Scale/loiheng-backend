@@ -3,11 +3,12 @@
 @section('content')
     <div class="d-flex align-items-center justify-content-between">
         <div class="pagetitle">
-            <h1>Product Edit Page</h1>
+            <h1>Product</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('homepage') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('product') }}">Product</a></li>
+                    <li class="breadcrumb-item active">Update</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +25,7 @@
                     @csrf
                     @method('PUT')
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="padding: 10px 30px">
                             <h5 class="card-title">Edit Product</h5>
                             <input type="hidden" name="user_id" value="{{ $products[0]->created_by[0]->id }}">
                             <input type="hidden" name="product_code" value="{{ $products[0]->product_code }}">
@@ -254,7 +255,7 @@
                     <div class="card">
                         <div class="card-body ">
                             <div class="d-flex justify-content-between mb-3 align-items-center">
-                                <h5 class="card-title">Create Product Image</h5>
+                                <h5 class="card-title">Images</h5>
                                 <div class="py-2">
                                     <a id="btnAddImage" class="btn btn-success">Add
                                         Image</a>
