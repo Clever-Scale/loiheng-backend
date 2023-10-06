@@ -198,17 +198,17 @@
                                                                 <div>
 
                                                                     <del style="text-transform: capitalize">
-                                                                        {{ number_format($product->price) }} MMK
+                                                                        {{ number_format($product->price) }} $
                                                                     </del>
                                                                 </div>
                                                                 <h6 style="text-transform: capitalize">
-                                                                    {{ number_format($promo_price) }} MMK
+                                                                    {{ number_format($promo_price) }} $
                                                                 </h6>
 
                                                             </div>
                                                         @else
                                                             <h6 style="text-transform: capitalize">
-                                                                {{ number_format($product->price) }} MMK</h6>
+                                                                {{ number_format($product->price) }} $</h6>
                                                         @endif
                                                     </div>
                                                 </td>

@@ -12,9 +12,27 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard.orders.index');
+        $orders = Order::query();
+        if(!is_null($request->key)){
+            $orders = $orders->where(function ($query) use  ($request) {
+                $query->orWhere('order_no', 'LIKE', "%$request->key%");
+                $query->orWhere('total_price', 'LIKE', "%$request->key%");
+            });
+        }
+        if(!is_null($request->status)){
+            $orders = $orders->where('status', $request->status);
+        }
+        if(!is_null($request->from_date) && !is_null($request->to_date)){
+            $from_date = Carbon::parse($request->get('from_date'))->format('Y-m-d');
+            $to_date = Carbon::parse($request->get('to_date'))->format('Y-m-d');
+            $start_date = $from_date != null ? "$from_date 00:00:00" : null;
+            $end_date = $to_date != null ? "$to_date 23:59:59" : null;
+            $orders = $orders->whereBetween('created_at', [$start_date, $end_date]);
+        }
+        $orders = $orders->where("is_active", 1)->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('dashboard.orders.index', compact('orders'));
     }
 
     public function getOrderList(Request $request)

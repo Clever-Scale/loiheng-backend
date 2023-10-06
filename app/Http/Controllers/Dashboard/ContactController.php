@@ -11,12 +11,22 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('contact-delete')) {
             toast(Session::get('contact-delete'), "success");
         }
-        return view('dashboard.contact.index');
+        $contacts = Contact::query();
+        if(!is_null($request->key)){
+            $contacts = $contacts->where(function ($query) use  ($request) {
+                $query->orWhere('name', 'LIKE', "%$request->key%");
+                $query->orWhere('email', 'LIKE', "%$request->key%");
+                $query->orWhere('subject', 'LIKE', "%$request->key%");
+                $query->orWhere('description', 'LIKE', "%$request->key%");
+            });
+        }
+        $contacts = $contacts->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('dashboard.contact.index', compact('contacts'));
     }
     public function getContactList(Request $request)
     {

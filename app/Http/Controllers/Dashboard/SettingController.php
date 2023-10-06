@@ -12,12 +12,20 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SettingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (session('setting-edit')) {
             toast(Session::get('setting-edit'), "success");
         }
-        return view('dashboard.settings.index');
+        $settings = Setting::query();
+        if(!is_null($request->key)){
+            $settings = $settings->where(function ($query) use  ($request) {
+                $query->orWhere('key', 'LIKE', "%$request->key%");
+                $query->orWhere('value', 'LIKE', "%$request->key%");
+            });
+        }
+        $settings = $settings->orderBy('created_at', 'desc')->paginate($request->limit ?? 10);
+        return view('dashboard.settings.index', compact('settings'));
     }
     public function getSettingList(Request $request)
     {
