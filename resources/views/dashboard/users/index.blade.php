@@ -24,8 +24,34 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">User List </h5>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="pr-2"> Show: </div>
+                                <div>
+                                    <select id="limit" class="form-select">
+                                        <option value="10" {{ request()->get('limit') == '10' ? 'selected' : '' }}>10
+                                            Rows
+                                        </option>
+                                        <option value="20" {{ request()->get('limit') == '20' ? 'selected' : '' }}>20
+                                            Rows
+                                        </option>
+                                        <option value="50" {{ request()->get('limit') == '50' ? 'selected' : '' }}>50
+                                            Rows
+                                        </option>
+                                        <option value="100" {{ request()->get('limit') == '100' ? 'selected' : '' }}>100
+                                            Rows
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="text" id="myInput" value="{{ request()->get('key') }}"
+                                    class="form-control" placeholder="Search.....">
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover datatable" id="UserTable">
+                            <table class="table table-striped table-hover" id="UserTable">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

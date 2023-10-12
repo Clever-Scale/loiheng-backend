@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\Api\AddressController;
-use App\Http\Controllers\Api\BannerSliderController;
-use App\Http\Controllers\Api\BrandController;
-use App\Http\Controllers\Api\CartController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\ContactController;
-use App\Http\Controllers\Api\CouponCodeController;
-use App\Http\Controllers\Api\DeliveryController;
-use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\PromotionController;
-use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\WishlistController;
-use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DeliveryController;
+use App\Http\Controllers\Api\WishlistController;
+use App\Http\Controllers\Api\PromotionController;
+use App\Http\Controllers\Api\CouponCodeController;
+use App\Http\Controllers\Api\BannerSliderController;
+use App\Http\Controllers\Api\CompanyProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,5 +113,8 @@ Route::group(['namespace' => 'Api'], function() {
 
     // Contact start //
     Route::post('contact', [ContactController::class, 'contact']);
+    // Contact end //
+    // Contact start //
+    Route::get('company-profile', [CompanyProfileController::class, 'getCompanyProfile']);
     // Contact end //
 });

@@ -31,7 +31,7 @@
                             <input type="hidden" value="{{ $user->is_admin }}" name="is_admin">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label for="profile_img" style="font-weight: 700">User Profile:</label>
+                                    <label for="profile_img" style="font-weight: 700">User Profile:</label><br>
                                     <label for="profile_img">
                                         <img id="blah"
                                             src="{{ asset($user->profile_img ? $user->profile_img : 'assets/img/images.jpg') }}"
@@ -74,7 +74,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                {{-- <div class="col-md-6 mb-3">
                                     <label for="role" style="font-weight: 700">Role:</label>
                                     <input type="text" name="role"
                                         class="@error('role') is-invalid @enderror form-control py-1"
@@ -84,7 +84,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="col-md-6 mb-3">
                                     <label for="password" style="font-weight: 700">Password:</label>
                                     <input type="password" name="password"
