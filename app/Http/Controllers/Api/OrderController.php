@@ -133,8 +133,9 @@ class OrderController extends BaseController
                 'coupon_code' => $request->coupon_code,
                 'coupon_price' => $coupon_price ? $coupon_price : 0,
                 'total_price' => $total_price,
-                'delivery_fee' => $delivery_fee->fee ? $delivery_fee->fee  : "",
+                'delivery_fee' => $delivery_fee ? $delivery_fee->fee  : "",
                 'order_no' => $this->generateOrderCode(),
+                'is_preorder' => $request->is_preorder == "true" ? true : false,
             ]);
 
             $orderdetail = OrderResource::collection(Order::where('id', $order->id)->get());
