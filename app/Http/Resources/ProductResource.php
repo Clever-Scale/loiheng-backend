@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ProductPicture;
+use App\Models\ProductReview;
 use App\Models\ProductSpec;
 use App\Models\ProductWarranty;
 use App\Models\Promotion;
@@ -50,6 +51,7 @@ class ProductResource extends JsonResource
             'product_warranties' => ProductWarranty::where('product_id', $this->id)->get(),
             'product_pictures' => ProductPicture::where('product_id', $this->id)->get(),
             'discount' => PromotionResource::collection(Promotion::where('product_id', $this->id)->where('expired_date', '>=', $now)->get()),
+            'reviews' => ProductReview::where('product_id', $this->id)->with('user')->get(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

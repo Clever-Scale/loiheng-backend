@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\CouponCodeController;
 use App\Http\Controllers\Api\BannerSliderController;
 use App\Http\Controllers\Api\CompanyProfileController;
+use App\Http\Controllers\Api\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('apply-coupon-code/{code}', [CouponCodeController::class, 'applyCouponCode']);
         Route::get('coupon-codes', [CouponCodeController::class, 'getCouponCode']);
         // Coupon code end //
+
+        // Review start //
+        Route::post('create-review', [ReviewController::class, 'create']);
+        // Review end //
     });
 
     // Brand start //

@@ -55,6 +55,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link  {{ request()->routeIs('reviews') ? '' : 'collapsed' }}" href="{{ route('reviews') }}">
+                <i class="bi bi-star-half"></i>
+                <span>Product Reviews</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link  {{ request()->routeIs('customer') || request()->routeIs('customer.edit') ? '' : 'collapsed' }}"
                 href="{{ route('customer') }}">
                 <i class="bi bi-person"></i>

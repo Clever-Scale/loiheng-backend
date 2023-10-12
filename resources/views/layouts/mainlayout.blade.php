@@ -57,7 +57,7 @@
 
         table,
         td {
-            height: 80px;
+            min-height: 80px;
         }
     </style>
 

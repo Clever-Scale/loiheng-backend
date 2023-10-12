@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\PromotionController;
+use App\Http\Controllers\Dashboard\ReviewController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
@@ -123,6 +124,11 @@ Route::group(["namespace" => "Dashboard", "middleware" => "is_admin"], function 
     Route::get('/settings/{id}/edit', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings/{key}/update', [SettingController::class, 'update'])->name('settings.update');
     // Setting end //
+
+    // Review start //
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
+    Route::post('/reviews/delete/{id}', [ReviewController::class, 'delete'])->name('reviews.delete');
+    // Review end //
 
     // Contact start //
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
