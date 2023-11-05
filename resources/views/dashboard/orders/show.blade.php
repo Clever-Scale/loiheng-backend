@@ -125,7 +125,8 @@
                                                         <th>Delivery Price</th>
                                                         <td>
                                                             <p style="text-transform: capitalize; color: green">
-                                                                {{ number_format($order->delivery_fee) }} MMK
+                                                                {{ $order->delivery_fee ? number_format($order->delivery_fee) : 0 }}
+                                                                MMK
                                                             </p>
                                                         </td>
                                                     </tr>
