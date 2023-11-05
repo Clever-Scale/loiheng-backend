@@ -12,6 +12,12 @@
             <a class="nav-link {{ request()->routeIs('orders') ? '' : 'collapsed' }}" href="{{ route('orders') }}">
                 <i class="bi bi-cart3"></i>
                 <span>Orders</span>
+                <div style="padding-left: 40px">
+                    <span class="badge text-bg-danger">
+                        <span id="order-count"></span>
+                        <span>News</span>
+                    </span>
+                </div>
             </a>
         </li>
 
@@ -112,3 +118,34 @@
     </ul>
 
 </aside>
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('d65532ac94059367b333', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-order-channel');
+    var order = {!! \App\Models\Order::where('is_seen', '!=', 1)->count() !!}
+
+    if (order) {
+        document.getElementById('order-count').innerHTML = order;
+    } else {
+        document.getElementById('order-count').innerHTML = 0;
+    }
+    channel.bind('my-order', function(data) {
+        if (data) {
+            const newOrder = document.getElementById('order-count').innerHTML;
+            Swal.fire({
+                position: 'top-end',
+                iconHtml: '<i class="bi bi-bell" style="color: green"></i>',
+                title: 'User ordered!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            document.getElementById('order-count').innerHTML = +newOrder + 1;
+
+        }
+    });
+</script>

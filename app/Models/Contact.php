@@ -17,6 +17,7 @@ class Contact extends Model
         'phone_no',
         'subject',
         'description',
+        'is_seen',
     ];
 
     public static function boot() {

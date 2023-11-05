@@ -14,6 +14,9 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
+        Order::where('is_seen', 0)->update([
+            'is_seen' => 1
+        ]);
         $orders = Order::query();
         if(!is_null($request->key)){
             $orders = $orders->where(function ($query) use  ($request) {

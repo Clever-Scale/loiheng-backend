@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\OrderNotification;
 use Exception;
 use App\Models\Cart;
 use App\Models\Order;
@@ -155,7 +156,7 @@ class OrderController extends BaseController
                         'stock' => $stock - $cat->qty
                     ]);
                 }
-                Mail::to($user->email)->send(new OrderMail($orderdetail));
+                // Mail::to($user->email)->send(new OrderMail($orderdetail));
 
             }
 
@@ -173,6 +174,10 @@ class OrderController extends BaseController
                     'coupon_id' => $coup_code->id,
                     'user_id' => $user->id
                 ]);
+            }
+
+            if($order){
+                event(new OrderNotification($order));
             }
             return $this->sendResponse($order,"Order successfully!.");
         }catch(Exception $e){

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Loi Heng - @yield('title')</title>
+    <title>LOI HENG - @yield('title')</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -43,6 +43,8 @@
     {{-- Summer Note end --}}
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
     <style>
         /* For summernote override unordered and order list */
         .note-editable ul {
@@ -72,7 +74,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ route('homepage') }}" class="logo d-flex align-items-center">
                 <img src="{{ asset('assets/img/logo-only.png') }}" alt="">
-                <span class="d-none d-lg-block">Loi Heng</span>
+                <span class="d-none d-lg-block">LOI HENG</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -95,76 +97,80 @@
 
                 <li class="nav-item dropdown">
 
+
+                    <?php
+                    $tmp = \App\Models\Contact::where('is_seen', '!=', 1)->count();
+                    $contacts = \App\Models\Contact::where('is_seen', '!=', 1)->get();
+                    ?>
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">4</span>
+                        <span class="badge bg-danger badge-number" id="noti-count">{{ $tmp }}</span>
                     </a><!-- End Notification Icon -->
+                    @if ($tmp > 0)
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                            <li class="dropdown-header">
+                                You have new notifications
+                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <div id="new-noti"></div>
+                            @if ($tmp > 0)
+                                @if ($tmp < 4)
+                                    @foreach ($contacts as $contact)
+                                        <li class="notification-item">
+                                            <a href="{{ route('contact') }}"
+                                                style="padding-left: 10px; text-decoration: none">
+                                                <h4 style="text-transform: capitalize">{{ $contact->name }}</h4>
+                                                <p
+                                                    style="white-space: nowrap;
+                                            width: 150px;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;">
+                                                    {{ $contact->description }}</p>
+                                                <p>{{ $contact->created_at }}</p>
+                                            </a>
+                                        </li>
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                        <li class="dropdown-header">
-                            You have 4 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    @endforeach
+                                @else
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <li class="notification-item">
+                                            <a href="{{ route('contact') }}"
+                                                style="padding-left: 10px; text-decoration: none">
+                                                <h4 style="text-transform: capitalize">{{ $contacts[$i]->name }}</h4>
+                                                <p
+                                                    style="white-space: nowrap;
+                                            width: 150px;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;">
+                                                    {{ $contacts[$i]->description }}</p>
+                                                <p>{{ \Carbon\Carbon::create($contacts[$i]->created_at)->toFormattedDateString() }}
+                                                </p>
+                                            </a>
+                                        </li>
 
-                        <li class="notification-item">
-                            <i class="bi bi-exclamation-circle text-warning"></i>
-                            <div>
-                                <h4>Lorem Ipsum</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>30 min. ago</p>
-                            </div>
-                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    @endfor
+                                @endif
+                            @endif
 
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        </ul><!-- End Notification Dropdown Items -->
+                    @else
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                            <li class="dropdown-header">
+                                You have no new notifications
+                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
+                            </li>
 
-                        <li class="notification-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <div>
-                                <h4>Atque rerum nesciunt</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>1 hr. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-check-circle text-success"></i>
-                            <div>
-                                <h4>Sit rerum fuga</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>2 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-info-circle text-primary"></i>
-                            <div>
-                                <h4>Dicta reprehenderit</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>4 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li>
-
-                    </ul><!-- End Notification Dropdown Items -->
+                        </ul>
+                    @endif
 
                 </li><!-- End Notification Nav -->
 
@@ -248,6 +254,38 @@
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('d65532ac94059367b333', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('my-contact-channel');
+        var contact = document.getElementById('noti-count').innerHTML;
+        document.getElementById('noti-count').innerHTML = contact;
+        channel.bind('my-contact-event', function(data) {
+            if (data) {
+                var newCount = document.getElementById('noti-count').innerHTML;
+                document.getElementById('noti-count').innerHTML = +newCount + 1;
+                document.getElementById('new-noti').innerHTML = `<li class="notification-item">
+                                    <a href="{{ route('contact') }}" style="padding-left: 10px; text-decoration: none">
+                                        <h4  style="text-transform: capitalize">${data.contact.name}</h4>
+                                        <p style="white-space: nowrap;
+                                        width: 150px;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;">${data.contact.description}</p>
+                                        <p>${data.contact.created_at}</p>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>`;
+            }
+        });
+    </script>
     @yield('script')
 </body>
 

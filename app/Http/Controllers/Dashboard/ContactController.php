@@ -16,6 +16,7 @@ class ContactController extends Controller
         if (session('contact-delete')) {
             toast(Session::get('contact-delete'), "success");
         }
+        Contact::where('is_seen', 0)->update(['is_seen' => 1]);
         $contacts = Contact::query();
         if(!is_null($request->key)){
             $contacts = $contacts->where(function ($query) use  ($request) {
