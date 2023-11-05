@@ -156,7 +156,7 @@ class OrderController extends BaseController
                         'stock' => $stock - $cat->qty
                     ]);
                 }
-                // Mail::to($user->email)->send(new OrderMail($orderdetail));
+                Mail::to($user->email)->send(new OrderMail($orderdetail));
 
             }
 
