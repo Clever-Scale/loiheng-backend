@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
     Route::get('get-verify-code',[AuthController::class, 'requestVerifyCode']);
     Route::post('verify-email',[AuthController::class, 'verifyEmail']);
     Route::post('profile-update',[AuthController::class, 'profileUpdate']);
+    Route::post('change-password',[AuthController::class, 'changePassword']);
 });
 
 Route::group(['namespace' => 'Api'], function() {

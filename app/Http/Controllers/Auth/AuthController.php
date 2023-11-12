@@ -158,6 +158,7 @@ class AuthController extends BaseController
             return $this->sendErrorMessageResponse('Email not found!');
         }
     }
+
     public function verifyEmail(Request $request){
         $validate = Validator::make($request->all(),[
             'email' => 'required',
@@ -198,6 +199,25 @@ class AuthController extends BaseController
         ]);
 
         return $this->sendMessageResponse(['profile_img' => ['Profile updated']]);
+    }
+    public function changePassword(Request $request){
+        $validate = Validator::make($request->all(),[
+            "old_password" => "required",
+            "new_password" => "required",
+        ]);
+        if($validate->fails()){
+            return $this->sendError($validate->errors());
+        }
+
+        if(!Hash::check($request->old_password, auth('sanctum')->user()->password)){
+            return $this->sendErrorMessageResponse(['error' => "Old Password Doesn't match!"]);
+        }
+
+        User::whereId(auth('sanctum')->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return $this->sendMessageResponse(['success' => 'Password updated successfully!']);
     }
 
 }
