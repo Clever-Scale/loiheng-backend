@@ -40,6 +40,9 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth' ],function() {
     Route::post('login',[AuthController::class, 'login']);
     Route::get('logout',[AuthController::class, 'logout']);
     Route::get('me',[AuthController::class, 'me']);
+    Route::get('get-verify-code',[AuthController::class, 'requestVerifyCode']);
+    Route::post('verify-email',[AuthController::class, 'verifyEmail']);
+    Route::post('profile-update',[AuthController::class, 'profileUpdate']);
 });
 
 Route::group(['namespace' => 'Api'], function() {

@@ -50,11 +50,17 @@
                                 </div>
                                 <div class="px-2">
                                     <select id="status" class="form-select" aria-label="Default select example">
-                                        <option value="0">Select Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="confirm">Confirm</option>
-                                        <option value="ontheway">On The Way</option>
-                                        <option value="complete">Complete</option>
+                                        <option value="" {{ request()->get('status') == '' ? 'selected' : '' }}>Select
+                                            Status</option>
+                                        <option value="pending"
+                                            {{ request()->get('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="confirm"
+                                            {{ request()->get('status') == 'confirm' ? 'selected' : '' }}>Confirm</option>
+                                        <option value="ontheway"
+                                            {{ request()->get('status') == 'ontheway' ? 'selected' : '' }}>On The Way
+                                        </option>
+                                        <option value="complete"
+                                            {{ request()->get('status') == 'complete' ? 'selected' : '' }}>Complete</option>
                                     </select>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content:end; align-items:start; height: 100%"
@@ -110,19 +116,33 @@
                                                         {{ $order->order_no }}</div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex align-items-center" style="height: 100%">
-                                                        {{ $order->user->fullname }}</div>
+                                                    <a href="{{ route('user.edit', ['id' => $order->user->id]) }}">
+                                                        <div class="d-flex align-items-center" style="height: 100%">
+                                                            <img src="{{ asset($order->user->profile_img ?? 'assets/img/logo-only.png') }}"
+                                                                alt="Profile Image"
+                                                                style="border-radius: 50%, width: 50px; height: 40px">
+                                                            <div style="display: flex; flex-direction: column">
+                                                                <span style="color: #000; font-weight: 600">
+                                                                    {{ $order->user->fullname }}</span>
+                                                                <span> {{ $order->user->email }}</span>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </a>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex align-items-center" style="height: 100%">
-                                                        {{ $order->total_price }}</div>
+                                                    <div class="d-flex align-items-center"
+                                                        style="height: 100%; color: #000; font-weight: 600">
+                                                        {{ number_format($order->total_price) }} MMK</div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center" style="height: 100%">
                                                         {{ $order->payment_method }}</div>
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex align-items-center" style="height: 100%">
+                                                    <div class="d-flex align-items-center"
+                                                        style="height: 100%; text-transform: capitalize">
                                                         @if ($order->status == 'pending')
                                                             <span
                                                                 class="badge rounded-pill text-bg-primary">{{ $order->status }}</span>
@@ -238,7 +258,7 @@
             });
             $("#clear_filter").click(function() {
                 location.replace(
-                    `/product`
+                    `/orders`
                 );
             });
         });

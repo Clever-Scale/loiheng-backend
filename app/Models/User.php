@@ -33,6 +33,8 @@ class User extends Authenticatable
         'provider',
         'provider_id',
         'provider_token',
+        'verify_code',
+        'is_verified',
     ];
 
     /**
