@@ -144,18 +144,24 @@ class AuthController extends BaseController
         return $this->sendResponse($user, 'User data getting successfully!');
     }
 
-    public function requestVerifyCode($email){
-        $checkUser = User::where('email', $email)->first();
+    public function requestVerifyCode(Request $request){
+        $validate = Validator::make($request->all(),[
+            "email" => "required",
+        ]);
+        if($validate->fails()){
+            return $this->sendError($validate->errors());
+        }
+        $checkUser = User::where('email', $request->email)->first();
         if($checkUser){
             $user = User::where('id', $checkUser->id)->update([
                 'verify_code'=> rand(10000, 99999),
             ]);
             $newUser = User::where('id', $checkUser->id)->first();
             Mail::to($newUser->email)->send(new VerifyEmail($newUser));
-            return response()->json(['success'=> true, "data" =>  auth('sanctum')->user()]);
+            return $this->sendMessageResponse(['email' => ['A confirmation code has been sent successfully!']]);
 
         }else{
-            return $this->sendErrorMessageResponse('Email not found!');
+            return $this->sendErrorMessageResponse(['email' => ['Email not found!']]);
         }
     }
 
@@ -180,7 +186,7 @@ class AuthController extends BaseController
 
     public function profileUpdate(Request $request){
         $validate = Validator::make($request->all(),[
-            "profile_img" => "required||max:3000|mimes:jpeg,png",
+            "profile_img" => "required|max:3000|mimes:jpeg,png",
         ]);
         if($validate->fails()){
             return $this->sendError($validate->errors());
@@ -219,5 +225,29 @@ class AuthController extends BaseController
 
         return $this->sendMessageResponse(['success' => 'Password updated successfully!']);
     }
+
+    public function forgotPassword(Request $request){
+        $validate = Validator::make($request->all(),[
+            "email" => "required",
+            "verify_code" => "required",
+            "new_password" => "required",
+        ]);
+        if($validate->fails()){
+            return $this->sendError($validate->errors());
+        }
+
+        $check = User::where(['email' => $request->email, 'verify_code' => $request->verify_code])->first();
+
+        if($check){
+            User::where('id', $check->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+        }else{
+            return $this->sendErrorMessageResponse(['error' => 'Verify Code is invalid!']);
+        }
+
+        return $this->sendMessageResponse(['success' => 'Password updated successfully!']);
+    }
+
 
 }
